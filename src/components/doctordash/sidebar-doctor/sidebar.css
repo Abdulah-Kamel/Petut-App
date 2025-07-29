@@ -1,0 +1,8 @@
+@media (max-width: 768px){
+    .sidebar{
+        width: 80px !important;
+    }   
+    .sidebar ul li a span{
+        display: none;
+    }
+}
