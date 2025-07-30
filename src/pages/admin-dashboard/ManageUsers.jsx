@@ -54,6 +54,7 @@ export default function ManageUsers() {
                                 color: activeTab === 'doctors' ? '#D9A741' : '#333',
                                 fontWeight: activeTab === 'doctors' ? 'bold' : 'normal'
                             }}
+                            className='d-flex align-items-center'
                         >
                             <FaUserDoctor className='me-2' size={20} />
                             doctors
@@ -69,6 +70,7 @@ export default function ManageUsers() {
                                 color: activeTab === 'clients' ? '#D9A741' : '#333',
                                 fontWeight: activeTab === 'clients' ? 'bold' : 'normal'
                             }}
+                            className='d-flex align-items-center'
                         >
                         <FaUsers className='me-2' size={20} />
                         clients
@@ -83,6 +85,7 @@ export default function ManageUsers() {
                                 color: activeTab === 'admins' ? '#D9A741' : '#333',
                                 fontWeight: activeTab === 'admins' ? 'bold' : 'normal'
                             }}
+                            className='d-flex align-items-center'
                         >
                         <FaUsers className='me-2' size={20} />
                         Admins

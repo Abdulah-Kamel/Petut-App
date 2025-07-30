@@ -7,6 +7,7 @@ import { auth } from "../../firebase";
 import DarkModeToggle from "../DarkModeToggle";
 import NotificationBell from "../Notification/NotificationBell";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
+import logo from "../../assets/petut.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,14 +51,12 @@ const Navbar = () => {
     fetchUserData();
   }, [currentUser]);
   return (
-    <nav className="bg-white dark:bg-[#313340] shadow-md fixed top-0 left-0 right-0 z-50">
+    <nav className="bg-white dark:bg-[#313340] shadow-md fixed top-0 left-0 right-0 z-50 py-2 ">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <span className="text-xl font-bold text-primary">
-              PET<span className="text-neutral dark:text-white">.CARE</span>
-            </span>
+          <Link to="/" >
+           <img src={logo} width={'100px'} height={'100px'} alt="logo" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -77,7 +76,12 @@ const Navbar = () => {
               Health
             </Link>
             {userData?.role === "doctor" && (
-              <Link to="/dashboard" className="nav-link">
+              <Link to="/doctor-dashboard" className="nav-link">
+                Dashboard
+              </Link>
+            )}
+            {userData?.role === "admin" && (
+              <Link to="/admin-dashboard" className="nav-link">
                 Dashboard
               </Link>
             )}
@@ -116,7 +120,7 @@ const Navbar = () => {
 
             {currentUser ? (
               <div className="flex items-center space-x-4">
-                <Link to="/profile" className="nav-link">
+                <Link to="/profile/:userId" className="nav-link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
