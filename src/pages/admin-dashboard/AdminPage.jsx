@@ -4,20 +4,20 @@ import ContentAdminDash from '../../components/admindash/ContentAdminDash'
 import HeaderAdmin from '../../components/HeaderAdmin'
 
 export default function AdminDashboard() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
+    setSidebarOpen(!sidebarOpen)
   }
 
   return (
     <Fragment>
       <HeaderAdmin toggleSidebar={toggleSidebar} />
       <div className='d-flex '>
-        <Sidebar isOpen={isSidebarOpen} />
+        <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />
         <div
           className="d-flex flex-1"
           // style={{
-          //   marginLeft: isSidebarOpen ? '250px' : '100px',
+          //   marginLeft: sidebarOpen ? '250px' : '100px',
           //   transition: 'margin-left 0.3s ease'
           // }}
           >
