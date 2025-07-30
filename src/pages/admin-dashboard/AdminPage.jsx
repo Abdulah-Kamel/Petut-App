@@ -13,7 +13,7 @@ export default function AdminDashboard() {
     <Fragment>
       <HeaderAdmin toggleSidebar={toggleSidebar} />
       <div className='d-flex '>
-        <Sidebar isOpen={isSidebarOpen} />
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div
           className="d-flex flex-1"
           // style={{

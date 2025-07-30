@@ -11,7 +11,7 @@ import { MdReviews } from "react-icons/md";
 import { HiShoppingBag } from "react-icons/hi2";
 
 
-export default function Sidebar({ isOpen }) {
+export default function Sidebar({ isOpen, toggleSidebar }) {
     return (
         <Fragment>
             <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed bottom-0 ${isOpen ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '999' }} >
@@ -26,10 +26,11 @@ export default function Sidebar({ isOpen }) {
                                 to="/admin-dashboard/overview"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <GrOverview size={25} />
 
-                                {isOpen && <span className="fw-bold">Overview</span>}
+                                <span className="fw-bold">Overview</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
@@ -37,10 +38,11 @@ export default function Sidebar({ isOpen }) {
                                 to="/admin-dashboard/manage-users"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <FaUsers size={25} />
 
-                                {isOpen && <span className="fw-bold">Manage Users</span>}
+                                <span className="fw-bold">Manage Users</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
@@ -48,9 +50,10 @@ export default function Sidebar({ isOpen }) {
                                 to="/admin-dashboard/manage-clinics"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <FaClinicMedical size={25} />
-                                {isOpen && <span className="fw-bold">Manage Clinics</span>}
+                                <span className="fw-bold">Manage Clinics</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
@@ -58,9 +61,10 @@ export default function Sidebar({ isOpen }) {
                                 to="/admin-dashboard/manage-reservations"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <FaCalendarAlt size={25} />
-                                {isOpen && <span className="fw-bold"> Reservations</span>}
+                                <span className="fw-bold"> Reservations</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
@@ -68,9 +72,10 @@ export default function Sidebar({ isOpen }) {
                                 to="/admin-dashboard/reviews"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <MdReviews size={25} />
-                                {isOpen && <span className="fw-bold">Reviews</span>}
+                                <span className="fw-bold">Reviews</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
@@ -78,9 +83,10 @@ export default function Sidebar({ isOpen }) {
                                 to="/admin-dashboard/store"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <HiShoppingBag size={25} />
-                                {isOpen && <span className="fw-bold">Store</span>}
+                                <span className="fw-bold">Store</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
@@ -88,9 +94,10 @@ export default function Sidebar({ isOpen }) {
                                 to="/admin-dashboard/charts"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <IoStatsChart size={25} />
-                                {isOpen && <span className="fw-bold">Charts</span>}
+                                <span className="fw-bold">Charts</span>
                             </NavLink>
                         </li>
                     </div>
@@ -100,9 +107,10 @@ export default function Sidebar({ isOpen }) {
                                 to="/login"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <TbLogout2 size={25} />
-                                {isOpen && <span className="fw-bold">Logout</span>}
+                                <span className="fw-bold">Logout</span>
                             </NavLink>
                         </li>
                     </div>

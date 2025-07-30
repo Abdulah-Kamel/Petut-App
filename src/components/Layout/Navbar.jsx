@@ -77,9 +77,13 @@ const Navbar = () => {
               Health
             </Link>
             {userData?.role === "doctor" && (
-              <Link to="/dashboard" className="nav-link">
+              <Link to="/doctor-dashboard" className="nav-link">
+                Dashboard
+              </Link> || userData?.role === "admin" && (
+              <Link to="/admin-dashboard" className="nav-link">
                 Dashboard
               </Link>
+                )
             )}
           </div>
           {/* User Actions */}

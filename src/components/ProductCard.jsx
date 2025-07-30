@@ -27,7 +27,8 @@ const ProductCard = ({
           <img
             src={product.imageURL}
             alt={product.name}
-            className="absolute inset-0 w-full h-full object-contain p-4"
+            className="absolute inset-0 w-full h-full object-contain object-center  "
+            style={{backgroundColor: 'transparent'}}
           />
         </div>
         <div className="p-4 flex flex-col flex-grow">
