@@ -4,6 +4,7 @@ import { auth, db } from '../firebase.js';
 import { doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FaBell } from "react-icons/fa6";
+import { Link } from 'react-router-dom';
 
 export default function HeaderDoctor({ toggleSidebar }) {
 
@@ -11,22 +12,23 @@ export default function HeaderDoctor({ toggleSidebar }) {
 
     //get doctor data from firebase
     useEffect(() => {
-        console.log(doctorData)
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const docRef = doc(db, 'users', user.uid);
                 const docSnap = await getDoc(docRef);
 
-                const data = docSnap.data();
-                if (data.role === 'doctor') {
-                    setDoctorData(data);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.role === 'doctor') {
+                        setDoctorData(data);
+                    }
                 }
             }
         });
 
         return () => unsubscribe();
     }, []);
- 
+
     return (
         <Fragment>
             <header className="header-dash">
@@ -39,7 +41,9 @@ export default function HeaderDoctor({ toggleSidebar }) {
                         <div className="d-flex align-items-center gap-2 text-white justify-content-between">
                             <FaBell size={20} cursor={"pointer"} color='#000' />
                             <span className="navbar-brand mb-0 fs-6 fw-bold">Welcome, Dr: {doctorData?.fullName}</span>
-                            <img src={doctorData?.profileImage} alt="img-doctor" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+                            <Link to='/doctor-dashboard/manage-profile'>
+                                <img src={doctorData?.profileImage} alt="img-doctor" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+                            </Link>
                         </div>
                     </div>
                 </nav>

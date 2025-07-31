@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { TbEdit } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
@@ -9,7 +9,7 @@ import { BeatLoader } from 'react-spinners';
 
 
 import { BiSearchAlt2 } from "react-icons/bi";
-export default function ProductsTable({ products, setProducts, handleDeleteProduct, loading }) {
+export default function ProductsTable({ products, setProducts, handleDeleteProduct, fetchProducts, loading }) {
     const [showConfirm, setShowConfirm] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,6 +17,10 @@ export default function ProductsTable({ products, setProducts, handleDeleteProdu
     const [selectedProductId, setSelectedProductId] = useState(null);
 
 
+
+    useEffect(() => {
+        fetchProducts();
+    }, [])
 
     // filter doctors by name, email, or specialization
     const filterProducts = products?.filter(product => {
@@ -63,7 +67,7 @@ export default function ProductsTable({ products, setProducts, handleDeleteProdu
                                     <th className="px-4 py-3">Rate</th>
                                     <th className="px-4 py-3">Category</th>
                                     <th className="px-4 py-3">Action</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>

@@ -3,21 +3,21 @@ import Sidebar from '../../components/doctordash/sidebar-doctor/Sidebar'
 import ContentDoctorDash from '../../components/doctordash/content-doctor-dash/ContentDoctorDash'
 import HeaderDoctor from '../../components/HeaderDoctor'
 export default function DoctorDashboard() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [sidebarOpen, setsidebarOpen] = useState(false)
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen) 
+    setsidebarOpen(!sidebarOpen) 
   }
   return (
     <Fragment>
       <HeaderDoctor toggleSidebar={toggleSidebar} />
       <div className='d-flex '>
-        <Sidebar isOpen={isSidebarOpen} />
+        <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />
 
         <div
           className="d-flex flex-1"
           // style={{
-          //   marginLeft: isSidebarOpen ? '250px' : '100px',
+          //   marginLeft: sidebarOpen ? '250px' : '100px',
           //   transition: 'margin-left 0.3s ease'
           // }}
         >

@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { BeatLoader } from 'react-spinners';
 import axios from 'axios';
 
-export default function AddClientModal() {
+export default function AddClientModal({clients, fetchClients, setClients}) {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -17,7 +17,16 @@ export default function AddClientModal() {
 
     const [imageUrl, setImageUrl] = useState('');
     const [loading, setLoading] = useState(false);
-
+    
+    const resetFields = () => {
+        setFullName('');
+        setEmail('');
+        setPhone('');
+        setPassword('');
+        setGender('');
+        setProfileImage(null);
+        setProfileImage(null);
+    }
     const handleAddClient = async () => {
         if (!fullName.trim() || !email.trim() || !phone.trim() || !gender) {
             toast.error('Please fill in all the required fields', { autoClose: 3000 });
@@ -29,9 +38,9 @@ export default function AddClientModal() {
         const formData = new FormData();
         formData.append('image', profileImage);
         try {
+            setLoading(true)
             // upload image
             const response = await axios.post('https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307', formData);
-
             const url = response.data.data.url;
             setImageUrl(url);
             setLoading(true);
@@ -47,17 +56,13 @@ export default function AddClientModal() {
                 profileImage: url,
                 createdAt: Timestamp.now()
             })
+            await fetchClients();
             //validate form fields
             toast.success('Client added successfully', { autoClose: 3000 });
-            setFullName('');
-            setEmail('');
-            setPhone('');
-            setPassword('');
-            setGender('');
-            setProfileImage(null);
+            resetFields();
+
             setTimeout(() => {
                 document.getElementById('close-btn-modal').click();
-                window.location.reload();
             }, 3000)
         } catch (error) {
             toast.error("Failed to add client, error:" + error.message, { autoClose: 3000 });
@@ -78,20 +83,20 @@ export default function AddClientModal() {
                         <div className="modal-body">
                             <form action="#">
                                 <div className="client-name d-flex align-items-center gap-3 mb-3">
-                                    <label htmlFor="client-name" className="form-label">Name</label>
+                                    <label htmlFor="client-name" className="form-label">Full Name</label>
                                     <input type="text" className="form-control w-75" id="client-name" placeholder="Enter Client Name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
                                 </div>
                                 <div className="client-email d-flex align-items-center gap-3 mb-3">
-                                    <label htmlFor="client-email" className="form-label">Email</label>
-                                    <input type="email" className="form-control w-75" id="client-email" placeholder="Enter Client Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                                </div>
-                                <div className="client-phone d-flex align-items-center gap-3 mb-3">
-                                    <label htmlFor="client-phone" className="form-label">Phone</label>
-                                    <input type="tel" className="form-control w-75" id="client-phone" placeholder="Enter Client Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                    <label htmlFor="client-email" className="form-label">Email Address</label>
+                                    <input type="email" className="form-control w-75" id="client-email" placeholder="Enter Email Address" value={email} onChange={(e) => setEmail(e.target.value)} />
                                 </div>
                                 <div className="client-password d-flex align-items-center gap-3 mb-3">
                                     <label htmlFor="client-password" className="form-label">Password</label>
                                     <input type="password" className="form-control w-75" id="client-password" placeholder="Enter Client password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                                </div>
+                                <div className="client-phone d-flex align-items-center gap-3 mb-3">
+                                    <label htmlFor="client-phone" className="form-label">Phone Number</label>
+                                    <input type="tel" className="form-control w-75" id="client-phone" placeholder="Enter Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
                                 </div>
                                 <div className="user-image d-flex align-items-center gap-3 mb-3">
                                     <label htmlFor="user-image" className="form-label">Profile Image</label>
@@ -102,9 +107,7 @@ export default function AddClientModal() {
                                 </div>
                                 {imageUrl && (
                                     <div>
-                                        <p>Image URL:</p>
-                                        <a href={imageUrl} target="_blank" rel="noopener noreferrer">{imageUrl}</a>
-                                        <br />
+                                        <p>Image :</p>
                                         <img src={imageUrl} alt="preview" style={{ width: 100, marginTop: 10 }} />
                                     </div>
                                 )}
@@ -122,7 +125,7 @@ export default function AddClientModal() {
                             </form>
                         </div>
                         <div className="modal-footer d-flex gap-3">
-                            <button type="button" className="btn btn-danger" id='close-btn-modal' data-bs-dismiss="modal" style={{ width: '100px' }}>Close</button>
+                            <button type="button" className="btn btn-danger" id='close-btn-modal' data-bs-dismiss="modal" style={{ width: '100px' }} onClick={resetFields}>Close</button>
                             <button type="button" className="custom-button" style={{ width: '100px' }} onClick={handleAddClient} disabled={loading}>{loading ? <BeatLoader size={10} color='#fff' /> : 'Add Client'}</button>
                         </div>
 

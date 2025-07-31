@@ -9,12 +9,23 @@ import { IoStatsChart } from "react-icons/io5";
 import { MdReviews } from "react-icons/md";
 // import logo from '../../assets/petut.png';
 import { HiShoppingBag } from "react-icons/hi2";
+import { auth } from '../../firebase';
+import { signOut } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
+export default function Sidebar({ open,toggleSidebar }) {
 
-export default function Sidebar({ isOpen, toggleSidebar }) {
+      const handleLogout = async () => {
+        try {
+          await signOut(auth);
+          navigate("/login");
+        } catch (error) {
+          toast.error("Failed to log out", { autoClose: 3000 });
+        }
+      };
     return (
         <Fragment>
-            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed bottom-0 ${isOpen ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '999' }} >
+            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed bottom-0 ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '999' }} >
                 <ul className=" p-0 d-flex flex-column align-items-left  justify-content-between h-100" >
                     <div className="top-links">
                         {/* <div className="logo">
@@ -97,7 +108,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                                 onClick={toggleSidebar}
                             >
                                 <IoStatsChart size={25} />
-                                <span className="fw-bold">Charts</span>
+                                 <span className="fw-bold">Charts</span>
                             </NavLink>
                         </li>
                     </div>
@@ -107,7 +118,12 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                                 to="/login"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
-                                onClick={toggleSidebar}
+                                onClick={
+                                    () => {
+                                        handleLogout();
+                                        toggleSidebar;
+                                    }
+                                }
                             >
                                 <TbLogout2 size={25} />
                                 <span className="fw-bold">Logout</span>

@@ -34,13 +34,13 @@ export default function ViewDoctorModal({ doctor, modalId }) {
                                     <p>{doctor.phone || ''}</p>
                                     <p style={{ color: 'white', backgroundColor: doctor.status === 'active' ? '#28a745  ' : '#6c757d   ', fontSize: '14px' }} className='px-3 py-1  rounded rounded-5  text-center '>{doctor.status || ''}</p>
                                     <p style={{ color: 'white', backgroundColor: doctor.gender === 'male' ? '#007BFF ' : '#E91E63 ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 text-center'>{doctor.gender || ''}</p>
-                                    <p><ReactStars
-                                        count={5}
-                                        value={doctor.rating || ''}
+                                    <ReactStars
+                                       count={3}
+                                        value={5}
                                         edit={false}
                                         size={24}
                                         activeColor="#ffd700"
-                                    /></p>
+                                    />
                                 </div>
                             </div>
                         </div>
