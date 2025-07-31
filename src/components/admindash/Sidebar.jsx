@@ -9,9 +9,21 @@ import { IoStatsChart } from "react-icons/io5";
 import { MdReviews } from "react-icons/md";
 // import logo from '../../assets/petut.png';
 import { HiShoppingBag } from "react-icons/hi2";
+import { auth } from '../../firebase';
+import { signOut } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 
 export default function Sidebar({ open,toggleSidebar }) {
+
+      const handleLogout = async () => {
+        try {
+          await signOut(auth);
+          navigate("/login");
+        } catch (error) {
+          toast.error("Failed to log out", { autoClose: 3000 });
+        }
+      };
     return (
         <Fragment>
             <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed bottom-0 ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '999' }} >
@@ -38,6 +50,7 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 to="/admin-dashboard/manage-users"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <FaUsers size={25} />
 
@@ -49,6 +62,7 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 to="/admin-dashboard/manage-clinics"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <FaClinicMedical size={25} />
                                 <span className="fw-bold">Manage Clinics</span>
@@ -59,6 +73,7 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 to="/admin-dashboard/manage-reservations"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <FaCalendarAlt size={25} />
                                 <span className="fw-bold"> Reservations</span>
@@ -69,6 +84,7 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 to="/admin-dashboard/reviews"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <MdReviews size={25} />
                                 <span className="fw-bold">Reviews</span>
@@ -79,6 +95,7 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 to="/admin-dashboard/store"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <HiShoppingBag size={25} />
                                 <span className="fw-bold">Store</span>
@@ -89,6 +106,7 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 to="/admin-dashboard/charts"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
                             >
                                 <IoStatsChart size={25} />
                                  <span className="fw-bold">Charts</span>
@@ -101,6 +119,13 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 to="/login"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={
+                                    () => {
+                                        handleLogout();
+                                        toggleSidebar;
+                                    }
+                                }
+
                             >
                                 <TbLogout2 size={25} />
                                 <span className="fw-bold">Logout</span>

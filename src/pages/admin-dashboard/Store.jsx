@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { RiAddLine } from "react-icons/ri";
 import AddProductModal from '../../components/admindash/AddProductModal';
-import { collection, collectionGroup, deleteDoc, doc, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection,  deleteDoc, doc, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 import { toast } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
@@ -14,35 +14,36 @@ import OrdersTable from '../../components/admindash/OrdersTable';
 
 export default function Store() {
     const [products, setProducts] = useState([]);
-    const [orders, setOrders] = useState([]);
-    const [productLoading, setProductLoading] = useState(true);
-    const [orderLoading, setOrderLoading] = useState(true);
+    // const [orders, setOrders] = useState([]);
+    const [productLoading, setProductLoading] = useState(false);
+    // const [orderLoading, setOrderLoading] = useState(true);
 
 
 
     //get products from firebase
-    useEffect(() => {
-        const getProducts = async () => {
-            try {
-                const productsRef = collection(db, 'products');
-                const q = query(productsRef, orderBy('createdAt', 'desc'));
-                const querySnapshot = await getDocs(q);
-                const productsData = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setProducts(productsData);
-            } catch (error) {
-                toast.error("Failed to fetch products, error:" + error.message, { autoClose: 3000 });
-            } finally {
-                setProductLoading(false);
-            }
+    const fetchProducts = async () => {
+        setProductLoading(true);
+        try {
+
+            const productsRef = collection(db, 'products');
+            const q = query(productsRef, orderBy('createdAt', 'desc'));
+            const querySnapshot = await getDocs(q);
+            const productsData = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setProducts(productsData);
+        } catch (error) {
+            toast.error("Failed to fetch products, error:" + error.message, { autoClose: 3000 });
+        } finally {
+            setProductLoading(false);
         }
-        getProducts();
-    }, [])
+    }
+
+
 
     // //get orders from firebase
-    //     useEffect(() => {
+    // useEffect(() => {
     //     const getOrders = async () => {
     //         try {
     //             const ordersRef = collection(db, 'orders');
@@ -56,7 +57,7 @@ export default function Store() {
     //         } catch (error) {
     //             toast.error("Failed to fetch products, error:" + error.message, { autoClose: 3000 });
     //         } finally {
-    //             setOrders(false);
+    //             setOrderLoading(false);
     //         }
     //     }
     //     getOrders();
@@ -64,45 +65,22 @@ export default function Store() {
 
 
 
-    //get orders from firebase
-    useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const snapshot = await getDocs(collectionGroup(db, "userOrders"));
-                const allOrders = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setOrders(allOrders);
-            } catch (error) {
-                console.error("Error fetching orders:", error.message);
-            }finally {
-                setOrderLoading(false);
-            }
-        };
-
-        fetchOrders();
-    }, []);
-
 
     //delete product from firebase
     const handleDeleteProduct = async (id) => {
         try {
             await deleteDoc(doc(db, "products", id));
-            setProducts(products => products.filter(product => product.id !== id));
             toast.success("Product deleted successfully", { autoClose: 3000 });
+            setProducts(products => products.filter(product => product.id !== id));
             setProductLoading(true);
-            setTimeout(() => {
-                window.location.reload();
 
-            }, 3000);
         } catch (error) {
             toast.error("Failed to delete product, error:" + error.message, { autoClose: 3000 });
         }
     }
 
 
-
+ 
     return (
         <Fragment>
             <div className="head d-flex align-items-center justify-content-between">
@@ -117,11 +95,11 @@ export default function Store() {
             <div className='d-flex align-items-center justify-content-end mt-4' >
                 <button className='custom-button d-flex align-items-center fw-bold' data-bs-toggle="modal" data-bs-target="#addproduct" > <RiAddLine size={20} /> Add Product</button>
             </div>
-            <AddProductModal />
+            <AddProductModal products={products} setProducts={setProducts} fetchProducts={fetchProducts} />
             {productLoading ? (<h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3>) : products?.length === 0 ? <h3 className='text-center my-5'>No Products found</h3> : (
 
                 <>
-                    <ProductsTable products={products} setProducts={setProducts} handleDeleteProduct={handleDeleteProduct} loading={productLoading} />
+                    <ProductsTable products={products} setProducts={setProducts} fetshProducts={fetchProducts} handleDeleteProduct={handleDeleteProduct} loading={productLoading} setProductLoading={setProductLoading} />
                 </>
             )}
             <hr />

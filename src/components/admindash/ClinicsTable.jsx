@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { TbEdit } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import EditClinicModal from '../EditClinicModal';
@@ -11,7 +11,7 @@ import { BeatLoader } from 'react-spinners';
 import ViewClinicModal from './ViewClinicModal';
 import { useState } from 'react';
 
-export default function ClinicsTable({ clinics, onDelete, loading }) {
+export default function ClinicsTable({ clinics, fetchClinics, onDelete, loading }) {
 
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +19,11 @@ export default function ClinicsTable({ clinics, onDelete, loading }) {
 
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedClinicId, setSelectedClinicId] = useState(null);
+
+
+    useEffect(() => {
+        fetchClinics();
+    }, []);
 
     // filter clinics by name, email, or specialization
     const filterClinics = clinics.filter(clinic => {

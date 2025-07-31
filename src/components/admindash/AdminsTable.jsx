@@ -1,5 +1,5 @@
 import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
-import React, {  Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { db } from '../../firebase.js';
 import { toast } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
@@ -8,33 +8,15 @@ import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
 import EditAdminModal from './EditAdminModal';
 
-export default function AdminsTable() {
+export default function AdminsTable({ admins, setAdmins, fetchAdmins, loading }) {
 
-    const [admins, setAdmins] = useState([]);
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedAdminId, setSelectedAdminId] = useState(null);
-    const [loading, setLoading] = useState(true);
+
 
     // get admins from firestore
     useEffect(() => {
-        const fetchAdmins  = async () => {
-            try {
-                const q = query(collection(db, "users"), where("role", "==", "admin"));
-                const querySnapshot = await getDocs(q);
-                const adminsData = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                setAdmins(adminsData);
-            } catch (error) {
-                toast.error("Failed to fetch admins, error:" + error.message, { autoClose: 3000 });
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchAdmins ();
-
-
+        fetchAdmins();
     }, []);
 
     // delete admin from firestore
@@ -43,7 +25,6 @@ export default function AdminsTable() {
             await deleteDoc(doc(db, 'users', adminId));
             setAdmins(admins => admins.filter(admin => admin.id !== adminId))
             toast.success('Admin deleted successfully', { autoClose: 3000 });
-            // window.location.reload()
         } catch (err) {
             toast.error("Failed to delete admin, error:" + err.message, { autoClose: 3000 });
         }
@@ -78,10 +59,10 @@ export default function AdminsTable() {
                                         <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editadmin-${admin.id}`}>
                                             <TbEdit className='' cursor={"pointer"} size={20} />
                                         </button>
-                                        <EditAdminModal admin={admin}  modalId={admin.id} />
+                                        <EditAdminModal admin={admin} modalId={admin.id} />
 
                                         <button type="button" className="btn border-0 p-0" >
-                                            <MdDelete cursor={"pointer"} size={20} className='text-danger' 
+                                            <MdDelete cursor={"pointer"} size={20} className='text-danger'
                                                 onClick={() => {
                                                     setShowConfirm(true);
                                                     setSelectedAdminId(admin.id);

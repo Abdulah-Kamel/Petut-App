@@ -28,24 +28,21 @@ export default function ManageClinics() {
         { title: 'Total Reservations', count: '100', icon: <FaCalendarAlt size={40} /> },
     ]
     //get clinics from firestore
-    useEffect(() => {
-        const getClinics = async () => {
-            try {
-                const clinicsRef = collection(db, 'clinics');
-                const clinicsSnapshot = await getDocs(clinicsRef);
-                const clinicsData = clinicsSnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                setClinics(clinicsData);
-            } catch (error) {
-                toast.error("Failed to fetch clinics, error:" + error.message, { autoClose: 3000 });
-            }finally {
-                setLoading(false);
-            }
+    const fetchClinics = async () => {
+        try {
+            const clinicsRef = collection(db, 'clinics');
+            const clinicsSnapshot = await getDocs(clinicsRef);
+            const clinicsData = clinicsSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setClinics(clinicsData);
+        } catch (error) {
+            toast.error("Failed to fetch clinics, error:" + error.message, { autoClose: 3000 });
+        } finally {
+            setLoading(false);
         }
-        getClinics();
-    }, [])
+    }
 
     //Delele clinic from firebase
     const handleDeleteClinic = async (id) => {
@@ -60,7 +57,7 @@ export default function ManageClinics() {
     }
     return (
         <Fragment>
-            <div className='container-fluid mt-4'> 
+            <div className='container-fluid mt-4'>
                 <div className=''>
                     <h1>Clinic management</h1>
                     <p className=''>Managing all clinics and responsible doctors</p>
@@ -74,10 +71,10 @@ export default function ManageClinics() {
                 <div className='d-flex align-items-center justify-content-end mt-4 pb-5' >
                     <button className='custom-button d-flex align-items-center fw-bold' data-bs-toggle="modal" data-bs-target="#addclinic" > <RiAddLine size={20} /> Add clinic</button>
                 </div>
-                <AddClinicModal />
+                <AddClinicModal clinics={clinics} setClinics={setClinics} fetchClinics={fetchClinics} />
 
-                <ClinicsTable  clinics={clinics} onDelete={handleDeleteClinic} loading={loading}/>
+                <ClinicsTable clinics={clinics} fetchClinics={fetchClinics} onDelete={handleDeleteClinic} loading={loading} setLoading={setLoading} />
             </div>
-        </Fragment> 
+        </Fragment>
     )
 }

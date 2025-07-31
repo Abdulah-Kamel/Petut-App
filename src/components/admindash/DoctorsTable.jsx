@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useState } from 'react'
 import { TbEdit } from "react-icons/tb";
-import { MdDelete } from "react-icons/md";
-import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { MdDelete, MdHeight } from "react-icons/md";
+import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
-import { BeatLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 import EditDoctorModal from './EditDoctorModal';
 
@@ -13,10 +12,11 @@ import { FaEye } from "react-icons/fa";
 import ConfirmModal from '../ConfirmModal';
 import ViewDoctorModal from './ViewDoctorModal';
 import ReactStars from "react-rating-stars-component";
+import { BeatLoader } from 'react-spinners';
 
 
 
-export default function DoctorsTable({doctors, setDoctors,fetchDoctors,loading,setLoading}) {
+export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loading }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [genderFilter, setGenderFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('all');
@@ -26,20 +26,20 @@ export default function DoctorsTable({doctors, setDoctors,fetchDoctors,loading,s
 
     // get doctors from firestore
     useEffect(() => {
-        fetchDoctors();
-
-
-    }, [doctors]);
+        fetchDoctors(); 
+    }, []);
 
     // delete doctor from firestore
     const handleDeleteDoctor = async (doctorId) => {
         try {
             await deleteDoc(doc(db, 'users', doctorId));
             setDoctors(doctors => doctors.filter(doctor => doctor.id != doctorId))
+            await fetchDoctors();
             toast.success('Doctor deleted successfully', { autoClose: 3000 });
-            // window.location.reload()
         } catch (err) {
             toast.error("Failed to delete doctor, error:" + err.message, { autoClose: 3000 });
+        } finally {
+            setShowConfirm(false);
         }
     }
     // filter doctors by name, email, or specialization
@@ -85,50 +85,55 @@ export default function DoctorsTable({doctors, setDoctors,fetchDoctors,loading,s
             ) : (
                 <>
 
-                    <div className="patient-table mt-4 bg-white shadow rounded w-100" style={{ maxHeight: '395px', overflowY: 'auto' }} >
+                    <div className="patient-table mt-4 bg-white shadow rounded w-100 my-5" style={{ maxHeight: '395px', overflowY: 'auto' }} >
                         <table className="table">
                             <thead className="table-light py-3  position-sticky top-0 z-10">
                                 <tr className="">
-                                    <th className="px-4 py-3">Name</th>
-                                    <th className="px-4 py-3">Rating</th>
-                                    <th className="px-4 py-3">Gender</th>
-                                    <th className="px-4 py-3">Status</th>
-                                    <th className="px-4 py-3">Action</th>
+                                    <th className="px-4 py-3 align-middle">Name</th>
+                                    <th className="px-4 py-3 align-middle">Rating</th>
+                                    <th className="px-4 py-3 align-middle">Gender</th>
+                                    <th className="px-4 py-3 align-middle">Status</th>
+                                    <th className="px-4 py-3 align-middle">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredDoctors.map((doctor) => (
-                                    <tr key={doctor.id}>
-                                        <td className="px-4 py-3">{doctor.fullName || doctor.doctorName || 'N/A'}</td>
-                                        <td className="px-4 py-3">
-                                            <ReactStars
-                                            count={5}
-                                            value={3}
-                                            edit={false}
-                                            size={24}
-                                            activeColor="#ffd700"/>
+                                    <tr key={doctor.id}  >
+                                        <td className="px-4 py-3 align-middle">{doctor.fullName || doctor.doctorName || 'N/A'}</td>
+                                        <td className="px-4 py-3 align-middle ">
+                                            <div className="d-flex align-items-center justify-content-start">
+                                                <ReactStars
+                                                    count={5}
+                                                    value={3}
+                                                    edit={false}
+                                                    size={24}
+                                                    activeColor="#ffd700" />
+                                            </div>
                                         </td>
-                                        <td className="px-4 py-3" ><span style={{ color: 'white', backgroundColor: doctor.gender === 'male' ? '#007BFF ' : '#E91E63 ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{doctor.gender}</span></td>
-                                        <td className="px-4 py-3"><span style={{ color: 'white', backgroundColor: doctor.status === 'active' ? '#28a745  ' : '#6c757d   ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{doctor.status}</span></td>
-                                        <td className="px-4 py-3 d-flex align-items-center gap-2 ">
+                                        <td className="px-4 py-3 align-middle" ><span style={{ color: 'white', backgroundColor: doctor.gender === 'male' ? '#007BFF ' : '#E91E63 ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{doctor.gender}</span></td>
+                                        <td className="px-4 py-3 align-middle"><span style={{ color: 'white', backgroundColor: doctor.status === 'active' ? '#28a745  ' : '#6c757d   ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{doctor.status}</span></td>
+                                        <td className="px-4 py-3 align-middle  ">
 
-                                            <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewdoctor-${doctor.id}`}>
-                                                <FaEye cursor={"pointer"} />
-                                            </button>
-                                            <ViewDoctorModal doctor={doctor} modalId={doctor.id} />
+                                            <div className="d-flex justify-content-start align-items-center gap-2">
 
-                                            <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editdoctor-${doctor.id}`}>
-                                                <TbEdit className='mb-1' />
-                                            </button>
-                                            <EditDoctorModal doctor={doctor} modalId={doctor.id} />
-                                            <button type="button" className="btn border-0 p-0" >
-                                                <MdDelete cursor={"pointer"} size={20} className='text-danger' data-bs-toggle="modal" data-bs-target="#confirmModal"
-                                                    onClick={() => {
-                                                        setShowConfirm(true);
-                                                        setSelectedDoctorId(doctor.id);
-                                                    }}
-                                                />
-                                            </button>
+                                                <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewdoctor-${doctor.id}`}>
+                                                    <FaEye cursor={"pointer"} size={20} />
+                                                </button>
+                                                <ViewDoctorModal doctor={doctor} modalId={doctor.id} />
+
+                                                <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editdoctor-${doctor.id}`}>
+                                                    <TbEdit className='' size={20} />
+                                                </button>
+                                                <EditDoctorModal doctor={doctor} modalId={doctor.id} />
+                                                <button type="button" className="btn border-0 p-0" >
+                                                    <MdDelete cursor={"pointer"} size={25} className='text-danger' data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                                        onClick={() => {
+                                                            setShowConfirm(true);
+                                                            setSelectedDoctorId(doctor.id);
+                                                        }}
+                                                    />
+                                                </button>
+                                            </div>
 
                                         </td>
                                     </tr>

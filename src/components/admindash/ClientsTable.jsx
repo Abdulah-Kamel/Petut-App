@@ -3,7 +3,7 @@ import { TbEdit } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import { toast } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
-import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 import EditClientModal from './EditClientModal';
 
@@ -14,9 +14,7 @@ import ViewClientModal from './ViewClientModal';
 
 
 
-export default function Clienttable() {
-    const [clients, setClients] = useState([]);
-    const [loading, setLoading] = useState(true);
+export default function Clientstable({ clients, setClients, fetchClients, loading }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [genderFilter, setGenderFilter] = useState('all');
 
@@ -24,25 +22,9 @@ export default function Clienttable() {
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedClientId, setSelectedClientId] = useState(null);
 
- 
-    //get clients from firestore
 
+    //get clients from firestore
     useEffect(() => {
-        const fetchClients = async () => {
-            try {
-                const q = query(collection(db, "users"), where("role", "==", "customer"))
-                const querySnapshot = await getDocs(q);
-                const clientsData = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                setClients(clientsData);
-            } catch (error) {
-                toast.error("Failed to fetch clients, error:" + error.message, { autoClose: 3000 });
-            } finally {
-                setLoading(false);
-            }
-        }
         fetchClients();
     }, [])
 
@@ -52,14 +34,13 @@ export default function Clienttable() {
             await deleteDoc(doc(db, 'users', clientId));
             setClients(clients => clients.filter(client => client.id != clientId))
             toast.success('Client deleted successfully', { autoClose: 3000 });
-            // window.location.reload()
         } catch (err) {
             toast.error("Failed to delete client, error:" + err.message, { autoClose: 3000 });
         }
     }
 
     // filter clients by name and email
-    const filteredClients = clients.filter((client)=> {
+    const filteredClients = clients.filter((client) => {
         const nameMatch = client.name?.toLowerCase().includes(searchTerm.toLowerCase());
         const emailMatch = client.email?.toLowerCase().includes(searchTerm.toLowerCase());
         const genderMatch = genderFilter === 'all' || client.gender === genderFilter;
@@ -89,7 +70,7 @@ export default function Clienttable() {
                     <option value="female" >Female</option>
                 </select>
             </div>
-            {loading ? <h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3> : clients.length === 0 ? <h3 className='text-center mt-5'>No clients found</h3> : filteredClients.length === 0 ? <h3 className='text-center mt-5'>No clients found</h3> : (
+            {loading ? <h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3> : clients.length === 0 ? <h3 className='text-center mt-5'>No clients found</h3> : filteredClients.length === 0 ? <h3 className='text-center mt-5'>No Match clients found</h3> : (
                 <div className="patient-table mt-4 bg-white shadow rounded w-100" style={{ maxHeight: '395px', overflowY: 'auto' }}>
                     <table className="table">
                         <thead className="table-light py-3  position-sticky top-0">
@@ -122,12 +103,12 @@ export default function Clienttable() {
                                             setSelectedClientId(client.id);
                                         }} />
                                     </td>
-                                    {showConfirm && (<ConfirmModal onDelete={() => handleDeleteClient(selectedClientId)} setShowConfirm={setShowConfirm} selectedId={selectedClientId} whatDelete="client" />)}
                                 </tr>
                             ))}
 
                         </tbody>
                     </table>
+                    {showConfirm && (<ConfirmModal onDelete={() => handleDeleteClient(selectedClientId)} setShowConfirm={setShowConfirm} selectedId={selectedClientId} whatDelete="client" />)}
                 </div>
             )
 

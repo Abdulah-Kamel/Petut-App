@@ -8,7 +8,7 @@ import { db } from '../../firebase.js';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 
-export default function AddProductModal() {
+export default function AddProductModal({setProducts, fetchProducts, loading, setLoading }) {
     const [productName, setProductName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -17,9 +17,17 @@ export default function AddProductModal() {
     const [imageFile, setImageFile] = useState(null);
 
     const [imageUrl, setImageUrl] = useState('');
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
-
+    const reserFeilds = () => {
+        setProductName('');
+        setDescription('');
+        setPrice('');
+        setRate('');
+        setCategory('');
+        setImageFile(null);
+        setImageUrl('');
+    }
 
     // add product to firebase
     const handleAddProduct = async () => {
@@ -32,18 +40,12 @@ export default function AddProductModal() {
 
         const formData = new FormData();
         formData.append('image', imageFile);
+
         try {
             // upload image
             const response = await axios.post('https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307', formData);
-
-
-
             const url = response.data.data.url;
             setImageUrl(url);
-            console.log('Image URL:', url);
-
-
-
             // // add product to firebase
             await addDoc(collection(db, 'products'), {
                 productName,
@@ -54,17 +56,23 @@ export default function AddProductModal() {
                 imageURL: url,
                 createdAt: Timestamp.now()
             })
-            toast.success('Product added successfully', { autoClose: 3000 });
             //reset fields
-            setProductName('');
-            setDescription('');
-            setPrice('');
-            setRate('');
-            setCategory('');
-            setImageFile(null);
+            reserFeilds();
+            // await fetchProducts();
+            toast.success('Product added successfully', { autoClose: 3000 });
+
+            setProducts(products => [...products, {
+                productName,
+                description,
+                price,
+                rate,
+                category,
+                imageURL: url,
+                createdAt: Timestamp.now()
+            }]);
+            fetchClients();
             setTimeout(() => {
                 document.getElementById('close-btn-modal').click();
-                window.location.reload();
             }, 3000);
         } catch (error) {
             toast.error("Failed to add product, error:" + error.message, { autoClose: 3000 });
@@ -114,7 +122,7 @@ export default function AddProductModal() {
                                         <option value="" >Open this select menu</option>
                                         <option value="cat">Cat</option>
                                         <option value="dog">Dog</option>
-                                        <option value="bird">Bird</option>
+                                        <option value="bird">Bird</option> 
                                         <option value="toys">Toys</option>
                                     </select>
                                 </div>

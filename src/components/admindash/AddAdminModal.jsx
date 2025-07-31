@@ -8,7 +8,7 @@ import { BeatLoader } from "react-spinners";
 import axios from 'axios';
 
 
-export default function AddAdminModal() {
+export default function AddAdminModal({ fetchAdmins , admins, setAdmins }) {
 
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
@@ -19,8 +19,14 @@ export default function AddAdminModal() {
     const [imageUrl, setImageUrl] = useState('');
     const [loading, setLoading] = useState(false);
 
-
-
+    const resetFields = () => {
+        setFullName('');
+        setEmail('');
+        setPassword('');
+        setPhone('');
+        setProfileImage(null);
+        setImageUrl(null);
+    }
 
     const handleAddDoctor = async () => {
         //validate form fields
@@ -52,17 +58,13 @@ export default function AddAdminModal() {
                 profileImage: url,
                 createdAt: Timestamp.now()
             });
+            await fetchAdmins();
             toast.success('Admin added successfully', { autoClose: 3000 });
             //reset fields
-            setFullName('');
-            setEmail('');
-            setPhone('');
-            setPassword('');
-            setProfileImage(null);
+            resetFields();
 
             setTimeout(() => {
                 document.getElementById('close-btn-modal').click();
-                window.location.reload();
             }, 3000);
         } catch (error) {
             toast.error("Failed to add admin, error:" + error?.message, { autoClose: 3000 });
