@@ -14,6 +14,7 @@ export default function AdminDashboard() {
       <HeaderAdmin toggleSidebar={toggleSidebar} />
       <div className='d-flex '>
         <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />
+
         <div
           className="d-flex flex-1"
           // style={{

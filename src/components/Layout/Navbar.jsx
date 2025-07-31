@@ -75,16 +75,7 @@ const Navbar = () => {
             <Link to="/clinics" className="nav-link">
               Health
             </Link>
-            {userData?.role === "doctor" && (
-              <Link to="/doctor-dashboard" className="nav-link">
-                Dashboard
-              </Link>
-            )}
-            {userData?.role === "admin" && (
-              <Link to="/admin-dashboard" className="nav-link">
-                Dashboard
-              </Link>
-            )}
+            
           </div>
           {/* User Actions */}
           <div className="flex items-center space-x-4">

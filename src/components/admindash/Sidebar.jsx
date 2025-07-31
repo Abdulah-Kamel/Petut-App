@@ -13,7 +13,6 @@ import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
-
 export default function Sidebar({ open,toggleSidebar }) {
 
       const handleLogout = async () => {
@@ -125,7 +124,6 @@ export default function Sidebar({ open,toggleSidebar }) {
                                         toggleSidebar;
                                     }
                                 }
-
                             >
                                 <TbLogout2 size={25} />
                                 <span className="fw-bold">Logout</span>
