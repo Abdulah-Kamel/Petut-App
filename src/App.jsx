@@ -47,6 +47,7 @@ import ManageReservations from './pages/admin-dashboard/ManageReservations'
 import Charts from './pages/admin-dashboard/Charts'
 import Reviews from './pages/admin-dashboard/Reviews'
 import Store from './pages/admin-dashboard/Store'
+import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -147,7 +148,7 @@ function App() {
           <Route path='store' element={<Store />} />
           <Route path='charts' element={<Charts />} />
         </Route>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<RoleProtectedRoute><Layout /></RoleProtectedRoute>}>
           <Route index element={<HomePage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="catalog" element={<CatalogPage />} />
