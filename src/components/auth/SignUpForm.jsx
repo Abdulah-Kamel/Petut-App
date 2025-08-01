@@ -30,7 +30,7 @@ const SignUpForm = ({ handleSubmit, handleChange, formData, formErrors, loading,
                         autoComplete="name"
                         value={formData.fullName}
                         onChange={handleChange}
-                        className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                        className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary_app focus:border-primary focus:z-10 sm:text-sm`}
                         placeholder="Full Name"
                     />
                     {formErrors.fullName && <p className="mt-1 text-sm text-red-500">{formErrors.fullName}</p>}
@@ -47,7 +47,7 @@ const SignUpForm = ({ handleSubmit, handleChange, formData, formErrors, loading,
                         autoComplete="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                        className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary_app focus:border-primary focus:z-10 sm:text-sm`}
                         placeholder="Email address"
                     />
                     {formErrors.email && <p className="mt-1 text-sm text-red-500">{formErrors.email}</p>}
@@ -65,7 +65,7 @@ const SignUpForm = ({ handleSubmit, handleChange, formData, formErrors, loading,
                             autoComplete="name"
                             value={formData.phone}
                             onChange={handleChange}
-                            className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                            className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary_app focus:border-primary focus:z-10 sm:text-sm`}
                             placeholder="Phone"
                         />
 
@@ -85,13 +85,12 @@ const SignUpForm = ({ handleSubmit, handleChange, formData, formErrors, loading,
                             autoComplete="name"
                             value={formData.gender}
                             onChange={handleChange}
-                            className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                            className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary_app focus:border-primary focus:z-10 sm:text-sm`}
                             placeholder="Gender"
                         >
                             <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
-                            <option value="other">Other</option>
                         </select>
                         {formErrors.gender && <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>}
                     </div>
@@ -108,7 +107,7 @@ const SignUpForm = ({ handleSubmit, handleChange, formData, formErrors, loading,
                         autoComplete="new-password"
                         value={formData.password}
                         onChange={handleChange}
-                        className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                        className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary_app focus:border-primary focus:z-10 sm:text-sm`}
                         placeholder="Password"
                     />
                     {formErrors.password && <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>}
@@ -125,7 +124,7 @@ const SignUpForm = ({ handleSubmit, handleChange, formData, formErrors, loading,
                         autoComplete="new-password"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                        className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary_app focus:border-primary focus:z-10 sm:text-sm`}
                         placeholder="Confirm Password"
                     />
                     {formErrors.confirmPassword && <p className="mt-1 text-sm text-red-500">{formErrors.confirmPassword}</p>}
@@ -139,15 +138,15 @@ const SignUpForm = ({ handleSubmit, handleChange, formData, formErrors, loading,
                     type="checkbox"
                     checked={formData.agreeTerms}
                     onChange={handleChange}
-                    className={`h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded ${formErrors.agreeTerms ? 'border-red-500' : ''}`}
+                    className={`h-4 w-4 text-primary_app focus:ring-primary_app border-gray-300 rounded ${formErrors.agreeTerms ? 'border-red-500' : ''}`}
                 />
                 <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-900 dark:text-white">
                     I agree to the{' '}
-                    <a href="#" className="font-medium text-primary hover:underline">
+                    <a href="#" className="font-medium text-primary_app hover:underline">
                         Terms of Service
                     </a>{' '}
                     and{' '}
-                    <a href="#" className="font-medium text-primary hover:underline">
+                    <a href="#" className="font-medium text-primary_app hover:underline">
                         Privacy Policy
                     </a>
                 </label>
@@ -158,7 +157,7 @@ const SignUpForm = ({ handleSubmit, handleChange, formData, formErrors, loading,
                 <button
                     type="submit"
                     disabled={loading}
-                    className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                    className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-primary_app hover:bg-primary_app/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary_app disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                 >
                     {loading ? (
                         <span className="flex items-center">

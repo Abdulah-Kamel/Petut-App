@@ -9,7 +9,7 @@ const PaymentHeader = () => {
       <div className="flex justify-between items-center">
         <button 
           onClick={() => navigate(-1)}
-          className="text-neutral dark:text-white hover:text-primary dark:hover:text-primary transition-colors"
+          className="text-neutral dark:text-white hover:text-primary_app dark:hover:text-primary_app transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

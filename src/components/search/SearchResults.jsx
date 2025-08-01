@@ -49,7 +49,7 @@ const SearchResults = ({ loading, error, results, query }) => {
           We couldn't find any products matching "{query}"
         </p>
         <div className="mt-6">
-          <Link to="/catalog" className="btn-primary py-2 px-6">
+          <Link to="/catalog" className="btn-primary-app py-2 px-6">
             Browse Catalog
           </Link>
         </div>

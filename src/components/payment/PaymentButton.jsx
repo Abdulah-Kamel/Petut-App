@@ -5,7 +5,7 @@ const PaymentButton = ({ isProcessing, totalAmount }) => {
     <button 
       type="submit"
       disabled={isProcessing}
-      className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+      className="w-full py-3 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
     >
       {isProcessing ? (
         <span className="flex items-center justify-center">

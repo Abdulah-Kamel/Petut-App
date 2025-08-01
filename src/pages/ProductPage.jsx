@@ -71,7 +71,7 @@ const ProductPage = () => {
       <div className="container mx-auto px-4 py-8 text-center">
         <h2 className="text-2xl dark:text-white font-bold mb-4">Product not found</h2>
         <p className="text-gray-600 dark:text-gray-300 mb-6">The product you are looking for does not exist.</p>
-        <Link to="/catalog" className="btn-primary">Back to Catalog</Link>
+        <Link to="/catalog" className="btn-primary-app">Back to Catalog</Link>
       </div>
     );
   }
@@ -108,7 +108,7 @@ const ProductPage = () => {
           <p className="text-gray-600 dark:text-gray-300 mb-6">{product.description}</p>
 
           <div className="flex items-center mb-6">
-            <span className="text-3xl font-bold text-primary mr-4">
+            <span className="text-3xl font-bold text-primary_app mr-4">
               ${product.price.toFixed(2)}
             </span>
             <span className="text-sm px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold">
@@ -119,7 +119,7 @@ const ProductPage = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => dispatch(addToCart(product))}
-              className="btn-primary flex-grow"
+              className="btn-primary-app flex-grow"
             >
               Add to Cart
             </button>
@@ -127,7 +127,7 @@ const ProductPage = () => {
               onClick={handleToggleFavorite}
               className={`p-3 rounded-full border-2 ${
                 isFavorite
-                  ? "bg-primary text-white border-primary"
+                  ? "bg-primary_app text-white border-primary"
                   : "bg-white text-gray-500 border-gray-300"
               } hover:border-primary transition-colors`}
             >
@@ -181,7 +181,7 @@ const ProductPage = () => {
                     <span className="font-bold text-lg dark:text-white">
                       ${relatedProduct.price.toFixed(2)}
                     </span>
-                    <button className="btn-primary py-1 px-3">
+                    <button className="btn-primary-app py-1 px-3">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"

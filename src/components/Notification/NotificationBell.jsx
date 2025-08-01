@@ -89,7 +89,7 @@ const NotificationBell = () => {
     <div className="relative">
       <button
         onClick={() => setShowDropdown(!showDropdown)}
-        className="relative p-2 text-neutral dark:text-white hover:text-primary dark:hover:text-primary transition-colors"
+        className="relative p-2 text-neutral dark:text-white hover:text-primary_app dark:hover:text-primary_app transition-colors"
       >
         <FiBell className="h-6 w-6" />
         {notificationCount > 0 && (
@@ -109,7 +109,7 @@ const NotificationBell = () => {
               {notificationCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm text-primary_app hover:underline"
                 >
                   Mark all as read
                 </button>
@@ -125,7 +125,7 @@ const NotificationBell = () => {
                 </p>
                 <button
                   onClick={requestPermission}
-                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                  className="px-4 py-2 bg-primary_app text-white rounded-lg hover:bg-primary_app/90 transition-colors"
                 >
                   Enable Notifications
                 </button>

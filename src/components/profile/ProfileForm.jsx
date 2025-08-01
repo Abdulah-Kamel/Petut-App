@@ -157,7 +157,7 @@ const ProfileForm = ({ currentUser }) => {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="max-lg:w-full py-3 px-8 border dark:text-white border-gray-300 dark:border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 hover:ring-1 hover:ring-primary"
+              className="max-lg:w-full py-3 px-8 border dark:text-white border-gray-300 dark:border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 hover:ring-1 hover:ring-primary_app"
             />
           </div>
         </div>
@@ -175,7 +175,7 @@ const ProfileForm = ({ currentUser }) => {
               name="fullName"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
             />
           </div>
           <div>
@@ -191,7 +191,7 @@ const ProfileForm = ({ currentUser }) => {
               name="email"
               value={email}
               disabled
-              className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
             />
           </div>
           <div>
@@ -208,7 +208,7 @@ const ProfileForm = ({ currentUser }) => {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder=""
-              className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
             />
           </div>
           <div>
@@ -224,7 +224,7 @@ const ProfileForm = ({ currentUser }) => {
               value={gender}
               onChange={(e) => setGender(e.target.value)}
               placeholder=""
-              className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -239,7 +239,7 @@ const ProfileForm = ({ currentUser }) => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="max-md:w-full px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+            className="max-md:w-full px-6 py-3 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors"
             disabled={loading}
           >
             Save Changes
@@ -261,7 +261,7 @@ const ProfileForm = ({ currentUser }) => {
                 name="currentPassword"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
               />
             </div>
             <div>
@@ -277,7 +277,7 @@ const ProfileForm = ({ currentUser }) => {
                 name="newPassword"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
               />
             </div>
             <div>
@@ -293,13 +293,13 @@ const ProfileForm = ({ currentUser }) => {
                 name="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full p-3 dark:bg-[#313340] dark:text-white border border-gray-300 dark:border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
               />
             </div>
             <div className="flex md:block justify-end w-full mt-4 md:mt-0">
               <button
                 type="button"
-                className="w-full md:w-auto px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                className="w-full md:w-auto px-6 py-3 bg-primary_app text-white rounded-lg font-semibold hover:bg-primary_app/90 transition-colors"
                 onClick={handleChangePassword}
                 disabled={loading}
               >

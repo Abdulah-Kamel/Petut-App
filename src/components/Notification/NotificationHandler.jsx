@@ -26,12 +26,19 @@ function NotificationHandler() {
                     console.log("FCM Token:", currentToken);
                     if (auth.currentUser) {
                       const uid = auth.currentUser.uid;
-                      await setDoc(
-                        doc(db, "users", uid),
-                        { fcmToken: currentToken },
-                        { merge: true }
-                      );
-                      console.log(" تم حفظ التوكن في Firestore");
+                      const userDocRef = doc(db, "users", uid);
+                      const userDoc = await getDoc(userDocRef);
+
+                      if (userDoc.exists()) {
+                        await setDoc(
+                          userDocRef,
+                          { fcmToken: currentToken },
+                          { merge: true }
+                        );
+                        console.log("FCM token saved to Firestore");
+                      } else {
+                        console.log("User document does not exist yet, skipping FCM token save.");
+                      }
                     }
                   } else {
                     console.log("مفيش توكن.");

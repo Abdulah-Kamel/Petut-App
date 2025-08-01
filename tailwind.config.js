@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
+        primary_app: {
           DEFAULT: "#FF8D4D",
           dark: "#5A282B",
         },

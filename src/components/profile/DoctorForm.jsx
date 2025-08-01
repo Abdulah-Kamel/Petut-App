@@ -15,7 +15,7 @@ const DoctorForm = () => {
         phone: auth.currentUser?.phone || '',
         gender: auth.currentUser?.gender || '',
         role: 'doctor',
-        status: "inActive",
+        status: "pending",
         doctorDetails: {
             cardBackImage: "",
             cardFrontImage: "",
@@ -154,7 +154,7 @@ const DoctorForm = () => {
         <div className="min-h-screen flex items-center justify-center px-4 py-12">
             <div className="max-w-md w-full space-y-8 bg-white dark:bg-[#313340] p-6 rounded-xl shadow-lg">
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-primary">PET.CARE</h1>
+                    <h1 className="text-3xl font-bold text-primary_app">PET.CARE</h1>
                     <h2 className="mt-6 text-2xl font-bold dark:text-white">Complete your doctor profile</h2>
                 </div>
 
@@ -178,39 +178,38 @@ const DoctorForm = () => {
                         <div>
                             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Full Name</label>
                             <input id="fullName" name="fullName" type="text" value={formData.fullName} onChange={handleChange}
-                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
                                    placeholder="Full Name" />
                         </div>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Email</label>
                             <input id="email" name="email" type="email" value={formData.email} onChange={handleChange}
-                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
                                    placeholder="Email" disabled />
                         </div>
                         <div>
                             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Phone</label>
                             <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange}
-                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
                                    placeholder="Phone Number" />
                         </div>
                         <div>
                             <label htmlFor="gender" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Gender</label>
                             <select id="gender" name="gender" value={formData.gender} onChange={handleChange}
-                                    className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
+                                    className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm">
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
-                                <option value="other">Other</option>
                             </select>
                         </div>
                     </div>
                     <div>
                         <label htmlFor="description" className="sr-only">Description</label>
-                        <textarea id="description" name="doctorDetails.description" value={formData.doctorDetails.description} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Description" required />
+                        <textarea id="description" name="doctorDetails.description" value={formData.doctorDetails.description} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm" placeholder="Description" required />
                     </div>
                     <div>
                         <label htmlFor="experience" className="sr-only">Years of Experience</label>
-                        <input id="experience" name="doctorDetails.experience" type="number" value={formData.doctorDetails.experience} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Years of Experience" required />
+                        <input id="experience" name="doctorDetails.experience" type="number" value={formData.doctorDetails.experience} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm" placeholder="Years of Experience" required />
                     </div>
                     <div>
                         <label htmlFor="cardFrontImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Syndicate Card Front</label>
@@ -227,24 +226,24 @@ const DoctorForm = () => {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label htmlFor="facebook" className="sr-only">Facebook</label>
-                            <input id="facebook" name="doctorDetails.socialMedia.facebook" value={formData.doctorDetails.socialMedia.facebook} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Facebook URL" />
+                            <input id="facebook" name="doctorDetails.socialMedia.facebook" value={formData.doctorDetails.socialMedia.facebook} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm" placeholder="Facebook URL" />
                         </div>
                         <div>
                             <label htmlFor="instagram" className="sr-only">Instagram</label>
-                            <input id="instagram" name="doctorDetails.socialMedia.instagram" value={formData.doctorDetails.socialMedia.instagram} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Instagram URL" />
+                            <input id="instagram" name="doctorDetails.socialMedia.instagram" value={formData.doctorDetails.socialMedia.instagram} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm" placeholder="Instagram URL" />
                         </div>
                         <div>
                             <label htmlFor="twitter" className="sr-only">Twitter</label>
-                            <input id="twitter" name="doctorDetails.socialMedia.twitter" value={formData.doctorDetails.socialMedia.twitter} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Twitter URL" />
+                            <input id="twitter" name="doctorDetails.socialMedia.twitter" value={formData.doctorDetails.socialMedia.twitter} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm" placeholder="Twitter URL" />
                         </div>
                         <div>
                             <label htmlFor="linkedin" className="sr-only">LinkedIn</label>
-                            <input id="linkedin" name="doctorDetails.socialMedia.linkedin" value={formData.doctorDetails.socialMedia.linkedin} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="LinkedIn URL" />
+                            <input id="linkedin" name="doctorDetails.socialMedia.linkedin" value={formData.doctorDetails.socialMedia.linkedin} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm" placeholder="LinkedIn URL" />
                         </div>
                     </div>
                     <div>
                         <button type="submit" disabled={loading}
-                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-primary_app hover:bg-primary_app/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary_app disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
                             {loading ? (
                                 <span className="flex items-center">
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">

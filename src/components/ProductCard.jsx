@@ -44,8 +44,8 @@ const ProductCard = ({
                 onClick={handleToggleFavorite}
                 className={`${
                   isFavorite
-                    ? "text-primary"
-                    : "text-gray-400 hover:text-primary"
+                    ? "text-primary_app"
+                    : "text-gray-400 hover:text-primary_app"
                 } focus:outline-none transition-colors flex-shrink-0`}
               >
                 <svg
@@ -81,7 +81,7 @@ const ProductCard = ({
                 ? parseFloat(product.price).toFixed(2)
                 : "0.00"}
             </span>
-            <button onClick={handleAddToCart} className="btn-primary py-1 px-3">
+            <button onClick={handleAddToCart} className="btn-primary-app py-1 px-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"

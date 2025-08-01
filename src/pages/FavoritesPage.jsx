@@ -68,7 +68,7 @@ const FavoritesPage = () => {
           </p>
           <Link
             to="/catalog"
-            className="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+            className="inline-block bg-primary_app text-white px-6 py-3 rounded-lg hover:bg-primary_app/90 transition-colors"
           >
             Browse Products
           </Link>

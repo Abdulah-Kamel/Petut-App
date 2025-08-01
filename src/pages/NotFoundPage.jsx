@@ -5,7 +5,7 @@ const NotFoundPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-secondary-light dark:bg-secondary-dark text-center px-4">
       <div className="max-w-md">
-        <h1 className="text-9xl font-bold text-primary">404</h1>
+        <h1 className="text-9xl font-bold text-primary_app">404</h1>
         <h2 className="mt-4 text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl">
           Page Not Found
         </h2>
@@ -15,7 +15,7 @@ const NotFoundPage = () => {
         <div className="mt-8">
           <Link
             to="/"
-            className="inline-block px-8 py-3 text-base font-medium text-white btn-primary border border-transparent rounded-md"
+            className="inline-block px-8 py-3 text-base font-medium text-white btn-primary-app border border-transparent rounded-md"
           >
             Go back home
           </Link>

@@ -20,7 +20,7 @@ const ProductGrid = ({ results, query }) => {
       <h3 className="text-xl font-semibold mb-2">No results found</h3>
       <p className="text-gray-600">We couldn't find any products matching "{query}"</p>
       <div className="mt-6">
-        <Link to="/catalog" className="btn-primary py-2 px-6">
+        <Link to="/catalog" className="btn-primary-app py-2 px-6">
           Browse Catalog
         </Link>
       </div>

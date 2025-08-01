@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart } from "../store/slices/cartSlice";
+import { doc, collection } from "firebase/firestore"; // Import collection and doc
+import { db } from "../firebase"; // Import db
 
 // Import the new reusable components
 import PaymentHeader from "../components/payment/PaymentHeader";
@@ -28,6 +30,7 @@ const PaymentPage = () => {
     expiryDate: "",
     cvv: "",
     saveCard: false,
+    status: "pending",
   });
 
   const [errors, setErrors] = useState({});
@@ -120,13 +123,20 @@ const PaymentPage = () => {
     }
     if (validateForm()) {
       setIsProcessing(true);
+
+      // Generate a unique order ID
+      const orderId = doc(collection(db, 'orders')).id;
+
       // Prepare order data
       const orderData = {
+        orderId: orderId,
+        userId: currentUser?.uid,
         deliveryInfo,
         cart,
         paymentInfo: {
           paymentMethod: paymentInfo.paymentMethod,
           cardHolder: paymentInfo.cardHolder,
+          status: paymentInfo.status,
           // Do NOT store card number, cvv, expiry in Firestore!
         },
         status: "pending",
@@ -153,9 +163,7 @@ const PaymentPage = () => {
 
   const paymentMethods = [
     { id: "card", name: "Credit / Debit Card" },
-    { id: "paypal", name: "PayPal" },
-    { id: "apple-pay", name: "Apple Pay" },
-    { id: "google-pay", name: "Google Pay" },
+    { id: "cash", name: "Cash on Delivery" },
   ];
 
   return (
@@ -170,13 +178,15 @@ const PaymentPage = () => {
             handleChange={handleChange}
           />
 
-          <CardDetailsForm
-            paymentInfo={paymentInfo}
-            errors={errors}
-            handleChange={handleChange}
-            handleCardNumberChange={handleCardNumberChange}
-            handleExpiryDateChange={handleExpiryDateChange}
-          />
+          {paymentInfo.paymentMethod === "card" && (
+            <CardDetailsForm
+              paymentInfo={paymentInfo}
+              errors={errors}
+              handleChange={handleChange}
+              handleCardNumberChange={handleCardNumberChange}
+              handleExpiryDateChange={handleExpiryDateChange}
+            />
+          )}
 
           <PaymentOrderSummary totalAmount={totalAmount} />
 
@@ -191,11 +201,11 @@ const PaymentPage = () => {
 
           <p className="text-center text-sm text-gray-500 mt-4">
             By clicking the button above, you agree to our{" "}
-            <a href="#" className="text-primary hover:underline">
+            <a href="#" className="text-primary_app hover:underline">
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="#" className="text-primary hover:underline">
+            <a href="#" className="text-primary_app hover:underline">
               Privacy Policy
             </a>
             .

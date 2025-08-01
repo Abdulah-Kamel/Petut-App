@@ -10,7 +10,7 @@ const FormInput = ({ id, name, label, value, onChange, error, type = 'text', pla
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={`w-full p-3 border ${error ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white dark:placeholder:text-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary`}
+      className={`w-full p-3 border ${error ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white dark:placeholder:text-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app`}
       maxLength={maxLength}
     />
     {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
@@ -73,7 +73,7 @@ const CardDetailsForm = ({ paymentInfo, errors, handleChange, handleCardNumberCh
             name="saveCard"
             checked={paymentInfo.saveCard}
             onChange={handleChange}
-            className="h-4 w-4 text-primary focus:ring-primary rounded"
+            className="h-4 w-4 text-primary_app focus:ring-primary_app rounded"
           />
           <label htmlFor="saveCard" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
             Save this card for future payments

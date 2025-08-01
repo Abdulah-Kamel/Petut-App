@@ -144,7 +144,7 @@ const CatalogPage = () => {
       </div>
 
       {/* Promotional Banner */}
-      <div className="bg-primary text-white rounded-lg p-4 mb-6 relative overflow-hidden">
+      <div className="bg-primary_app text-white rounded-lg p-4 mb-6 relative overflow-hidden">
         <div className="flex items-center">
           <div className="flex-1">
             <div className="text-2xl font-bold mb-1">20% OFF</div>
@@ -170,7 +170,7 @@ const CatalogPage = () => {
       <div className="flex overflow-x-auto space-x-2 mb-6 pb-2 scrollbar-hide">
         <button 
           onClick={() => setActiveTab('all')} 
-          className={`px-4 py-2 rounded-full whitespace-nowrap capitalize ${activeTab === 'all' ? 'bg-primary text-white' : 'bg-white text-neutral'}`}
+          className={`px-4 py-2 rounded-full whitespace-nowrap capitalize ${activeTab === 'all' ? 'bg-primary_app text-white' : 'bg-white text-neutral'}`}
         >
           All
         </button>
@@ -178,7 +178,7 @@ const CatalogPage = () => {
           <button 
             key={category}
             onClick={() => setActiveTab(category)} 
-            className={`px-4 py-2 rounded-full whitespace-nowrap capitalize ${activeTab === category ? 'bg-primary text-white' : 'bg-white text-neutral'}`}
+            className={`px-4 py-2 rounded-full whitespace-nowrap capitalize ${activeTab === category ? 'bg-primary_app text-white' : 'bg-white text-neutral'}`}
           >
             {category}
           </button>
@@ -208,7 +208,7 @@ const CatalogPage = () => {
       <div className="fixed bottom-6 right-6">
         <Link 
           to="/filters"
-          className="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-primary/90 transition-colors"
+          className="bg-primary_app text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-primary_app/90 transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
