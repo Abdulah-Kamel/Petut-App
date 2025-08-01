@@ -8,7 +8,7 @@ import { db } from '../../firebase.js';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 
-export default function AddProductModal({setProducts, fetchProducts, loading, setLoading }) {
+export default function AddProductModal({setProducts, loading, setLoading }) {
     const [productName, setProductName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -70,7 +70,7 @@ export default function AddProductModal({setProducts, fetchProducts, loading, se
                 imageURL: url,
                 createdAt: Timestamp.now()
             }]);
-            fetchClients();
+            
             setTimeout(() => {
                 document.getElementById('close-btn-modal').click();
             }, 3000);

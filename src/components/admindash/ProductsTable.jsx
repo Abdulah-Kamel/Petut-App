@@ -9,18 +9,13 @@ import { BeatLoader } from 'react-spinners';
 
 
 import { BiSearchAlt2 } from "react-icons/bi";
-export default function ProductsTable({ products, setProducts, handleDeleteProduct, fetchProducts, loading }) {
+export default function ProductsTable({ products, setProducts, handleDeleteProduct, loading }) {
     const [showConfirm, setShowConfirm] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('all');
     const [selectedProductId, setSelectedProductId] = useState(null);
 
-
-
-    useEffect(() => {
-        fetchProducts();
-    }, [])
 
     // filter doctors by name, email, or specialization
     const filterProducts = products?.filter(product => {
@@ -54,9 +49,9 @@ export default function ProductsTable({ products, setProducts, handleDeleteProdu
                     <option value="toys" >Toys</option>
                 </select>
             </div>
-            {loading ? <h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3> : products?.length === 0 ? <h3 className='text-center mt-5'>No products found</h3> : filterProducts?.length === 0 ? <h3 className='text-center mt-5'>No products found</h3> : (
+            {loading ? <h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3> : products?.length === 0 ? <h3 className='text-center mt-5'>No products found</h3> : filterProducts?.length === 0 ? <h3 className='text-center mt-5'>No Match products found</h3> : (
                 <>
-                    <div className="products-table mt-4 mb-5  bg-white shadow rounded w-100 " style={{ maxHeight: '730px', overflowY: 'auto' }}>
+                    <div className="products-table mt-4 mb-5 table-responsive  bg-white shadow rounded w-100 " style={{ maxHeight: '620px', overflowY: 'auto' }}>
                         <table className="table">
                             <thead className="table-light py-3 position-sticky top-0">
                                 <tr className="">
