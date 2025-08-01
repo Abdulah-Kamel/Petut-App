@@ -140,3 +140,7 @@ ul {
 input {
   font-size: medium !important;
 }
+
+table tr:last-child td {
+  border-bottom: none !important;
+}
