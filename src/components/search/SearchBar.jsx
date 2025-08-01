@@ -61,7 +61,7 @@ const SearchBar = ({ value, onChange, onSearch, onClear }) => {
             </svg>
           </button>
         )}
-        <button type="submit" className="absolute right-3 text-primary">
+        <button type="submit" className="absolute right-3 text-primary dark:text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"

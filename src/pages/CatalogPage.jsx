@@ -15,6 +15,7 @@ import ProductCard from '../components/ProductCard';
 import {fetchProducts} from "../store/slices/catalogSlice.js";
 import SearchBar from "../components/search/SearchBar.jsx";
 import LoadingAnimation from "../components/common/LoadingAnimation.jsx";
+import { Pagination } from 'flowbite-react';
 
 const CatalogPage = () => {
     const dispatch = useDispatch();
@@ -26,6 +27,8 @@ const CatalogPage = () => {
   const [activeTab, setActiveTab] = useState('all')
   const [categories, setCategories] = useState([])
   const [inputValue, setInputValue] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 20;
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -56,20 +59,30 @@ const CatalogPage = () => {
     const priceMin = params.get('price_min');
     const priceMax = params.get('price_max');
     const rating = params.get('rating');
+    const sort = params.get('sort');
 
-    // Update Redux state from URL, but only if filters are present
-    if (categories.length > 0) dispatch(setSelectedCategories(categories));
-    if (brands.length > 0) dispatch(setSelectedBrands(brands));
+    // Always update the filters based on the URL, dispatching defaults if params are absent
+    dispatch(setSelectedCategories(categories));
+    dispatch(setSelectedBrands(brands));
+
     if (priceMin && priceMax) {
       dispatch(setPriceRange({ min: parseInt(priceMin, 10), max: parseInt(priceMax, 10) }));
     } else {
-      dispatch(setPriceRange({ min: 0, max: 10000 })); // Reset to a wide default
+      // Reset to a default that includes all prices if not specified
+      dispatch(setPriceRange({ min: 0, max: 10000 }));
     }
+
     if (rating) {
       dispatch(setRating(parseInt(rating, 10)));
     } else {
-      dispatch(setRating(0)); // Reset to default
+      dispatch(setRating(0)); // A rating of 0 means no filter
     }
+
+    if (sort) {
+      // This assumes you have a setSortOption in filterSlice
+      // dispatch(setSortOption(sort));
+    }
+
   }, [location.search, dispatch]);
 
   const toggleFavorite = (product) => {
@@ -125,17 +138,34 @@ const CatalogPage = () => {
     return true;
   });
 
+  // Get current products
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+  // Change page
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, activeTab, inputValue]);
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Catalog</h1>
+        <h1 className="text-2xl dark:text-white font-bold">Catalog</h1>
         <div className="flex space-x-2">
-          <Link to="/search" className="p-2 text-neutral hover:text-primary transition-colors">
+          <Link to="/search" className="p-2 text-neutral dark:text-white hover:text-primary transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </Link>
-          <Link to="/favorites" className="p-2 text-neutral hover:text-primary transition-colors">
+          <Link to="/favorites" className="p-2 text-neutral dark:text-white hover:text-primary transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
@@ -191,17 +221,50 @@ const CatalogPage = () => {
       ) : error ? (
         <div className="text-center text-red-500 py-8">{error}</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredProducts.map(product => (
-            <ProductCard 
-              key={product.id} 
-              product={product} 
-              onAddToCart={handleAddToCart}
-              onToggleFavorite={toggleFavorite}
-              isFavorite={favorites.some(item => item.id === product.id)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {currentProducts.length > 0 ? (
+              currentProducts.map(product => (
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  onAddToCart={handleAddToCart}
+                  onToggleFavorite={toggleFavorite}
+                  isFavorite={favorites.some(item => item.id === product.id)}
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="text-lg text-gray-600 dark:text-gray-300">No products found matching your filters.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-12">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={onPageChange}
+                showIcons
+                previousLabel=""
+                nextLabel=""
+                className="pagination"
+                theme={{
+                  pages: {
+                    base: "inline-flex items-center -space-x-px",
+                    showIcon: "inline-flex"
+                  },
+                  pageItem: {
+                    base: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
+                    active: "z-10 flex items-center justify-center px-3 h-8 leading-tight text-primary-600 border border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                  }
+                }}
+              />
+            </div>
+          )}
+        </>
       )}
 
       {/* Filters Button */}

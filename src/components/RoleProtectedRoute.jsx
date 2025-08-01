@@ -40,10 +40,7 @@ const RoleProtectedRoute = ({ children }) => {
         return <LoadingAnimation />;
     }
 
-    // If no currentUser (user is not logged in), redirect to login page
-    if (!currentUser) {
-        return <Navigate to="/login" />;
-    }
+
 
     // If user is logged in and has a specific role, redirect to the respective dashboard
     if (user?.role === roles.admin) {
@@ -54,13 +51,8 @@ const RoleProtectedRoute = ({ children }) => {
         return <Navigate to="/doctor-dashboard" />;
     }
 
-    // If the role is customer, render the children (protected route content)
-    if (user?.role === roles.customer) {
-        return children;
-    }
 
-    // Default case: redirect to login if no role is found
-    return <Navigate to="/login" />;
+        return children;
 };
 
 export default RoleProtectedRoute;
