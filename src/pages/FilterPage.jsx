@@ -11,13 +11,16 @@ import {
   setRating,
   resetFilters
 } from '../store/slices/filterSlice'
+import { fetchProducts } from '../store/slices/catalogSlice';
+import LoadingAnimation from '../components/common/LoadingAnimation';
 
 const FilterPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
   const filters = useSelector(state => state.filter)
-  
+  const { products, loading: productsLoading } = useSelector(state => state.catalog);
+
   // Local state to track changes before applying
   const [localFilters, setLocalFilters] = useState({
     categories: [...filters.selectedCategories],
@@ -49,6 +52,12 @@ const FilterPage = () => {
       }))
     }
   }, [location.search])
+
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
 
   const handleCategoryToggle = (category) => {
     setLocalFilters(prev => {
@@ -159,9 +168,36 @@ const FilterPage = () => {
     navigate(`/catalog?${params.toString()}`);
   };
 
+  if (productsLoading) {
+    return (
+        <div className="max-w-7xl mx-auto px-4 pb-20 mt-12">
+            <div className="sticky top-0 bg-white z-10 py-4 border-b border-gray-200">
+                <div className="flex justify-between items-center">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="text-neutral"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <h1 className="text-xl font-bold">Filters</h1>
+                    <button
+                        onClick={handleReset}
+                        className="text-primary_app text-sm font-medium"
+                    >
+                        Reset All
+                    </button>
+                </div>
+            </div>
+            <LoadingAnimation />
+        </div>
+    );
+  }
+
   // Mock data for filters
-  const availableCategories = ['Food', 'Vitamins', 'Toys', 'Grooming', 'Accessories']
-  const availableBrands = ['Royal Canin', 'Brit', 'Tetra', 'Vitamax', 'Trixie', 'Purina']
+  const availableCategories = [...new Set(products.map(p => p.category))];
+  const availableBrands = [...new Set(products.map(p => p.brand))];
   const availableAgeRanges = ['Puppy', 'Adult', 'Senior']
   const availableBreedSizes = ['Small', 'Medium', 'Large']
   const availableSortOptions = [

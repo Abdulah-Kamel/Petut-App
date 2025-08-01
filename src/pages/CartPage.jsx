@@ -48,7 +48,7 @@ const CartPage = () => {
   const finalAmount = totalAmount - discount
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pb-24 mt-14">
+    <div className="max-w-7xl mx-auto px-4 pb-24 mt-20">
       <div className="sticky top-0 bg-white dark:bg-[#313340] z-10 p-4 border-b rounded-xl shadow-md border-gray-200 dark:border-gray-700">
         <div className="flex justify-between items-center">
           <button 
