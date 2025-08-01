@@ -171,8 +171,8 @@ const SignupPage = () => {
       const userDocSnap = await getDoc(userDocRef);
 
       if (!userDocSnap.exists()) {
-        // Redirect to completion form
-        navigate(`/complete-profile?uid=${user.uid}&role=${formData.role}`);
+        // Redirect to role selection form
+        navigate(`/role-selection?uid=${user.uid}`);
       } else {
         navigate("/");
       }

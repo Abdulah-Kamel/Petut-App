@@ -19,14 +19,37 @@ const CustomerForm = () => {
 
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [formErrors, setFormErrors] = useState({});
 
     const handleChange = e => {
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
+        if (formErrors[name]) {
+            setFormErrors(prev => ({ ...prev, [name]: '' }))
+        }
     }
+
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.fullName.trim()) {
+            errors.fullName = "Full name is required";
+        }
+        if (!formData.phone.trim()) {
+            errors.phone = "Phone number is required";
+        } else if (!/^(\+20|0)1[0125]\d{8}$/.test(formData.phone)) {
+            errors.phone = "Please enter a valid Egyptian phone number";
+        }
+        if (!formData.gender) {
+            errors.gender = "Gender is required";
+        }
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (!validateForm()) return;
+
         setLoading(true)
         try {
             console.log(formData)
@@ -83,8 +106,9 @@ const CustomerForm = () => {
                         <div>
                             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Full Name</label>
                             <input id="fullName" name="fullName" type="text" value={formData.fullName} onChange={handleChange}
-                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
+                                   className={`appearance-none block w-full px-3 py-3 border ${formErrors.fullName ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}
                                    placeholder="Full Name" />
+                            {formErrors.fullName && <p className="mt-1 text-sm text-red-500">{formErrors.fullName}</p>}
                         </div>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Email</label>
@@ -95,17 +119,19 @@ const CustomerForm = () => {
                         <div>
                             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Phone</label>
                             <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange}
-                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
+                                   className={`appearance-none block w-full px-3 py-3 border ${formErrors.phone ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm placeholder:text-white`}
                                    placeholder="Phone Number" />
+                            {formErrors.phone && <p className="mt-1 text-sm text-red-500">{formErrors.phone}</p>}
                         </div>
                         <div>
                             <label htmlFor="gender" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Gender</label>
                             <select id="gender" name="gender" value={formData.gender} onChange={handleChange}
-                                    className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm">
+                                    className={`appearance-none block w-full px-3 py-3 border ${formErrors.gender ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}>
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
+                            {formErrors.gender && <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>}
                         </div>
                     </div>
 
