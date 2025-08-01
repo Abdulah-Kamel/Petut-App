@@ -55,6 +55,7 @@ const DoctorForm = () => {
 
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [formErrors, setFormErrors] = useState({});
 
     const handleChange = e => {
         const { name, value, type, files } = e.target;
@@ -78,19 +79,50 @@ const DoctorForm = () => {
         };
 
         setFormData(prev => updateNestedState(prev, keys, file));
+
+        if (formErrors[name]) {
+            setFormErrors(prev => ({ ...prev, [name]: '' }));
+        }
     }
+
+    const validateForm = () => {
+        const errors = {};
+        const { fullName, phone, gender, doctorDetails } = formData;
+
+        if (!fullName.trim()) errors.fullName = "Full name is required";
+        if (!phone.trim()) {
+            errors.phone = "Phone number is required";
+        } else if (!/^(\+20|0)1[0125]\d{8}$/.test(phone)) {
+            errors.phone = "Please enter a valid Egyptian phone number";
+        }
+        if (!gender) errors.gender = "Gender is required";
+        if (!doctorDetails.description.trim()) errors['doctorDetails.description'] = "Description is required";
+        if (!doctorDetails.experience) {
+            errors['doctorDetails.experience'] = "Years of experience are required";
+        } else if (doctorDetails.experience <= 0) {
+            errors['doctorDetails.experience'] = "Experience must be a positive number";
+        }
+        if (!doctorDetails.cardFrontImage) errors['doctorDetails.cardFrontImage'] = "Syndicate card front image is required";
+        if (!doctorDetails.cardBackImage) errors['doctorDetails.cardBackImage'] = "Syndicate card back image is required";
+        if (!doctorDetails.idImage) errors['doctorDetails.idImage'] = "ID image is required";
+
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        if (!validateForm()) return;
+
+        setLoading(true)
+        setError('')
 
         const { description, experience, cardFrontImage, cardBackImage, idImage } = formData.doctorDetails;
         if (!description || !experience || !cardFrontImage || !cardBackImage || !idImage) {
             setError('Please fill out all required fields and upload all required images.');
             return;
         }
-
-        setLoading(true)
-        setError('')
 
         const uploadToImgBB = async (file) => {
             const apiKey = "01a0445653bd47247515dce07a3f1400"; 
@@ -178,8 +210,9 @@ const DoctorForm = () => {
                         <div>
                             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Full Name</label>
                             <input id="fullName" name="fullName" type="text" value={formData.fullName} onChange={handleChange}
-                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
+                                   className={`appearance-none block w-full px-3 py-3 border ${formErrors.fullName ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}
                                    placeholder="Full Name" />
+                            {formErrors.fullName && <p className="mt-1 text-sm text-red-500">{formErrors.fullName}</p>}
                         </div>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Email</label>
@@ -190,38 +223,45 @@ const DoctorForm = () => {
                         <div>
                             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Phone</label>
                             <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange}
-                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
+                                   className={`appearance-none block w-full px-3 py-3 border ${formErrors.phone ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}
                                    placeholder="Phone Number" />
+                            {formErrors.phone && <p className="mt-1 text-sm text-red-500">{formErrors.phone}</p>}
                         </div>
                         <div>
                             <label htmlFor="gender" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Gender</label>
                             <select id="gender" name="gender" value={formData.gender} onChange={handleChange}
-                                    className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm">
+                                    className={`appearance-none block w-full px-3 py-3 border ${formErrors.gender ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}>
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
+                            {formErrors.gender && <p className="mt-1 text-sm text-red-500">{formErrors.gender}</p>}
                         </div>
                     </div>
                     <div>
                         <label htmlFor="description" className="sr-only">Description</label>
-                        <textarea id="description" name="doctorDetails.description" value={formData.doctorDetails.description} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm" placeholder="Description" required />
+                        <textarea id="description" name="doctorDetails.description" value={formData.doctorDetails.description} onChange={handleChange} className={`appearance-none block w-full px-3 py-3 border ${formErrors['doctorDetails.description'] ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`} placeholder="Description" required />
+                        {formErrors['doctorDetails.description'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.description']}</p>}
                     </div>
                     <div>
                         <label htmlFor="experience" className="sr-only">Years of Experience</label>
-                        <input id="experience" name="doctorDetails.experience" type="number" value={formData.doctorDetails.experience} onChange={handleChange} className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm" placeholder="Years of Experience" required />
+                        <input id="experience" name="doctorDetails.experience" type="number" value={formData.doctorDetails.experience} onChange={handleChange} className={`appearance-none block w-full px-3 py-3 border ${formErrors['doctorDetails.experience'] ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`} placeholder="Years of Experience" required />
+                        {formErrors['doctorDetails.experience'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.experience']}</p>}
                     </div>
                     <div>
                         <label htmlFor="cardFrontImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Syndicate Card Front</label>
-                        <input id="cardFrontImage" name="doctorDetails.cardFrontImage" type="file" onChange={handleChange} className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" required />
+                        <input id="cardFrontImage" name="doctorDetails.cardFrontImage" type="file" onChange={handleChange} className={`block w-full text-sm text-gray-900 border ${formErrors['doctorDetails.cardFrontImage'] ? 'border-red-500' : 'border-gray-300'} rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400`} aria-describedby="user_avatar_help" required />
+                        {formErrors['doctorDetails.cardFrontImage'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.cardFrontImage']}</p>}
                     </div>
                     <div>
                         <label htmlFor="cardBackImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Syndicate Card Back</label>
-                        <input id="cardBackImage" name="doctorDetails.cardBackImage" type="file" onChange={handleChange} className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" required />
+                        <input id="cardBackImage" name="doctorDetails.cardBackImage" type="file" onChange={handleChange} className={`block w-full text-sm text-gray-900 border ${formErrors['doctorDetails.cardBackImage'] ? 'border-red-500' : 'border-gray-300'} rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400`} aria-describedby="user_avatar_help" required />
+                        {formErrors['doctorDetails.cardBackImage'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.cardBackImage']}</p>}
                     </div>
                     <div>
                         <label htmlFor="idImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">ID Image</label>
-                        <input id="idImage" name="doctorDetails.idImage" type="file" onChange={handleChange} className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" required />
+                        <input id="idImage" name="doctorDetails.idImage" type="file" onChange={handleChange} className={`block w-full text-sm text-gray-900 border ${formErrors['doctorDetails.idImage'] ? 'border-red-500' : 'border-gray-300'} rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400`} aria-describedby="user_avatar_help" required />
+                        {formErrors['doctorDetails.idImage'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.idImage']}</p>}
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div>

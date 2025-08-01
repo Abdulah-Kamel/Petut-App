@@ -48,6 +48,7 @@ import Charts from './pages/admin-dashboard/Charts'
 import Reviews from './pages/admin-dashboard/Reviews'
 import Store from './pages/admin-dashboard/Store'
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
+import RoleSelectionPage from "./pages/RoleSelectionPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -247,6 +248,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/complete-profile" element={<CompleteProfile />} />
+        <Route path="/role-selection" element={<RoleSelectionPage />} />
       </Routes>
     </>
   );

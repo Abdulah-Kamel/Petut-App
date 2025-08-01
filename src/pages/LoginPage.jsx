@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, signInWithGoogle } from '../firebase';
+import {auth, db, signInWithGoogle} from '../firebase';
+import {doc, getDoc} from "firebase/firestore";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -80,12 +81,24 @@ const LoginPage = () => {
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
-      await signInWithGoogle();
-      navigate('/');
+      const result = await signInWithGoogle();
+      const user = result.user;
+
+      // Check if user already has profile in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (!userDocSnap.exists()) {
+        // Redirect to role selection form
+        navigate(`/role-selection?uid=${user.uid}`);
+      } else {
+        navigate("/");
+      }
     } catch (err) {
-      setError('Failed to sign in with Google. Please try again.');
+      console.error(err);
+      setError("Failed to sign up with Google. Please try again.");
       console.error(err);
     } finally {
       setLoading(false);
