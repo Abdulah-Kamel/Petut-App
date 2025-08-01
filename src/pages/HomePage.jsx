@@ -45,13 +45,13 @@ const HomePage = () => {
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 max-md:order-last mb-8 md:mb-0">
               <h1 className="text-4xl md:text-5xl font-bold text-neutral dark:text-white mb-4">
-                Taking care of <span className="text-primary">your pet</span>
+                Taking care of <span className="text-primary_app">your pet</span>
               </h1>
               <p className="text-lg dark:text-gray-300 mb-6">
                 Find everything your pet needs - from premium food to toys and
                 accessories.
               </p>
-              <Link to="/catalog" className="btn-primary inline-block">
+              <Link to="/catalog" className="btn-primary-app inline-block">
                 Shop Now
               </Link>
             </div>
@@ -70,7 +70,7 @@ const HomePage = () => {
       <section className="mb-12">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold dark:text-white">Featured Products</h2>
-          <Link to="/catalog" className="text-primary hover:underline">
+          <Link to="/catalog" className="text-primary_app hover:underline">
             View All
           </Link>
         </div>
@@ -100,7 +100,7 @@ const HomePage = () => {
       {/*    {*/}
       {/*      categories.map((category,index)=>{*/}
       {/*    return <Link to={`/${category}/`} className="block group" key={index}>*/}
-      {/*      <div className="aspect-square bg-primary-light rounded-lg flex items-center justify-center p-4">*/}
+      {/*      <div className="aspect-square bg-primary_app-light rounded-lg flex items-center justify-center p-4">*/}
       {/*        <img*/}
       {/*            src="https://placehold.co/100x100/"*/}
       {/*            alt="Electronics"*/}

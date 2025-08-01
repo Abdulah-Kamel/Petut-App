@@ -38,7 +38,7 @@ const OrderDetailsPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 mt-12">
-      <button onClick={() => navigate(-1)} className="mb-4 text-primary hover:underline">&larr; Back to Orders</button>
+      <button onClick={() => navigate(-1)} className="mb-4 text-primary_app hover:underline">&larr; Back to Orders</button>
       <div className="bg-white dark:bg-[#313340] rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-8">
         <h1 className="text-2xl font-bold mb-4 dark:text-white">Order #{order.id}</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -102,7 +102,7 @@ const OrderDetailsPage = () => {
         <div className="mb-2 dark:text-white"><span>Cardholder:</span> {paymentInfo?.cardHolder}</div>
       </div>
       <div className="text-center space-y-4">
-        <Link to="/profile" className="inline-block py-3 px-6 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors">Back to Orders</Link>
+        <Link to="/profile" className="inline-block py-3 px-6 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors">Back to Orders</Link>
       </div>
     </div>
   );

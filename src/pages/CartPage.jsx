@@ -78,7 +78,7 @@ const CartPage = () => {
           </svg>
           <h2 className="text-xl dark:text-white font-semibold mb-2">Your cart is empty</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">Looks like you haven't added any products to your cart yet.</p>
-          <Link to="/catalog" className="btn-primary py-2 px-6">
+          <Link to="/catalog" className="btn-primary-app py-2 px-6">
             Start Shopping
           </Link>
         </div>
@@ -154,7 +154,7 @@ const CartPage = () => {
           {/* Checkout Button */}
           <button 
             onClick={handleCheckout}
-            className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+            className="w-full py-3 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors"
           >
             Proceed to Checkout
           </button>

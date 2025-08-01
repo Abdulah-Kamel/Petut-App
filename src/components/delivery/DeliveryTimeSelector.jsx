@@ -8,7 +8,7 @@ const DeliveryTimeSelector = ({ deliveryTimes, selectedTime, handleChange }) => 
         {deliveryTimes.map(time => (
           <label
             key={time.id}
-            className={`block p-3 border rounded-lg cursor-pointer text-center transition-colors ${selectedTime === time.id ? 'border-primary bg-primary/5 dark:bg-primary/100 dark:text-white' : 'border-gray-200 hover:bg-primary dark:hover:bg-gray-600'} bg-white dark:border-gray-700  dark:bg-[#313340] dark:text-white dark:hover:text-white`}
+            className={`block p-3 border rounded-lg cursor-pointer text-center transition-colors ${selectedTime === time.id ? 'border-primary_app bg-primary_app/5 dark:bg-primary_app/100 dark:text-white' : 'border-gray-200 hover:bg-primary_app dark:hover:bg-gray-600'} bg-white dark:border-gray-700  dark:bg-[#313340] dark:text-white dark:hover:text-white`}
           >
             <input
               type="radio"

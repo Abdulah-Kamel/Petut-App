@@ -36,7 +36,7 @@ const OrderConfirmationPage = () => {
         </p>
         <Link
           to="/catalog"
-          className="py-2 px-4 bg-primary text-white rounded-lg"
+          className="py-2 px-4 bg-primary_app text-white rounded-lg"
         >
           Continue Shopping
         </Link>
@@ -167,13 +167,13 @@ const OrderConfirmationPage = () => {
         <div className="space-x-4">
           <Link
             to="/catalog"
-            className="inline-block py-3 px-6 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+            className="inline-block py-3 px-6 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors"
           >
             Continue Shopping
           </Link>
           <Link
             to="/profile"
-            className="inline-block py-3 px-6 bg-white dark:bg-[#313340] text-primary dark:text-white font-semibold rounded-lg border border-primary dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+            className="inline-block py-3 px-6 bg-white dark:bg-[#313340] text-primary_app dark:text-white font-semibold rounded-lg border border-primary dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
           >
             View Order History
           </Link>

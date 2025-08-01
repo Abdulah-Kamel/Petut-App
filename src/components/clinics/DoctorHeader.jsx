@@ -12,12 +12,12 @@ const DoctorHeader = ({ clinic }) => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <span className="material-icons text-6xl text-primary flex items-center justify-center w-full h-full">
+          <span className="material-icons text-6xl text-primary_app flex items-center justify-center w-full h-full">
             person
           </span>
         )}
       </div>
-      <div className="font-bold text-xl text-primary mt-2">
+      <div className="font-bold text-xl text-primary_app mt-2">
         {clinic.doctorName}
       </div>
       <div className="text-secondary text-sm">
@@ -25,7 +25,7 @@ const DoctorHeader = ({ clinic }) => {
       </div>
       <div className="flex items-center gap-2 text-secondary mt-1 text-sm">
         <span>{rating.toFixed(1)}</span>
-        <span className="material-icons text-primary text-base">star</span>
+        <span className="material-icons text-primary_app text-base">star</span>
         <span>|</span>
         <span>{clinic.phone || "No phone"}</span>
       </div>

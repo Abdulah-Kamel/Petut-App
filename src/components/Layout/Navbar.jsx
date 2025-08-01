@@ -81,7 +81,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => navigate("/cart")}
-              className="relative p-2 text-neutral dark:text-white hover:text-primary dark:hover:text-primary transition-colors"
+              className="relative p-2 text-neutral dark:text-white hover:text-primary_app dark:hover:text-primary_app transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@ const Navbar = () => {
                 />
               </svg>
               {totalQuantity > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-primary_app text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {totalQuantity}
                 </span>
               )}
@@ -111,7 +111,7 @@ const Navbar = () => {
 
             {currentUser ? (
               <div className="flex items-center space-x-4">
-                <Link to="/profile/:userId" className="nav-link">
+                <Link to="/profile" className="nav-link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
@@ -136,7 +136,7 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                <Link to="/login" className="btn-primary text-sm">
+                <Link to="/login" className="btn-primary-app text-sm">
                   Log In
                 </Link>
                 <Link to="/signup" className="btn-secondary text-sm">
@@ -150,7 +150,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => navigate("/cart")}
-              className="relative p-2 mr-2 text-neutral hover:text-primary transition-colors"
+              className="relative p-2 mr-2 text-neutral hover:text-primary_app transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +167,7 @@ const Navbar = () => {
                 />
               </svg>
               {totalQuantity > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-primary_app text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {totalQuantity}
                 </span>
               )}
@@ -181,7 +181,7 @@ const Navbar = () => {
             <button
               onClick={toggleMenu}
               type="button"
-              className="text-neutral hover:text-primary focus:outline-none focus:text-primary"
+              className="text-neutral hover:text-primary_app focus:outline-none focus:text-primary_app"
             >
               <svg
                 className="h-6 w-6"

@@ -142,7 +142,7 @@ const DeliveryPage = () => {
 
           <button
             type="submit"
-            className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+            className="w-full py-3 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors"
           >
             Continue to Payment
           </button>

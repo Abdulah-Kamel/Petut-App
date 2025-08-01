@@ -187,7 +187,7 @@ const FilterPage = () => {
           <h1 className="text-xl font-bold">Filters</h1>
           <button 
             onClick={handleReset}
-            className="text-primary text-sm font-medium"
+            className="text-primary_app text-sm font-medium"
           >
             Reset All
           </button>
@@ -207,7 +207,7 @@ const FilterPage = () => {
                   name="sortOption"
                   checked={localFilters.sortOption === option.value}
                   onChange={() => handleSortOptionChange(option.value)}
-                  className="w-5 h-5 text-primary focus:ring-primary"
+                  className="w-5 h-5 text-primary_app focus:ring-primary_app"
                 />
                 <label htmlFor={`sort-${option.value}`} className="ml-2 text-gray-700">
                   {option.label}
@@ -225,7 +225,7 @@ const FilterPage = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryToggle(category)}
-                className={`px-4 py-2 rounded-full ${localFilters.categories.includes(category) ? 'bg-primary text-white' : 'bg-white text-neutral border border-gray-200'}`}
+                className={`px-4 py-2 rounded-full ${localFilters.categories.includes(category) ? 'bg-primary_app text-white' : 'bg-white text-neutral border border-gray-200'}`}
               >
                 {category}
               </button>
@@ -244,7 +244,7 @@ const FilterPage = () => {
                   id={`brand-${brand}`}
                   checked={localFilters.brands.includes(brand)}
                   onChange={() => handleBrandToggle(brand)}
-                  className="w-5 h-5 text-primary focus:ring-primary rounded"
+                  className="w-5 h-5 text-primary_app focus:ring-primary_app rounded"
                 />
                 <label htmlFor={`brand-${brand}`} className="ml-2 text-gray-700">
                   {brand}
@@ -283,7 +283,7 @@ const FilterPage = () => {
                 onChange={(e) => handlePriceRangeChange(parseInt(e.target.value), localFilters.priceRange.max)}
                 min="0"
                 max={localFilters.priceRange.max}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
               />
             </div>
             <div className="w-[48%]">
@@ -295,7 +295,7 @@ const FilterPage = () => {
                 onChange={(e) => handlePriceRangeChange(localFilters.priceRange.min, parseInt(e.target.value))}
                 min={localFilters.priceRange.min}
                 max="1000"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
               />
             </div>
           </div>
@@ -309,7 +309,7 @@ const FilterPage = () => {
               <button
                 key={age}
                 onClick={() => handleAgeRangeToggle(age)}
-                className={`px-4 py-2 rounded-full ${localFilters.ageRanges.includes(age) ? 'bg-primary text-white' : 'bg-white text-neutral border border-gray-200'}`}
+                className={`px-4 py-2 rounded-full ${localFilters.ageRanges.includes(age) ? 'bg-primary_app text-white' : 'bg-white text-neutral border border-gray-200'}`}
               >
                 {age}
               </button>
@@ -325,7 +325,7 @@ const FilterPage = () => {
               <button
                 key={size}
                 onClick={() => handleBreedSizeToggle(size)}
-                className={`px-4 py-2 rounded-full ${localFilters.breedSizes.includes(size) ? 'bg-primary text-white' : 'bg-white text-neutral border border-gray-200'}`}
+                className={`px-4 py-2 rounded-full ${localFilters.breedSizes.includes(size) ? 'bg-primary_app text-white' : 'bg-white text-neutral border border-gray-200'}`}
               >
                 {size}
               </button>
@@ -345,7 +345,7 @@ const FilterPage = () => {
                   name="rating"
                   checked={localFilters.rating === rating}
                   onChange={() => handleRatingChange(rating)}
-                  className="w-5 h-5 text-primary focus:ring-primary"
+                  className="w-5 h-5 text-primary_app focus:ring-primary_app"
                 />
                 <label htmlFor={`rating-${rating}`} className="ml-2 flex items-center">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -371,7 +371,7 @@ const FilterPage = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
         <button 
           onClick={handleApply}
-          className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+          className="w-full py-3 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors"
         >
           Apply Filters
         </button>

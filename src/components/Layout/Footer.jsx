@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="flex items-center mb-6">
-              <span className="text-3xl font-bold text-primary">
+              <span className="text-3xl font-bold text-primary_app">
                 PET<span className="text-neutral dark:text-white">.CARE</span>
               </span>
             </div>
@@ -20,7 +20,7 @@ const Footer = () => {
             <div className="flex space-x-5">
               <a
                 href="#"
-                className="text-gray-400 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 transform hover:scale-110"
+                className="text-gray-400 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 transform hover:scale-110"
               >
                 <svg
                   className="w-6 h-6"
@@ -32,7 +32,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="text-gray-400 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 transform hover:scale-110"
+                className="text-gray-400 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 transform hover:scale-110"
               >
                 <svg
                   className="w-6 h-6"
@@ -44,7 +44,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="text-gray-400 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 transform hover:scale-110"
+                className="text-gray-400 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 transform hover:scale-110"
               >
                 <svg
                   className="w-6 h-6"
@@ -56,7 +56,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="text-gray-400 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 transform hover:scale-110"
+                className="text-gray-400 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 transform hover:scale-110"
               >
                 <svg
                   className="w-6 h-6"
@@ -74,22 +74,22 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-neutral dark:text-white mb-6">Quick Links</h3>
             <ul className="space-y-4">
               <li>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
                   About Us
                 </button>
               </li>
               <li>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
                   Our Services
                 </button>
               </li>
               <li>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
                   Pet Care Tips
                 </button>
               </li>
               <li>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
                   Veterinary Care
                 </button>
               </li>
@@ -103,22 +103,22 @@ const Footer = () => {
             </h3>
             <ul className="space-y-4">
               <li>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
                   My Account
                 </button>
               </li>
               <li>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
                   Order Tracking
                 </button>
               </li>
               <li>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
                   Returns & Refunds
                 </button>
               </li>
               <li>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
+                <button className="text-gray-600 dark:text-gray-300 hover:text-primary_app dark:hover:text-primary_app transition-all duration-300 text-base font-medium bg-transparent border-none p-0 cursor-pointer">
                   Help Center
                 </button>
               </li>
@@ -131,7 +131,7 @@ const Footer = () => {
             <div className="space-y-4">
               <div className="flex items-start space-x-4">
                 <svg
-                  className="w-6 h-6 text-primary mt-1 flex-shrink-0"
+                  className="w-6 h-6 text-primary_app mt-1 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -158,7 +158,7 @@ const Footer = () => {
               </div>
               <div className="flex items-start space-x-4">
                 <svg
-                  className="w-6 h-6 text-primary mt-1 flex-shrink-0"
+                  className="w-6 h-6 text-primary_app mt-1 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -185,7 +185,7 @@ const Footer = () => {
             {/* Company Branding */}
             <div className="flex flex-col items-center">
               <div className="flex items-center mb-4">
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-2xl font-bold text-primary_app">
                   PET<span className="text-neutral dark:text-white">.CARE</span>
                 </span>
               </div>

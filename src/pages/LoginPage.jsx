@@ -96,11 +96,11 @@ const LoginPage = () => {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full space-y-8 bg-white dark:bg-[#313340] p-6 rounded-xl shadow-lg">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-primary">PET.CARE</h1>
+          <h1 className="text-3xl font-bold text-primary_app">PET.CARE</h1>
           <h2 className="mt-6 text-2xl font-bold dark:text-white">Sign in to your account</h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
             Or{' '}
-            <Link to="/signup" className="font-medium text-primary hover:underline">
+            <Link to="/signup" className="font-medium text-primary_app hover:underline">
               create a new account
             </Link>
           </p>
@@ -166,7 +166,7 @@ const LoginPage = () => {
                 type="checkbox"
                 checked={formData.rememberMe}
                 onChange={handleChange}
-                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                className="h-4 w-4 text-primary_app focus:ring-primary border-gray-300 rounded"
               />
               <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 dark:text-white">
                 Remember me
@@ -174,7 +174,7 @@ const LoginPage = () => {
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-primary hover:underline">
+              <a href="#" className="font-medium text-primary_app hover:underline">
                 Forgot your password?
               </a>
             </div>
@@ -184,7 +184,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-primary_app hover:bg-primary_app/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? (
                 <span className="flex items-center">

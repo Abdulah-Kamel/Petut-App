@@ -26,7 +26,7 @@ const SortControls = ({ sortBy, onSortChange, onToggleFilters }) => {
           id="sort"
           value={sortBy}
           onChange={onSortChange}
-          className="border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          className="border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary_app focus:border-transparent"
         >
           <option value="default">Relevance</option>
           <option value="price-high">Price: High to Low</option>
