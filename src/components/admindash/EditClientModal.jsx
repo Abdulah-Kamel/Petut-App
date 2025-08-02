@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 import { BeatLoader } from 'react-spinners';
 import logo from '../../assets/petut.png';
-export default function EditClientModal({ client, modalId }) {
+export default function EditClientModal({ client, setClients, modalId }) {
     if (!client) return null;
     const { fullName: defaultName, email: defaultEmail, phone: defaultPhone, gender: defaultGender, profileImage: defaultProfileImage } = client;
     const [fullName, setFullName] = useState(defaultName)
@@ -36,8 +36,17 @@ export default function EditClientModal({ client, modalId }) {
             return
         }
         setLoading(true);
+
+
+        const uploadSingleImage = async (imageFile) => {
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            const response = await axios.post('https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307', formData);
+            return response.data.data.url;
+        };
         try {
-            const finalImage = uploadedImageUrl || profileImage;
+            const finalImage = await uploadSingleImage(profileImage);
 
             const docRef = doc(db, 'users', modalId);
             await updateDoc(docRef, {
@@ -51,7 +60,7 @@ export default function EditClientModal({ client, modalId }) {
             toast.success('Client updated successfully', { autoClose: 3000 });
             setTimeout(() => {
                 document.getElementById(`close-btn-edit-${modalId}`).click();
-                window.location.reload();
+                setClients([...client, { fullName, email, phone, gender, profileImage: finalImage }]);
             }, 3000);
         } catch (error) {
             toast.error("Failed to update client, error:" + error.message, { autoClose: 3000 });
@@ -85,53 +94,15 @@ export default function EditClientModal({ client, modalId }) {
                                     </div>
                                     <div className="product-image d-flex align-items-center gap-3 mb-3">
                                         <label htmlFor="product-image" className="form-label">Image</label>
-                                        <input type="file" className="form-control w-75" id="product-image" accept="image/*" onChange={async (e) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                                // setImageUrl(file); // still save the File if needed
-                                                const formData = new FormData();
-                                                formData.append("image", file);
-
-                                                try {
-                                                    const res = await fetch(`https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307`, {
-                                                        method: "POST",
-                                                        body: formData,
-                                                    });
-                                                    const data = await res.json();
-                                                    if (data.success) {
-                                                        setUploadedImageUrl(data.data.url);
-                                                        setProfileImage(data.data.url); //  set final image URL
-                                                        toast.success("Image uploaded successfully");
-                                                    } else {
-                                                        toast.error("Failed to upload image.");
-                                                    }
-                                                } catch (err) {
-                                                    toast.error("Upload error: " + err.message);
-                                                }
-                                            }
-                                        }} disabled={notEditable} />
+                                        <input type="file" className="form-control w-75" id="product-image" accept="image/*" onChange={(e) => setProfileImage(e.target.files[0])} disabled={notEditable} />
                                     </div>
-                                    {(uploadedImageUrl || profileImage) && (
-                                        <div>
-                                            <p>Image:</p>
-
-                                            <img
-                                                src={profileImage}
-                                                alt="Doctor image"
-                                                style={{ width: 100, marginBottom: 10 }}
-                                            />
-                                        </div>
-                                    )}
-                                    <div className="gender mb-2 ">
-                                        <p className='fw-bold mb-2'>Choose Gander</p>
-                                        <div className="form-check form-check-inline">
-                                            <input type="radio" name="gender" id="male" value={'male'} className="form-check-input" checked={gender === 'male'} onChange={(e) => setGender(e.target.value)} disabled={notEditable} />
-                                            <label htmlFor="male" className="form-check-label">Male</label>
-                                        </div>
-                                        <div className="form-check form-check-inline">
-                                            <input type="radio" name="gender" id="female" value={'female'} className="form-check-input" checked={gender === 'female'} onChange={(e) => setGender(e.target.value)} disabled={notEditable} />
-                                            <label htmlFor="female" className="">Female</label>
-                                        </div>
+                                    <div className="gender mb-2 d-flex align-items-center gap-3">
+                                        <label htmlFor="gender" className="form-label">Gender</label>
+                                        <select className="form-select w-25" name="gender" id="gender" value={gender} onChange={(e) => setGender(e.target.value)} disabled={notEditable}>
+                                            <option value="">Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
                                     </div>
                                 </div>
                             </form>

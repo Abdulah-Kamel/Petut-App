@@ -7,6 +7,8 @@ import ConfirmModal from '../ConfirmModal';
 import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
 import EditAdminModal from './EditAdminModal';
+import { FaEye } from 'react-icons/fa';
+import ViewAdminModal from './ViewAdminModal.jsx';
 
 export default function AdminsTable({ admins, setAdmins, fetchAdmins, loading }) {
 
@@ -55,11 +57,14 @@ export default function AdminsTable({ admins, setAdmins, fetchAdmins, loading })
                                     <td className="px-4 py-3">{admin?.phone || 'N/A'}</td>
 
                                     <td className="px-4 py-3 d-flex align-items-center gap-2 ">
-
+                                        <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewadmin-${admin.id}`}>
+                                            <FaEye cursor={"pointer"} />
+                                        </button>
+                                        <ViewAdminModal admin={admin}  modalId={admin.id} />
                                         <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editadmin-${admin.id}`}>
                                             <TbEdit className='' cursor={"pointer"} size={20} />
                                         </button>
-                                        <EditAdminModal admin={admin} modalId={admin.id} />
+                                        <EditAdminModal admin={admin} admins={admins} setAdmins={setAdmins} modalId={admin.id} />
 
                                         <button type="button" className="btn border-0 p-0" >
                                             <MdDelete cursor={"pointer"} size={20} className='text-danger'

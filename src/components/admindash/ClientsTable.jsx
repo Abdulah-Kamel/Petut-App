@@ -97,7 +97,7 @@ export default function Clientstable({ clients, setClients, fetchClients, loadin
                                         <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editclient-${client.id}`}>
                                             <TbEdit size={20} className='' />
                                         </button>
-                                        <EditClientModal client={client} modalId={client.id} />
+                                        <EditClientModal client={client} setClients={setClients} modalId={client.id} />
                                         <MdDelete cursor={"pointer"} size={20} className='text-danger' onClick={() => {
                                             setShowConfirm(true);
                                             setSelectedClientId(client.id);

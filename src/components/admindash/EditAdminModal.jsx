@@ -7,15 +7,15 @@ import { db } from "../../firebase.js";
 
 import logo from '../../assets/petut.png';
 import { BeatLoader } from 'react-spinners';
+import axios from "axios";
 
-export default function EditAdminModal({ admin, modalId }) {
+export default function EditAdminModal({ admin,setAdmins, modalId }) {
     if (!admin) return null;
     const { fullName: defaultName, email: defaultEmail, phone: defaultPhone, profileImage: defaultProfileImage } = admin;
     const [fullName, setFullName] = useState(defaultName)
     const [email, setEmail] = useState(defaultEmail)
     const [phone, setPhone] = useState(defaultPhone)
     const [profileImage, setProfileImage] = useState(defaultProfileImage);
-    const [uploadedImageUrl, setUploadedImageUrl] = useState('');
 
 
 
@@ -37,8 +37,18 @@ export default function EditAdminModal({ admin, modalId }) {
             return
         }
         setLoading(true);
+
+        const uploadSingleImage = async (imageFile) => {
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            const response = await axios.post('https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307', formData);
+            return response.data.data.url;
+        };
+
+        
         try {
-            const finalImage = uploadedImageUrl || profileImage;
+            const finalImage = await uploadSingleImage(profileImage);
             const docRef = doc(db, 'users', modalId);
             await updateDoc(docRef, {
                 fullName,
@@ -50,7 +60,7 @@ export default function EditAdminModal({ admin, modalId }) {
             toast.success('admin updated successfully', { autoClose: 3000 });
             setTimeout(() => {
                 document.getElementById('close-btn-edit').click();
-                window.location.reload();
+                setAdmins([...admin, { fullName, email, phone, profileImage: finalImage }]);
             }, 3000);
         } catch (error) {
             toast.error("Failed to update admin, error:" + error.message, { autoClose: 3000 });
@@ -84,43 +94,8 @@ export default function EditAdminModal({ admin, modalId }) {
                                     </div>
                                     <div className="product-image d-flex align-items-center gap-3 mb-3">
                                         <label htmlFor="product-image" className="form-label">Image</label>
-                                        <input type="file" className="form-control w-75" id="product-image" accept="image/*" onChange={async (e) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                                // setImageUrl(file); // still save the File if needed
-                                                const formData = new FormData();
-                                                formData.append("image", file);
-
-                                                try {
-                                                    const res = await fetch(`https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307`, {
-                                                        method: "POST",
-                                                        body: formData,
-                                                    });
-                                                    const data = await res.json();
-                                                    if (data.success) {
-                                                        setUploadedImageUrl(data.data.url);
-                                                        setProfileImage(data.data.url); //  set final image URL
-                                                        toast.success("Image uploaded successfully");
-                                                    } else {
-                                                        toast.error("Failed to upload image.");
-                                                    }
-                                                } catch (err) {
-                                                    toast.error("Upload error: " + err.message);
-                                                }
-                                            }
-                                        }} disabled={notEditable} />
+                                        <input type="file" className="form-control w-75" id="product-image" accept="image/*" onChange={(e) => setUploadedImageUrl(e.target.files[0])} disabled={notEditable} />
                                     </div>
-                                    {(uploadedImageUrl || profileImage) && (
-                                        <div>
-                                            <p>Image:</p>
-
-                                            <img
-                                                src={profileImage}
-                                                alt="Doctor image"
-                                                style={{ width: 100, marginBottom: 10 }}
-                                            />
-                                        </div>
-                                    )}
                                 </div>
                             </form>
                         </div>

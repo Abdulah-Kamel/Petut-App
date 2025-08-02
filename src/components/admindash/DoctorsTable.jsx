@@ -124,7 +124,7 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
                                                 <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editdoctor-${doctor.id}`}>
                                                     <TbEdit className='' size={20} />
                                                 </button>
-                                                <EditDoctorModal doctor={doctor} modalId={doctor.id} />
+                                                <EditDoctorModal doctor={doctor} doctors={doctors} setDoctors={setDoctors} modalId={doctor.id} />
                                                 <button type="button" className="btn border-0 p-0" >
                                                     <MdDelete cursor={"pointer"} size={25} className='text-danger' data-bs-toggle="modal" data-bs-target="#confirmModal"
                                                         onClick={() => {

@@ -19,7 +19,7 @@ export default function ConfirmModal({ onDelete, setShowConfirm, selectedId, wha
         >
             <div className="modal-dialog" style={{ marginTop: '250px' }}>
                 <div className="modal-content">
-                    <div className="modal-header py-2 d-flex align-items-center justify-content-between py-0 pe-0">
+                    <div className="modal-header  d-flex align-items-center justify-content-between py-0 pe-0">
                         <h5 className="modal-title">Confirm Deletion</h5>
                         <img src={logo} width="90" height="90" alt="logo" />
                     </div>

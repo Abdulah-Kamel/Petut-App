@@ -6,22 +6,39 @@ import { db } from '../../firebase.js';
 import logo from '../../assets/petut.png';
 
 import { BeatLoader } from 'react-spinners';
+import axios from 'axios';
+import { setDoc } from 'firebase/firestore';
 
-export default function EditDoctorModal({ doctor, modalId }) {
+export default function EditDoctorModal({ doctor, setDoctors, modalId }) {
     if (!doctor) return null;
-    const { fullName: defaultName, email: defaultEmail, phone: defaultPhone, gender: defaultGender, status: defaultStatus, profileImage: defaultProfileImage } = doctor;
+    const { fullName: defaultName, email: defaultEmail, phone: defaultPhone, gender: defaultGender, status: defaultStatus, doctorDetails = {} } = doctor;
+
+    const { profileImage: defaultProfileImage = '', cardFrontImage: defaultCardFrontImage = '', cardBackImage: defaultCardBackImage = '', idImage: defaultIdImage = '', experience: defaultExperience = '', description: defaultDescription = '', socialMedia = {} } = doctorDetails;
+
+    const { facebook: defaultFacebookLink = '', twitter: defaultTwitterLink = '', instagram: defaultInstagramLink = '', linkedin: defaultLinkedinLink = '' } = socialMedia;
+
+
+
     const [fullName, setFullName] = useState(defaultName);
     const [email, setEmail] = useState(defaultEmail);
     const [phone, setPhone] = useState(defaultPhone);
     const [gender, setGender] = useState(defaultGender);
     const [status, setStatus] = useState(defaultStatus);
     const [profileImage, setProfileImage] = useState(defaultProfileImage);
-    const [uploadedImageUrl, setUploadedImageUrl] = useState('');
+    const [cardFrontImage, setCardFrontImage] = useState(defaultCardFrontImage);
+    const [cardBackImage, setCardBackImage] = useState(defaultCardBackImage);
+    const [idImage, setIdImage] = useState(defaultIdImage);
+    const [experience, setExperience] = useState(defaultExperience);
+    const [description, setDescription] = useState(defaultDescription);
+    const [facebookLink, setFacebookLink] = useState(defaultFacebookLink);
+    const [twitterLink, setTwitterLink] = useState(defaultTwitterLink);
+    const [instagramLink, setInstagramLink] = useState(defaultInstagramLink);
+    const [linkedinLink, setLinkedinLink] = useState(defaultLinkedinLink);
 
     const [loading, setLoading] = useState(false);
 
 
-    const [isEditable, setIsEditable] = useState(false);
+    const [notEditable, setNotEditable] = useState(true);
 
     const resetFields = () => {
         setFullName(defaultName);
@@ -30,17 +47,39 @@ export default function EditDoctorModal({ doctor, modalId }) {
         setGender(defaultGender);
         setStatus(defaultStatus);
         setProfileImage(defaultProfileImage);
+        setCardFrontImage(defaultCardFrontImage);
+        setCardBackImage(defaultCardBackImage);
+        setIdImage(defaultIdImage);
+        setExperience(defaultExperience);
+        setDescription(defaultDescription);
+        setFacebookLink(defaultFacebookLink);
+        setTwitterLink(defaultTwitterLink);
+        setInstagramLink(defaultInstagramLink);
+        setLinkedinLink(defaultLinkedinLink);
     }
 
     //edit doctor in firestore 
     const handleSave = async () => {
-        if (!fullName.trim() || !email.trim() || !phone.trim() || !gender.trim() || !status.trim() || !profileImage) {
+        if (!fullName.trim() || !email.trim() || !phone.trim() || !gender.trim() || !status.trim() || !profileImage || !cardFrontImage || !cardBackImage || !idImage || !experience || !description) {
             toast.error('Please fill in all the required fields', { autoClose: 3000 });
             return
         }
         setLoading(true);
+
+        const uploadSingleImage = async (imageFile) => {
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            const response = await axios.post('https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307', formData);
+            return response.data.data.url;
+        };
         try {
-            const finalImage = uploadedImageUrl || profileImage;
+
+            const finalProfileImage = typeof profileImage === "string" ? profileImage : await uploadSingleImage(profileImage);
+            const finalCardFrontImage = typeof cardFrontImage === "string" ? cardFrontImage : await uploadSingleImage(cardFrontImage);
+            const finalCardBackImage = typeof cardBackImage === "string" ? cardBackImage : await uploadSingleImage(cardBackImage);
+            const finalIdImage = typeof idImage === "string" ? idImage : await uploadSingleImage(idImage);
+
             const docRef = doc(db, 'users', modalId);
             await updateDoc(docRef, {
                 fullName,
@@ -48,13 +87,26 @@ export default function EditDoctorModal({ doctor, modalId }) {
                 phone,
                 gender,
                 status,
-                profileImage: finalImage
+                doctorDetails: {
+                    profileImage: finalProfileImage,
+                    cardFrontImage: finalCardFrontImage,
+                    cardBackImage: finalCardBackImage,
+                    idImage: finalIdImage,
+                    experience,
+                    description,
+                    socialMedia: {
+                        facebook: facebookLink,
+                        twitter: twitterLink,
+                        instagram: instagramLink,
+                        linkedin: linkedinLink
+                    }
+                },
             })
-            setIsEditable(false);
+            setNotEditable(true);
             toast.success('Doctor updated successfully', { autoClose: 3000 });
             setTimeout(() => {
                 document.getElementById('close-btn-edit').click();
-                window.location.reload();
+                setDoctors([...DoctorsTable, { fullName, email, phone, gender, status, profileImage, cardFrontImage, cardBackImage, idImage, experience, description, facebookLink, twitterLink, instagramLink, linkedinLink }]);
             }, 3000);
         } catch (error) {
             toast.error("Failed to update doctor, error:" + error.message, { autoClose: 3000 });
@@ -75,79 +127,89 @@ export default function EditDoctorModal({ doctor, modalId }) {
                             <form action="#">
                                 <div className="doctor-name d-flex align-items-center gap-3 mb-3">
                                     <label htmlFor="doctor-name" className="form-label">Full Name</label>
-                                    <input type="text" className="form-control w-75" id="doctor-name" placeholder="Enter Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} disabled={!isEditable} />
+                                    <input type="text" className="form-control w-75" id="doctor-name" placeholder="Enter Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} disabled={notEditable} />
                                 </div>
                                 <div className="doctor-address d-flex align-items-center gap-3 mb-3">
-                                    <label htmlFor="doctor-address" className="form-label">Email</label>
-                                    <input type="email" className="form-control w-75" id="doctor-address" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={!isEditable} />
+                                    <label htmlFor="doctor-address" className="form-label">Email Address</label>
+                                    <input type="email" className="form-control w-75" id="doctor-address" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={notEditable} />
                                 </div>
                                 <div className="doctor-address d-flex align-items-center gap-3 mb-3">
-                                    <label htmlFor="doctor-address" className="form-label">Phone</label>
-                                    <input type="tel" className="form-control w-75" id="doctor-address" placeholder="Enter Phone" value={phone} onChange={(e) => setPhone(e.target.value)} disabled={!isEditable} />
+                                    <label htmlFor="doctor-address" className="form-label">Phone Number</label>
+                                    <input type="tel" className="form-control w-75" id="doctor-address" placeholder="Enter Phone" value={phone} onChange={(e) => setPhone(e.target.value)} disabled={notEditable} />
                                 </div>
-                                <div className="product-image d-flex align-items-center gap-3 mb-3">
-                                    <label htmlFor="product-image" className="form-label">Image</label>
-                                    <input type="file" className="form-control w-75" id="product-image" accept="image/*" onChange={async (e) => {
-                                        const file = e.target.files[0];
-                                        if (file) {
-                                            // setImageUrl(file); // still save the File if needed
-                                            const formData = new FormData();
-                                            formData.append("image", file);
 
-                                            try {
-                                                const res = await fetch(`https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307`, {
-                                                    method: "POST",
-                                                    body: formData,
-                                                });
-                                                const data = await res.json();
-                                                if (data.success) {
-                                                    setUploadedImageUrl(data.data.url);
-                                                    setProfileImage(data.data.url); //  set final image URL
-                                                    toast.success("Image uploaded successfully");
-                                                } else {
-                                                    toast.error("Failed to upload image.");
-                                                }
-                                            } catch (err) {
-                                                toast.error("Upload error: " + err.message);
-                                            }
-                                        }
-                                    }} disabled={!isEditable} />
-                                </div>
-                                {(uploadedImageUrl || profileImage) && (
-                                    <div>
-                                        <p>Image:</p>
+                                <div className="frofile-image d-flex align-items-center gap-3 mb-3">
+                                    <label htmlFor="frofile-image" className="form-label">Profile Image</label>
+                                    <input type="file" className="form-control w-75" id="frofile-image"
+                                        accept="image/*"
 
-                                        <img
-                                            src={profileImage}
-                                            alt="Doctor image"
-                                            style={{ width: 100, marginBottom: 10 }}
-                                        />
+                                        onChange={(e) => setProfileImage(e.target.files[0])}
+                                        disabled={notEditable}
+                                        required
+                                    />
+                                </div>
+                                <div className="cart-front d-flex align-items-center gap-3 mb-3">
+                                    <label htmlFor="cart-front" className="form-label">Card Front </label>
+                                    <input type="file" className="form-control w-75" id="cart-front"
+                                        accept="image/*"
+
+                                        onChange={(e) => setCardFrontImage(e.target.files[0])}
+                                        disabled={notEditable}
+                                        required
+                                    />
+                                </div>
+                                <div className="cart-back d-flex align-items-center gap-3 mb-3">
+                                    <label htmlFor="cart-back" className="form-label">Card Back</label>
+                                    <input type="file" className="form-control w-75" id="cart-back"
+                                        accept="image/*"
+
+                                        onChange={(e) => setCardBackImage(e.target.files[0])}
+                                        disabled={notEditable}
+                                        required
+                                    />
+                                </div>
+                                <div className="id-image d-flex align-items-center gap-3 mb-3">
+                                    <label htmlFor="id-image " className="form-label">ID Image</label>
+                                    <input type="file" className="form-control w-75" id="id-image "
+                                        accept="image/*"
+
+                                        onChange={(e) => setIdImage(e.target.files[0])}
+                                        disabled={notEditable}
+                                        required
+                                    />
+                                </div>
+                                <div className="gender-status-experience d-flex align-items-center justify-content-between my-3 me-3">
+                                    <div className="gender w-25"  >
+                                        <select className="form-select w-100 " name="gender" id="gender" value={gender} onChange={(e) => setGender(e.target.value)} cursor={'pointer'} disabled={notEditable}>
+                                            <option value="" >Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
                                     </div>
-                                )}
-                                <div className="gender-and-status d-flex align-items-center gap-5">
-                                    <div className="gender mb-2 ">
-                                        <p className='fw-bold mb-2'>Choose Gander</p>
-                                        <div className="form-check form-check-inline">
-                                            <input type="radio" name="gender" id="male" value={'male'} className="form-check-input" checked={gender === 'male'} onChange={(e) => setGender(e.target.value)} disabled={!isEditable} />
-                                            <label htmlFor="male" className="form-check-label">Male</label>
-                                        </div>
-                                        <div className="form-check form-check-inline">
-                                            <input type="radio" name="gender" id="female" value={'female'} className="form-check-input" checked={gender === 'female'} onChange={(e) => setGender(e.target.value)} disabled={!isEditable} />
-                                            <label htmlFor="female" className="">Female</label>
-                                        </div>
+                                    <div className="status w-25 " >
+                                        <select className="form-select" name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)} cursor={'pointer'} disabled={notEditable}>
+                                            <option value="">Status</option>
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
                                     </div>
-                                    <div className="status ">
-                                        <p className='fw-bold mb-2'>Choose Status</p>
-                                        <div className="form-check form-check-inline">
-                                            <input type="radio" name="status" id="active" value={'active'} className="form-check-input" checked={status === 'active'} onChange={(e) => setStatus(e.target.value)} disabled={!isEditable} />
-                                            <label htmlFor="active" className="form-check-label">Active</label>
-                                        </div>
-                                        <div className="form-check form-check-inline">
-                                            <input type="radio" name="status" id="inactive" value={'inactive'} className="form-check-input" checked={status === 'inactive'} onChange={(e) => setStatus(e.target.value)} disabled={!isEditable} />
-                                            <label htmlFor="inactive" className="">Inactive</label>
-                                        </div>
+                                    <div className="experience" >
+                                        <input type="number" className="form-control" step={1} name="experience" id="experience" placeholder="Experience" value={experience} onChange={(e) => setExperience(e.target.value)} disabled={notEditable} />
                                     </div>
                                 </div>
+                                <div className="textarea my-3 me-3">
+                                    <textarea className="form-control" id="decription" placeholder="Enter About Doctor" maxLength={1000} value={description} onChange={(e) => setDescription(e.target.value)} disabled={notEditable}></textarea>
+                                </div>
+                                <div className="social-media d-flex align-items-center  gap-3 mt-3 me-3">
+                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Facebook Link" value={facebookLink} onChange={(e) => setFacebookLink(e.target.value)} disabled={notEditable} />
+                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Instagram Link" value={instagramLink} onChange={(e) => setInstagramLink(e.target.value)} disabled={notEditable} />
+                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Twitter Link" value={twitterLink} onChange={(e) => setTwitterLink(e.target.value)} disabled={notEditable} />
+                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Linkedin Link" value={linkedinLink} onChange={(e) => setLinkedinLink(e.target.value)} disabled={notEditable} />
+                                </div>
+
+
+
+
 
                             </form>
                         </div>
@@ -155,20 +217,20 @@ export default function EditDoctorModal({ doctor, modalId }) {
 
                         <div className="modal-footer">
 
-                            {isEditable ? (
+                            {!notEditable ? (
                                 <div className="d-flex gap-3 w-100 justify-content-end">
                                     <button type="button" className="btn text-white bg-danger w-25 " onClick={() => {
 
                                         resetFields();
-                                        setIsEditable(false);
+                                        setNotEditable(true);
                                     }
                                     } >Cancel</button>
-                                    <button type="button" className="custom-button w-25 d-flex align-items-center justify-content-center" onClick={handleSave} disabled={!isEditable || loading}>{loading ? <BeatLoader size={10} color="#fff" /> : "Edit"} </button>
+                                    <button type="button" className="custom-button w-25 d-flex align-items-center justify-content-center" onClick={handleSave} disabled={notEditable || loading}>{loading ? <BeatLoader size={10} color="#fff" /> : "Edit"} </button>
                                 </div>
                             ) : (
                                 <>
                                     <button type="button" className="custom-button w-25 text-white bg-danger" id="close-btn-edit" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                                    <button type="button" className="custom-button w-25" onClick={() => setIsEditable(true)}>Edit Doctor</button>
+                                    <button type="button" className="custom-button w-25" onClick={() => setNotEditable(false)}>Edit Doctor</button>
                                 </>
 
                             )
