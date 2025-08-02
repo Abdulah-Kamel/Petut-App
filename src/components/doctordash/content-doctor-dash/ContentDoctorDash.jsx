@@ -4,7 +4,7 @@ import './contentdash.css'
 export default function ContentDoctorDash() {
     return (
         <Fragment>
-            <main className='flex-1 px-5 ' style={{marginTop:'120px'}}>
+            <main className='container mx-auto' style={{marginTop:'120px'}}>
                 <Outlet />
             </main>
         </Fragment>
