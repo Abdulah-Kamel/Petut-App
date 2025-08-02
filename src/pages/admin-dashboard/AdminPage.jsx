@@ -14,19 +14,9 @@ export default function AdminDashboard() {
   return (
     <Fragment>
       <HeaderAdmin toggleSidebar={toggleSidebar} />
-      <div className='d-flex '>
+      <div className='d-flex'>
         <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />
-
-        <div
-          className="d-flex flex-1"
-          // style={{
-          //   marginLeft: sidebarOpen ? '250px' : '100px',
-          //   transition: 'margin-left 0.3s ease'
-          // }}
-          >
-
-          <ContentAdminDash />
-        </div>
+        <ContentAdminDash />
       </div>
     </Fragment>
   )

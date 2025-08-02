@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 export default function ContentDoctorDash() {
     return (
         <Fragment>
-            <main className='flex-1 px-5 ' style={{marginTop:'120px',marginLeft:"80px"}}>
+            <main className='container mx-auto' style={{marginTop:'120px'}}>
                 <Outlet />
             </main>
         </Fragment>

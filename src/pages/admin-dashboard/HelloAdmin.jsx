@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
-import image from '../../assets/hello-admin.jpg'
+import image from '../../assets/petut.png'
 export default function HelloAdmin() {
   return (
     <Fragment>
-      <img src={image} alt="Hello Admin" style={{backgroundSize: 'cover', width: '100%', height: 'calc(100vh - 100px)'}} />
+      <img src={image} alt="Hello Admin" style={{backgroundSize: 'cover', width: '580px', height: '580px',textAlign: 'center' ,marginLeft: 'auto', marginRight: 'auto'}} />
     </Fragment>
   )
 }

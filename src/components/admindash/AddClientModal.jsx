@@ -111,16 +111,14 @@ export default function AddClientModal({clients, fetchClients, setClients}) {
                                         <img src={imageUrl} alt="preview" style={{ width: 100, marginTop: 10 }} />
                                     </div>
                                 )}
-                                <div className="gender mb-2 ">
-                                    <p className='fw-bold mb-2'>Choose Gander</p>
-                                    <div className="form-check form-check-inline">
-                                        <input type="radio" name="gender" id="male" value={'male'} className="form-check-input" checked={gender === 'male'} onChange={(e) => setGender(e.target.value)} />
-                                        <label htmlFor="male" className="form-check-label">Male</label>
-                                    </div>
-                                    <div className="form-check form-check-inline">
-                                        <input type="radio" name="gender" id="female" value={'female'} className="form-check-input" checked={gender === 'female'} onChange={(e) => setGender(e.target.value)} />
-                                        <label htmlFor="female" className="">Female</label>
-                                    </div>
+
+                                <div className="gender mb-2 d-flex align-items-center gap-3">
+                                    <label htmlFor="gender" className="form-label">Gender</label>
+                                    <select className="form-select w-25" name="gender" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                                        <option value="">Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
                                 </div>
                             </form>
                         </div>
