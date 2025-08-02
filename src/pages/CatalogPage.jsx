@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   setSelectedCategories,
@@ -17,6 +17,22 @@ import SearchBar from "../components/search/SearchBar.jsx";
 import LoadingAnimation from "../components/common/LoadingAnimation.jsx";
 import { Pagination } from 'flowbite-react';
 
+// Custom hook to detect mobile/tablet view
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024); // 1024px is the lg breakpoint in Tailwind
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isMobile;
+};
+
 const CatalogPage = () => {
     const dispatch = useDispatch();
   const location = useLocation();
@@ -28,7 +44,8 @@ const CatalogPage = () => {
   const [categories, setCategories] = useState([])
   const [inputValue, setInputValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 20;
+  const isMobile = useIsMobile();
+  const productsPerPage = isMobile ? 15 : 20;
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
