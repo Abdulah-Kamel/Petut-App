@@ -59,8 +59,12 @@ const Navbar = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link to="/" className="flex-shrink-0">
+            <Link to="/" className="flex items-center">
               <img src={logo} width={'100px'} height={'100px'} alt="logo" className="" />
+              <p className="text-xl font-bold text-neutral dark:text-white">
+                <span className="text-primary_app me-2">Petut</span>
+                Pet Care
+              </p>
             </Link>
 
             {/* Desktop Navigation */}
