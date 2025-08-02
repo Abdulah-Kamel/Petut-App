@@ -9,7 +9,7 @@ const FormInput = ({ id, name, label, value, onChange, error, type = 'text', pla
       name={name}
       value={value}
       onChange={onChange}
-      className={`w-full p-3 border ${error ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white dark:placeholder:text-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary`}
+      className={`w-full p-3 border ${error ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white dark:placeholder:text-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app`}
       placeholder={placeholder}
     />
     {error && <p className="mt-1 text-sm text-red-500">{error}</p>}

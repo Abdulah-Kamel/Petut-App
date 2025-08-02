@@ -11,13 +11,16 @@ import {
   setRating,
   resetFilters
 } from '../store/slices/filterSlice'
+import { fetchProducts } from '../store/slices/catalogSlice';
+import LoadingAnimation from '../components/common/LoadingAnimation';
 
 const FilterPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
   const filters = useSelector(state => state.filter)
-  
+  const { products, loading: productsLoading } = useSelector(state => state.catalog);
+
   // Local state to track changes before applying
   const [localFilters, setLocalFilters] = useState({
     categories: [...filters.selectedCategories],
@@ -49,6 +52,12 @@ const FilterPage = () => {
       }))
     }
   }, [location.search])
+
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
 
   const handleCategoryToggle = (category) => {
     setLocalFilters(prev => {
@@ -159,9 +168,36 @@ const FilterPage = () => {
     navigate(`/catalog?${params.toString()}`);
   };
 
+  if (productsLoading) {
+    return (
+        <div className="max-w-7xl mx-auto px-4 pb-20 mt-12">
+            <div className="sticky top-0 bg-white z-10 py-4 border-b border-gray-200">
+                <div className="flex justify-between items-center">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="text-neutral"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <h1 className="text-xl font-bold">Filters</h1>
+                    <button
+                        onClick={handleReset}
+                        className="text-primary_app text-sm font-medium"
+                    >
+                        Reset All
+                    </button>
+                </div>
+            </div>
+            <LoadingAnimation />
+        </div>
+    );
+  }
+
   // Mock data for filters
-  const availableCategories = ['Food', 'Vitamins', 'Toys', 'Grooming', 'Accessories']
-  const availableBrands = ['Royal Canin', 'Brit', 'Tetra', 'Vitamax', 'Trixie', 'Purina']
+  const availableCategories = [...new Set(products.map(p => p.category))];
+  const availableBrands = [...new Set(products.map(p => p.brand))];
   const availableAgeRanges = ['Puppy', 'Adult', 'Senior']
   const availableBreedSizes = ['Small', 'Medium', 'Large']
   const availableSortOptions = [
@@ -187,7 +223,7 @@ const FilterPage = () => {
           <h1 className="text-xl font-bold">Filters</h1>
           <button 
             onClick={handleReset}
-            className="text-primary text-sm font-medium"
+            className="text-primary_app text-sm font-medium"
           >
             Reset All
           </button>
@@ -207,7 +243,7 @@ const FilterPage = () => {
                   name="sortOption"
                   checked={localFilters.sortOption === option.value}
                   onChange={() => handleSortOptionChange(option.value)}
-                  className="w-5 h-5 text-primary focus:ring-primary"
+                  className="w-5 h-5 text-primary_app focus:ring-primary_app"
                 />
                 <label htmlFor={`sort-${option.value}`} className="ml-2 text-gray-700">
                   {option.label}
@@ -225,7 +261,7 @@ const FilterPage = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryToggle(category)}
-                className={`px-4 py-2 rounded-full ${localFilters.categories.includes(category) ? 'bg-primary text-white' : 'bg-white text-neutral border border-gray-200'}`}
+                className={`px-4 py-2 rounded-full ${localFilters.categories.includes(category) ? 'bg-primary_app text-white' : 'bg-white text-neutral border border-gray-200'}`}
               >
                 {category}
               </button>
@@ -244,7 +280,7 @@ const FilterPage = () => {
                   id={`brand-${brand}`}
                   checked={localFilters.brands.includes(brand)}
                   onChange={() => handleBrandToggle(brand)}
-                  className="w-5 h-5 text-primary focus:ring-primary rounded"
+                  className="w-5 h-5 text-primary_app focus:ring-primary_app rounded"
                 />
                 <label htmlFor={`brand-${brand}`} className="ml-2 text-gray-700">
                   {brand}
@@ -283,7 +319,7 @@ const FilterPage = () => {
                 onChange={(e) => handlePriceRangeChange(parseInt(e.target.value), localFilters.priceRange.max)}
                 min="0"
                 max={localFilters.priceRange.max}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
               />
             </div>
             <div className="w-[48%]">
@@ -295,7 +331,7 @@ const FilterPage = () => {
                 onChange={(e) => handlePriceRangeChange(localFilters.priceRange.min, parseInt(e.target.value))}
                 min={localFilters.priceRange.min}
                 max="1000"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app"
               />
             </div>
           </div>
@@ -309,7 +345,7 @@ const FilterPage = () => {
               <button
                 key={age}
                 onClick={() => handleAgeRangeToggle(age)}
-                className={`px-4 py-2 rounded-full ${localFilters.ageRanges.includes(age) ? 'bg-primary text-white' : 'bg-white text-neutral border border-gray-200'}`}
+                className={`px-4 py-2 rounded-full ${localFilters.ageRanges.includes(age) ? 'bg-primary_app text-white' : 'bg-white text-neutral border border-gray-200'}`}
               >
                 {age}
               </button>
@@ -325,7 +361,7 @@ const FilterPage = () => {
               <button
                 key={size}
                 onClick={() => handleBreedSizeToggle(size)}
-                className={`px-4 py-2 rounded-full ${localFilters.breedSizes.includes(size) ? 'bg-primary text-white' : 'bg-white text-neutral border border-gray-200'}`}
+                className={`px-4 py-2 rounded-full ${localFilters.breedSizes.includes(size) ? 'bg-primary_app text-white' : 'bg-white text-neutral border border-gray-200'}`}
               >
                 {size}
               </button>
@@ -345,7 +381,7 @@ const FilterPage = () => {
                   name="rating"
                   checked={localFilters.rating === rating}
                   onChange={() => handleRatingChange(rating)}
-                  className="w-5 h-5 text-primary focus:ring-primary"
+                  className="w-5 h-5 text-primary_app focus:ring-primary_app"
                 />
                 <label htmlFor={`rating-${rating}`} className="ml-2 flex items-center">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -371,7 +407,7 @@ const FilterPage = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
         <button 
           onClick={handleApply}
-          className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+          className="w-full py-3 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors"
         >
           Apply Filters
         </button>

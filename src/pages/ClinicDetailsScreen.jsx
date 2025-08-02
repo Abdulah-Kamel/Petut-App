@@ -98,11 +98,11 @@ const ClinicDetailsScreen = () => {
         <div className="flex items-center gap-3 mb-4 mt-6">
           <button
             onClick={() => navigate(-1)}
-            className="text-2xl text-secondary hover:text-primary dark:text-gray-300 dark:hover:text-primary"
+            className="text-2xl text-secondary hover:text-primary_app dark:text-gray-300 dark:hover:text-primary_app"
           >
             <span className="material-icons">arrow_back</span>
           </button>
-          <h1 className="text-2xl font-bold text-primary dark:text-white flex-1">
+          <h1 className="text-2xl font-bold text-primary_app dark:text-white flex-1">
             {clinic.clinicName || clinic.doctorName}
           </h1>
           <DarkModeToggle />
@@ -118,13 +118,13 @@ const ClinicDetailsScreen = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="material-icons text-6xl text-primary flex items-center justify-center w-full h-full">
+              <span className="material-icons text-6xl text-primary_app flex items-center justify-center w-full h-full">
                 person
               </span>
             )}
           </div>
           <div className="ml-6 flex-1">
-            <div className="font-bold text-lg md:text-xl text-primary dark:text-white mb-1">
+            <div className="font-bold text-lg md:text-xl text-primary_app dark:text-white mb-1">
               {clinic.clinicName || clinic.doctorName}
             </div>
             <div className="text-black dark:text-gray-300 text-sm mb-1">
@@ -132,7 +132,7 @@ const ClinicDetailsScreen = () => {
             </div>
             <div className="flex items-center gap-2 text-black dark:text-gray-300 text-sm mb-1">
               <span>{rating.toFixed(1)}</span>
-              <span className="material-icons text-primary text-base">
+              <span className="material-icons text-primary_app text-base">
                 star
               </span>
               <span>|</span>
@@ -147,24 +147,24 @@ const ClinicDetailsScreen = () => {
         {/* Info Rows */}
         <div className="space-y-2 text-sm text-neutral dark:text-gray-300 mb-6">
           <div className="flex items-center gap-2">
-            <span className="material-icons text-primary">location_on</span>
+            <span className="material-icons text-primary_app">location_on</span>
             <span>
               {clinic.clinicAddress || clinic.location || "Any location"}
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="material-icons text-primary">attach_money</span>
+            <span className="material-icons text-primary_app">attach_money</span>
             <span>{clinic.price ? `${clinic.price} EGP` : "0.0 EGP"}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="material-icons text-primary">schedule</span>
+            <span className="material-icons text-primary_app">schedule</span>
             <span>{clinic.isOpen ? "Open Now" : "Closed"}</span>
           </div>
         </div>
 
         {/* Date & Time Picker card */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-100 dark:border-gray-700 mb-6">
-          <div className="font-semibold text-primary dark:text-white mb-2 text-sm">
+          <div className="font-semibold text-primary_app dark:text-white mb-2 text-sm">
             Select Date & Time
           </div>
           <DatePicker
@@ -189,13 +189,13 @@ const ClinicDetailsScreen = () => {
 
         {/* Patient Reviews card */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-100 dark:border-gray-700 mb-6">
-          <div className="font-semibold text-primary dark:text-white mb-2 text-sm">
+          <div className="font-semibold text-primary_app dark:text-white mb-2 text-sm">
             Patient Reviews
           </div>
           <div className="bg-white dark:bg-gray-700 rounded-xl p-4 shadow-sm">
             {reviews.map((r, i) => (
               <div key={i} className="mb-4 last:mb-0">
-                <div className="font-bold text-primary dark:text-white">
+                <div className="font-bold text-primary_app dark:text-white">
                   {r.name}
                 </div>
                 <div className="text-neutral dark:text-gray-300 text-sm">
@@ -214,10 +214,10 @@ const ClinicDetailsScreen = () => {
               window.open(`tel:${clinic.phone || clinic.phoneNumber || ""}`);
             }}
           >
-            <span className="material-icons text-primary">call</span> Call
+            <span className="material-icons text-primary_app">call</span> Call
           </button>
           <button
-            className="flex-1 btn-primary flex items-center justify-center gap-2 shadow-md disabled:opacity-60"
+            className="flex-1 btn-primary-app flex items-center justify-center gap-2 shadow-md disabled:opacity-60"
             disabled={!selectedDateTime || loading}
             onClick={handleBook}
           >

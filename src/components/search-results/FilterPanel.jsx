@@ -10,15 +10,15 @@ const FilterPanel = ({ showFilters }) => {
           <h3 className="font-semibold mb-3">Categories</h3>
           <div className="space-y-2">
             <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
+              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary_app" />
               <span className="ml-2">Food</span>
             </label>
             <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
+              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary_app" />
               <span className="ml-2">Vitamins</span>
             </label>
             <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
+              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary_app" />
               <span className="ml-2">Toys</span>
             </label>
           </div>
@@ -27,19 +27,19 @@ const FilterPanel = ({ showFilters }) => {
           <h3 className="font-semibold mb-3">Brands</h3>
           <div className="space-y-2">
             <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
+              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary_app" />
               <span className="ml-2">Brit</span>
             </label>
             <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
+              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary_app" />
               <span className="ml-2">Vitamax</span>
             </label>
             <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
+              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary_app" />
               <span className="ml-2">Trixie</span>
             </label>
             <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
+              <input type="checkbox" className="form-checkbox h-4 w-4 text-primary_app" />
               <span className="ml-2">Tetra</span>
             </label>
           </div>
@@ -64,7 +64,7 @@ const FilterPanel = ({ showFilters }) => {
         <button className="px-4 py-2 bg-gray-200 rounded-full mr-2 hover:bg-gray-300 transition-colors">
           Reset
         </button>
-        <button className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary-dark transition-colors">
+        <button className="px-4 py-2 bg-primary_app text-white rounded-full hover:bg-primary_app-dark transition-colors">
           Apply Filters
         </button>
       </div>

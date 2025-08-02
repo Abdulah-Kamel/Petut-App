@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import { Outlet } from 'react-router-dom'
-import './contentdash.css'
 export default function ContentDoctorDash() {
     return (
         <Fragment>

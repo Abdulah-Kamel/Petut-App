@@ -117,7 +117,7 @@ const BookingConfirmationPage = () => {
 
         {/* Appointment Time */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex items-center mb-6">
-          <span className="material-icons text-primary mr-3">event</span>
+          <span className="material-icons text-primary_app mr-3">event</span>
           <div>
             <div className="text-gray-500 dark:text-gray-400">
               Appointment time
@@ -141,7 +141,7 @@ const BookingConfirmationPage = () => {
           <div className="flex justify-between items-center">
             <span className="font-bold dark:text-white">Payment method</span>
             <button
-              className="text-primary font-semibold"
+              className="text-primary_app font-semibold"
               onClick={() => setShowPaymentModal(true)}
             >
               CHANGE
@@ -159,7 +159,7 @@ const BookingConfirmationPage = () => {
           {clinic.price} EGP
         </div>
         <button
-          className="btn-primary w-1/2"
+          className="btn-primary-app w-1/2"
           onClick={handleConfirmBooking}
           disabled={loading}
         >

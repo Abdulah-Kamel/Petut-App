@@ -7,6 +7,7 @@
 @layer base {
   html {
     font-family: 'Exo', 'Exo 2', system-ui, sans-serif;
+    text-decoration: none;
   }
   body {
     @apply bg-secondary-light dark:bg-secondary-dark text-neutral;
@@ -14,8 +15,8 @@
 }
 
 @layer components {
-  .btn-primary {
-    @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-primary/90 transition-colors;
+  .btn-primary-app {
+    @apply bg-primary_app text-white font-semibold py-2 px-4 rounded-lg hover:bg-primary_app/90 transition-colors;
   }
   
   .btn-secondary {
@@ -27,11 +28,11 @@
   }
   
   .input-field {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary;
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary_app;
   }
   
   .nav-link {
-    @apply text-neutral dark:text-white hover:text-primary dark:hover:text-primary transition-colors;
+    @apply text-neutral dark:text-white hover:text-primary_app dark:hover:text-primary_app transition-colors;
   }
   
   .badge {
@@ -39,7 +40,7 @@
   }
   
   .badge-primary {
-    @apply badge bg-primary text-white;
+    @apply badge bg-primary_app text-white;
   }
   
   .badge-secondary {
@@ -47,100 +48,3 @@
   }
 }
 
-
-
-a {
-  text-decoration: none;
-}
-
-ul {
-  list-style: none;
-}
-
-.x {
-  border: 1px solid red;
-
-}
-
-.flex-1 {
-  flex: 1;
-}
-
-.gap-140 {
-  gap: 140px;
-}
-
-.background {
-  background-color: #F7F3EB;
-}
-
-.custom-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  background-color: #D9A741;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 4px;
-  border: 1px solid #D9A741;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-
-.custom-button:hover {
-  background-color: transparent;
-  color: #D9A741;
-  border: 1px solid #D9A741;
-}
-
-/* .sidebar {
-  left: -250px;
-  transition: 0.3s ease-in-out;
-}
-.sidebar.open {
-  left: 0;
-} */
-
-.sidebar.collapsed {
-  width: 250px;
-  padding: 20px 15px;
-  left: -300px;
-  transition: 0.3s ease-in-out;
-
-}
-
-.sidebar.expanded {
-  width: 250px;
-  padding: 20px 15px;
-  left: 0;
-  transition: 0.3s ease-in-out;
-
-}
-
-/* .sidebar {
-  transition: 0.3s ;
-} */
-
-/* .sidebar svg {
-  transition: font-size 0.3s ease;
-  font-size: 16px;
-}
-
-.sidebar.expanded svg {
-  font-size: 24px;
-} */
-
-
-::placeholder {
-  opacity: 0.4 !important;
-  color: #000 !important;
-}
-
-input {
-  font-size: medium !important;
-}
-
-table tr:last-child td {
-  border-bottom: none !important;
-}

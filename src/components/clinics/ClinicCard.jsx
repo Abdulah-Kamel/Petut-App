@@ -15,20 +15,20 @@ const ClinicCard = ({ clinic, onClick }) => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <span className="material-icons text-primary text-4xl">
+          <span className="material-icons text-primary_app text-4xl">
             local_hospital
           </span>
         )}
       </div>
       <div className="flex-1">
-        <div className="font-bold text-xl text-primary mb-1">
+        <div className="font-bold text-xl text-primary_app mb-1">
           {clinic.clinicName || "Unknown Name"}
         </div>
         <div className="text-base text-secondary mb-1">
           {clinic.clinicAddress || "Unknown Address"}
         </div>
         <div className="flex items-center gap-2 mt-1">
-          <span className="material-icons text-primary text-lg">verified</span>
+          <span className="material-icons text-primary_app text-lg">verified</span>
           <span className="text-base text-neutral">
             Dr. {clinic.doctorName || "---"}
           </span>
@@ -38,7 +38,7 @@ const ClinicCard = ({ clinic, onClick }) => {
             <span
               key={i}
               className={`material-icons ${
-                i < rating ? "text-primary" : "text-secondary-light"
+                i < rating ? "text-primary_app" : "text-secondary-light"
               } text-xl`}
             >
               star

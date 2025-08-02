@@ -45,7 +45,7 @@ const FavoritesTab = () => {
           </p>
           <Link
             to="/catalog"
-            className="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+            className="px-6 py-3 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors"
           >
             Browse Products
           </Link>

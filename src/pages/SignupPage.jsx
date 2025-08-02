@@ -171,8 +171,8 @@ const SignupPage = () => {
       const userDocSnap = await getDoc(userDocRef);
 
       if (!userDocSnap.exists()) {
-        // Redirect to completion form
-        navigate(`/complete-profile?uid=${user.uid}&role=${formData.role}`);
+        // Redirect to role selection form
+        navigate(`/role-selection?uid=${user.uid}`);
       } else {
         navigate("/");
       }
@@ -193,7 +193,7 @@ const SignupPage = () => {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full space-y-8 bg-white dark:bg-[#313340] p-6 rounded-xl shadow-lg">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-primary">PET.CARE</h1>
+          <h1 className="text-3xl font-bold text-primary_app">PET.CARE</h1>
           <h2 className="mt-6 text-2xl font-bold dark:text-white">
             Create your account
           </h2>
@@ -201,7 +201,7 @@ const SignupPage = () => {
             Already have an account?{" "}
             <Link
               to="/login"
-              className="font-medium text-primary hover:underline"
+              className="font-medium text-primary_app hover:underline"
             >
               Sign in
             </Link>
@@ -216,7 +216,7 @@ const SignupPage = () => {
           error={error}
         />
         {formData.role === "customer" && (
-          <div className="flex items-center justify-center mt-6 text-primary dark:text-white hover:underline">
+          <div className="flex items-center justify-center mt-6 text-primary_app dark:text-white hover:underline">
             <button
               onClick={() => {
                 setFormData({ ...formData, role: "doctor" });

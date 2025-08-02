@@ -37,7 +37,7 @@ const OrdersTab = ({ orders, loading, error }) => {
           </p>
           <button
             onClick={() => navigate("/catalog")}
-            className="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+            className="px-6 py-3 bg-primary_app text-white font-semibold rounded-lg hover:bg-primary_app/90 transition-colors"
           >
             Start Shopping
           </button>
@@ -112,7 +112,7 @@ const OrdersTab = ({ orders, loading, error }) => {
                 >
                   View Details
                 </Link>
-                {/* <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                {/* <button className="px-4 py-2 bg-primary_app text-white rounded-lg hover:bg-primary_app/90 transition-colors">
                   Track Order
                 </button> */}
               </div>

@@ -58,9 +58,20 @@ export async function deleteUserCart(uid) {
 }
 
 export async function placeOrder(uid, orderData) {
-  const ordersRef = collection(db, "users", uid, "orders");
-  const docRef = await addDoc(ordersRef, orderData);
-  return docRef.id;
+  const { orderId } = orderData;
+  if (!orderId) {
+    throw new Error("Order ID is missing");
+  }
+
+  // Reference to the main order document
+  const mainOrderRef = doc(db, "orders", orderId);
+  await setDoc(mainOrderRef, orderData);
+
+  // Reference to the user's specific order document
+  const userOrderRef = doc(db, "users", uid, "orders", orderId);
+  await setDoc(userOrderRef, orderData);
+
+  return orderId;
 }
 
 export async function getUserOrders(uid) {
@@ -70,8 +81,11 @@ export async function getUserOrders(uid) {
 }
 
 export async function updateOrderStatus(uid, orderId, status) {
-  const orderRef = doc(db, "users", uid, "orders", orderId);
-  await updateDoc(orderRef, { status });
+  const userOrderRef = doc(db, "users", uid, "orders", orderId);
+  const mainOrderRef = doc(db, "orders", orderId);
+
+  await updateDoc(userOrderRef, { status });
+  await updateDoc(mainOrderRef, { status });
 }
 
 export async function getUserProfile(uid) {

@@ -37,7 +37,7 @@ const SearchBar = ({ value, onChange, onSearch, onClear }) => {
           value={value}
           onChange={onChange}
           placeholder="Search products"
-          className="shadow-lg w-full pl-12 pr-10 py-3 border border-gray-300 dark:border-gray-600 dark:bg-[#313340] dark:text-white placeholder:text-white rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          className="shadow-lg w-full pl-12 pr-10 py-3 border border-gray-300 dark:border-gray-600 dark:bg-[#313340] dark:text-white placeholder:text-white rounded-full focus:outline-none focus:ring-2 focus:ring-primary_app focus:border-transparent"
         />
         {value && (
           <button
@@ -61,7 +61,7 @@ const SearchBar = ({ value, onChange, onSearch, onClear }) => {
             </svg>
           </button>
         )}
-        <button type="submit" className="absolute right-3 text-primary">
+        <button type="submit" className="absolute right-3 text-primary dark:text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
