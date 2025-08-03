@@ -68,6 +68,7 @@ export default function ClinicsTable({ clinics, fetchClinics, onDelete, loading 
                                 <th className="px-4 py-3">Clinic Name</th>
                                 <th className="px-4 py-3">Address</th>
                                 <th className="px-4 py-3">Phone</th>
+                                <th className="px-4 py-3">Price</th>
                                 <th className="px-4 py-3">Status</th>
                                 <th className="px-4 py-3">Action</th>
                             </tr>
@@ -78,6 +79,7 @@ export default function ClinicsTable({ clinics, fetchClinics, onDelete, loading 
                                     <td className="px-4 py-3">{clinic.name || clinic.clinicName}</td>
                                     <td className="px-4 py-3">{clinic?.address && typeof clinic.address === 'object' ? `${clinic.address.governorate} - ${clinic.address.city}` : clinic.clinicAddress || ''}</td>
                                     <td className="px-4 py-3">{clinic.phone}</td>
+                                    <td className="px-4 py-3">{clinic.price}</td>
                                     <td className="px-4 py-3"><span style={{ color: 'white', backgroundColor: clinic.status === 'active' ? '#28a745  ' : '#6c757d   ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{clinic.status}</span></td>
                                     <td className="px-4 py-3 d-flex align-items-center gap-2">
 
