@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // import specializations from '../spcializations/spcializations.json';
 import { db, auth } from '../firebase.js';
 import logo from '../assets/petut.png';
-export default function AddClinicModal({ clinics, setClinics, fetchClinics, loading, setLoading }) {
+export default function AddClinicModal({  fetchClinics, loading, setLoading }) {
   const [day, setDay] = useState('');
   const [openTime, setOpenTime] = useState('');
   const [closeTime, setCloseTime] = useState('');
@@ -25,6 +25,8 @@ export default function AddClinicModal({ clinics, setClinics, fetchClinics, load
 
 
   const [userData, setUserData] = useState(null);
+  const [price, setPrice] = useState(null);
+
   const isAdmin = userData?.role === 'admin';
 
   useEffect(() => {
@@ -93,7 +95,7 @@ export default function AddClinicModal({ clinics, setClinics, fetchClinics, load
   // Add clinic data to Firebase
   const handleAddClinic = async () => {
     // Validate form fields
-    if (!name.trim() || !phone.trim() || !email.trim() || !address.governorate || !address.city || workingHours.length === 0) {
+    if (!name.trim() || !phone.trim() || !email.trim() || !address.governorate || !address.city || workingHours.length === 0 || !price || !status) {
       toast.error('Please fill in all the required fields', {
         position: "top-right",
         autoClose: 5000,
@@ -116,23 +118,13 @@ export default function AddClinicModal({ clinics, setClinics, fetchClinics, load
         address,
         workingHours,
         status,
+        price,
         doctorId: isAdmin ? selectedDoctor?.id : auth.currentUser.uid,
         doctorName: isAdmin ? selectedDoctor?.fullName : auth.currentUser.displayName,
         createdAt: Timestamp.now(),
       };
       const docRef = await addDoc(collection(db, 'clinics'), clinicData);
       await setDoc(docRef, { ...clinicData, clinicId: docRef.id });
-      // toast.success('Clinic added successfully', {
-      //   position: "top-right",
-      //   autoClose: 3000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      //   transition: Slide,
-      // });
       await fetchClinics();
       toast.success('Clinic added successfully', { autoClose: 3000 });
       resetFields();
@@ -143,7 +135,7 @@ export default function AddClinicModal({ clinics, setClinics, fetchClinics, load
       }, 3000);
     } catch (error) {
       toast.error("Failed to add clinic, error:" + error.message, { autoClose: 3000 });
-    }finally{
+    } finally {
       setLoading(false);
     }
   }
@@ -173,14 +165,11 @@ export default function AddClinicModal({ clinics, setClinics, fetchClinics, load
                   <label className="form-label">Email</label>
                   <input type="email" className="form-control w-75" placeholder='Enter Clinic Email' value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
-                {/* <div className="spcialization d-flex align-items-center gap-3 mb-3">
-                  <label className="form-label">Specialization</label>
-                  <select className="form-select w-50" onChange={(e) => setSpecialization(e.target.value)}>
-                    {specializations.map((spec, index) => (
-                      <option value={spec.name} key={index}>{spec.name}</option>
-                    ))}
-                  </select>
-                </div> */}
+
+                <div className="clinic-price d-flex align-items-center gap-3 mb-3">
+                  <label className="form-label">Cost</label>
+                  <input type="number" className="form-control w-75" placeholder='Enter Cost' value={price} onChange={(e) => setPrice(e.target.value)} />
+                </div>
 
                 {isAdmin && (
 
@@ -208,9 +197,15 @@ export default function AddClinicModal({ clinics, setClinics, fetchClinics, load
 
                 <Address onAddressChange={setAddress} />
 
+                <div className="status d-flex align-items-center gap-3">
+                  <p className='mb-0'>Choose Status</p>
+                  <select name="status" id="status" className="form-select w-50" value={status} onChange={(e) => setStatus(e.target.value)}>
+                    <option value="">Choose Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
                 <hr />
-
-                {/* Working Hours */}
                 <div className="appointment mb-3">
                   <p className='fw-bold mb-2'>Working Hours</p>
                   <div className="d-flex align-items-center gap-3 flex-wrap">
@@ -246,20 +241,9 @@ export default function AddClinicModal({ clinics, setClinics, fetchClinics, load
                 </div>
 
                 {/* Status */}
-                <div className="status">
-                  <p className='fw-bold mb-2'>Choose Status</p>
-                  <div className="form-check form-check-inline">
-                    <input type="radio" name="status" id="active" className="form-check-input" checked={status === 'active'} onChange={() => setStatus('active')} />
-                    <label htmlFor="active" className="form-check-label">Active</label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input type="radio" name="status" id="inactive" className="form-check-input" checked={status === 'inactive'} onChange={() => setStatus('inactive')} />
-                    <label htmlFor="inactive" className="form-check-label">Inactive</label>
-                  </div>
-                </div>
                 <div className="modal-footer d-flex justify-content-end gap-2">
                   <button type="button" className="btn btn-danger " id='close-btn-modal' data-bs-dismiss="modal" style={{ width: '100px' }}>Close</button>
-                  <button type="button" className="custom-button" style={{ width: '100px' }} onClick={handleAddClinic} disabled={loading}> {loading ?<BeatLoader size={10} color='#fff' /> : 'Add Clinic'}</button>
+                  <button type="button" className="custom-button" style={{ width: '100px' }} onClick={handleAddClinic} disabled={loading}> {loading ? <BeatLoader size={10} color='#fff' /> : 'Add Clinic'}</button>
                 </div>
               </form>
             </div>

@@ -27,12 +27,13 @@ export default function Address({ onAddressChange }) {
     }, [governorate, city, onAddressChange]);
     return (
         <Fragment>
-            <div className="d-flex align-items-center gap-3 mb-3">
+            <div className="d-flex align-items-center gap-3 mb-3" >
                 <label className="form-label mb-0 ">Governorate</label>
                 <select
                     className="form-select w-50"
                     value={governorate}
                     onChange={(e) => setGovernorate(e.target.value)}
+                    // {...notEditable ? 'disabled' : ''}
                 >
                     <option value="">Select Governorate</option>
                     {governorates.map((gov) => (

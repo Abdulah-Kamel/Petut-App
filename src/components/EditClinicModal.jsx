@@ -3,29 +3,47 @@ import Adress from './Address';
 import { toast } from 'react-toastify';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase.js';
-// import specializations from '../spcializations/spcializations.json';
 import logo from '../assets/petut.png';
 import { BeatLoader } from 'react-spinners';
-
-
+import { MdDelete } from 'react-icons/md';
 
 
 
 export default function EditClinicModal({ clinic, modalId }) {
-  const { name: defaultName, address: defaultAddress, phone: defaultPhone, email: defaultEmail, status: defaultStatus } = clinic;
-
-
+  const { name: defaultName, address: defaultAddress, phone: defaultPhone, email: defaultEmail, status: defaultStatus, price: defaultPrice, workingHours: defaultWorkingHours } = clinic;
+  // const { day: defaultDay, openTime: defaultOpenTime, closeTime: defaultCloseTime } = defaultWorkingHours[0];
   const [name, setName] = useState(defaultName);
-  // const [specialization, setSpecialization] = useState(defaultSpec);
   const [email, setEmail] = useState(defaultEmail);
   const [phone, setPhone] = useState(defaultPhone);
+  const [price, setPrice] = useState(defaultPrice);
   const [status, setStatus] = useState(defaultStatus);
   const [address, setAddress] = useState(defaultAddress || { governorate: '', city: '' });
 
-  const [noteditable, setNotEditable] = useState(true);
+  const [notEditable, setnotEditable] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const [day, setDay] = useState('');
+  const [openTime, setOpenTime] = useState('');
+  const [closeTime, setCloseTime] = useState('');
+  const [workingHours, setWorkingHours] = useState(defaultWorkingHours || []);
 
+
+
+
+  const handleAddDay = () => {
+    if (day && openTime && closeTime) {
+      const exists = workingHours.some(item => item.day === day);
+      if (!exists) {
+        setWorkingHours([...workingHours, { day, openTime, closeTime }]);
+        setDay('');
+        setOpenTime('');
+        setCloseTime('');
+      }
+    }
+  };
+  const handleDeleteDay = (dayDelated) => {
+    setWorkingHours(workingHours.filter(item => item.day !== dayDelated));
+  };
 
 
 
@@ -36,11 +54,12 @@ export default function EditClinicModal({ clinic, modalId }) {
       const clinicRef = doc(db, 'clinics', modalId);
       await updateDoc(clinicRef, {
         name,
-        address,
         phone,
         email,
+        price,
+        address,
         status,
-
+        workingHours
       })
       toast.success('Clinic updated successfully', { autoClose: 3000 });
       setTimeout(() => {
@@ -50,7 +69,7 @@ export default function EditClinicModal({ clinic, modalId }) {
 
     } catch (error) {
       toast.error("Failed to update clinic, error:" + error.message, { autoClose: 3000 });
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -60,6 +79,9 @@ export default function EditClinicModal({ clinic, modalId }) {
     setEmail(defaultEmail);
     setPhone(defaultPhone);
     setStatus(defaultStatus);
+    setPrice(defaultPrice);
+    setAddress(defaultAddress);
+    setWorkingHours(defaultWorkingHours);
   }
   return (
     <Fragment>
@@ -75,66 +97,87 @@ export default function EditClinicModal({ clinic, modalId }) {
                 {/* Clinic Info */}
                 <div className="clinic-name d-flex align-items-center gap-3 mb-3">
                   <label className="form-label" htmlFor='clinic-name'>Clinic Name</label>
-                  <input type="text" className="form-control w-75" id='clinic-name' placeholder='Enter Clinic Name' value={name} onChange={(e) => setName(e.target.value)} disabled={noteditable} />
+                  <input type="text" className="form-control w-75" id='clinic-name' placeholder='Enter Clinic Name' value={name} onChange={(e) => setName(e.target.value)} disabled={notEditable} />
                 </div>
 
 
                 <div className="clinic-phone d-flex align-items-center gap-3 mb-3">
                   <label className="form-label" htmlFor='clinic-phone'>Phone</label>
-                  <input type="tel" className="form-control w-75" id='clinic-phone' placeholder='Enter Clinic Phone' value={phone} onChange={(e) => setPhone(e.target.value)} disabled={noteditable} />
+                  <input type="tel" className="form-control w-75" id='clinic-phone' placeholder='Enter Clinic Phone' value={phone} onChange={(e) => setPhone(e.target.value)} disabled={notEditable} />
                 </div>
 
                 <div className="clinic-email d-flex align-items-center gap-3 mb-3">
                   <label className="form-label" htmlFor='clinic-email'>Email</label>
-                  <input type="email" className="form-control w-75" id='clinic-email' placeholder='Enter Clinic Email' value={email} onChange={(e) => setEmail(e.target.value)} disabled={noteditable} />
+                  <input type="email" className="form-control w-75" id='clinic-email' placeholder='Enter Clinic Email' value={email} onChange={(e) => setEmail(e.target.value)} disabled={notEditable} />
                 </div>
-
-                {/* <div className="spcialization d-flex align-items-center gap-3 mb-3">
-                  <label className="form-label" htmlFor='spcialization'>Specialization</label>
-                  <select className="form-select w-50" id='spcialization' value={specialization}  onChange={(e) => setSpecialization(e.target.value)}>
-                    {specializations.map((spec, index) => (
-                      <option value={spec.name} key={index}>{spec.name}</option>
-                    ))}
+                <div className="clinic-price d-flex align-items-center gap-3 mb-3">
+                  <label className="form-label" htmlFor='clinic-price'>price</label>
+                  <input type="number" className="form-control w-75" id='clinic-price' placeholder='Enter Cost' value={price} onChange={(e) => setPrice(e.target.value)} disabled={notEditable} />
+                </div>
+                <div className="status d-flex align-items-center gap-3 mb-3">
+                  <p className='mb-0'>Choose Status</p>
+                  <select name="status" id="status" className="form-select w-50" value={status} onChange={(e) => setStatus(e.target.value)} disabled={notEditable}>
+                    <option value="">Choose Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                   </select>
-                </div> */}
-                <Adress onAddressChange={setAddress} />
+                </div>
+                <Adress onAddressChange={setAddress}  />
                 <hr />
 
-                {/* Working Hours */}
-
-
-                {/* Status */}
-                <div className="status">
-                  <p className='fw-bold mb-2'>Choose Status</p>
-                  <div className="form-check form-check-inline">
-                    <input type="radio" name="status" id="active" className="form-check-input" value={'active'} checked={status === 'active'} onChange={(e) => setStatus(e.target.value)} disabled={noteditable} />
-                    <label htmlFor="active" className="form-check-label" >Active</label>
+                <div className="appointment mb-3">
+                  <p className='fw-bold mb-2'>Working Hours</p>
+                  <div className="d-flex align-items-center gap-3 flex-wrap">
+                    <select className="form-select w-auto" value={day} onChange={(e) => setDay(e.target.value)} disabled={notEditable}>
+                      <option value="">Select Day</option>
+                      <option value="Saturday">Saturday</option>
+                      <option value="Sunday">Sunday</option>
+                      <option value="Monday">Monday</option>
+                      <option value="Tuesday">Tuesday</option>
+                      <option value="Wednesday">Wednesday</option>
+                      <option value="Thursday">Thursday</option>
+                      <option value="Friday">Friday</option>
+                    </select>
+                    <span>from</span>
+                    <input type="time" className="form-control w-auto" value={openTime} onChange={(e) => setOpenTime(e.target.value)} disabled={notEditable} />
+                    <span>to</span>
+                    <input type="time" className="form-control w-auto" value={closeTime} onChange={(e) => setCloseTime(e.target.value)} disabled={notEditable} />
+                    <button type="button" className="btn btn-success ms-2" onClick={handleAddDay} disabled={notEditable}>Add</button>
                   </div>
-                  <div className="form-check form-check-inline">
-                    <input type="radio" name="status" id="inactive" className="form-check-input" value={'inactive'} checked={status === 'inactive'} onChange={(e) => setStatus(e.target.value)} disabled={noteditable} />
-                    <label htmlFor="inactive" className="form-check-label">Inactive</label>
-                  </div>
+
+                  {workingHours.length > 0 && (
+                    <ul className="mt-3  list-group w-75">
+                      {workingHours.map((item, index) => (
+                        <li key={index} className="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded px-3 py-2">
+                          <span>{item.day}: {item.openTime} - {item.closeTime}</span>
+                          <button className="btn border-0" onClick={() => handleDeleteDay(item.day)} disabled={notEditable}>
+                            <MdDelete size={25} className='text-danger' />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </form>
             </div>
 
 
 
-            {noteditable ? (
+            {notEditable ? (
 
               <div className="modal-footer d-flex justify-content-end gap-2">
                 <button type="button" className="btn btn-danger" id='close-btn-edit' data-bs-dismiss="modal" style={{ width: '100px' }}>Close</button>
-                <button type="button" className="custom-button" style={{ width: '100px' }} onClick={() => setNotEditable(false)}>Edit</button>
+                <button type="button" className="custom-button" style={{ width: '100px' }} onClick={() => setnotEditable(false)}>Edit</button>
               </div>
             ) : (
               <div className="modal-footer d-flex justify-content-end gap-2">
                 <button type="button" className="btn btn-danger" id='close-btn-edit' data-bs-dismiss="modal" style={{ width: '100px' }} onClick={() => {
 
                   resetFields();
-                  setNotEditable(true);
+                  setnotEditable(true);
                 }
                 } >Cancel</button>
-                <button type="button" className="custom-button" style={{ width: '100px' }} onClick={handleSave} disabled={noteditable || loading} >{loading ? <BeatLoader size={10} color="#fff" /> : "Edit Clinic"}</button>
+                <button type="button" className="custom-button" style={{ width: '100px' }} onClick={handleSave} disabled={notEditable || loading} >{loading ? <BeatLoader size={10} color="#fff" /> : "Edit Clinic"}</button>
               </div>
             )}
           </div>
