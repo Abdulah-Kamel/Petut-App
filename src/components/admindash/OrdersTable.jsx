@@ -3,21 +3,25 @@ import { FaEye } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import ConfirmModal from '../ConfirmModal';
 import ViewOrderModal from './ViewOrderModal';
+import { BiSearchAlt2 } from 'react-icons/bi';
 
 export default function OrdersTable({ orders, handleDeleteOrder, loading }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [searchTerm, setSearchTerm] =useState('');
 
-  // // filter orders 
-  // const filterOreders = orders?.filter(order => {
-  //     const nameMatch = order?.orderName?.toLowerCase().includes(searchTerm.toLowerCase());
-  //     const priceMatch = String(order?.price).includes(searchTerm);
-  //     const categoryMatch = categoryFilter === 'all' || order.category === categoryFilter;
-  //     return (nameMatch || priceMatch) && categoryMatch;
-  // })
+  const [statusFilter, setStatusFilter] = useState('all');
+
+  // filter orders 
+  const filterOreders = orders?.filter(order => {
+    const nameMatch = order?.deliveryInfo?.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+    const priceMatch = String(order?.cart?.totalAmount).includes(searchTerm);
+    const statusMatch = statusFilter === 'all' || order.status === statusFilter;
+    return (nameMatch || priceMatch) && statusMatch;
+  })
   return (
     <Fragment>
-      {/* <div className="d-flex justify-content-between align-items-center my-3">
+      <div className="d-flex justify-content-between align-items-center my-3">
         <div className="search-box position-relative" style={{ width: '40%' }}>
           <input
             className="form-control pe-5"
@@ -32,17 +36,18 @@ export default function OrdersTable({ orders, handleDeleteOrder, loading }) {
             style={{ top: '50%', right: '15px', transform: 'translateY(-50%)', color: '#888' }}
           />
         </div>
-        <select className="form-select w-25" value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} >
+        <select className="form-select w-25" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} >
           <option value="all" >All</option>
-          <option value="cat" >Cat</option>
-          <option value="dog" >Dog</option>
-          <option value="toys" >Toys</option>
+          <option value="pending" >pending</option>
+          <option value="processing" >processing</option>
+          <option value="delivered" >delivered</option>
+          <option value="cancelled" >cancelled</option>
         </select>
-      </div> */}
+      </div>
 
       {loading ? <h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3> : orders.length === 0 ? <h3 className='text-center mt-5'>No orders found</h3> : (
 
-        <div className="orders-table mt-4 mb-5  bg-white shadow rounded w-100 " style={{ maxHeight: '620px', overflowY: 'auto' }}>
+        <div className="orders-table mt-4 mb-5  bg-white shadow responsive rounded w-100 " style={{ maxHeight: '620px', overflowY: 'auto' }}>
           <table className="table">
             <thead className="table-light py-3">
               <tr className="">
@@ -56,7 +61,7 @@ export default function OrdersTable({ orders, handleDeleteOrder, loading }) {
               </tr>
             </thead>
             <tbody>
-              {orders.map(order => (
+              {filterOreders.map(order => (
                 <tr key={order.id}>
                   <td className="px-4 py-3 align-middle">{order.deliveryInfo.fullName}</td>
                   <td className="px-4 py-3 align-middle">{order.deliveryInfo.phone}</td>

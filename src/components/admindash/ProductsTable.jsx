@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { TbEdit } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
-import { FaEye } from "react-icons/fa";
+import { FaEye } from "react-icons/fa"; 
 import ViewProductModal from './ViewProductModal';
 import EditProductModal from './EditProductModal';
 import ConfirmModal from '../ConfirmModal';
