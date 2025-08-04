@@ -1,5 +1,4 @@
 import React from "react";
-
 const FilterModal = ({
   open,
   onClose,
@@ -13,18 +12,18 @@ const FilterModal = ({
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-end z-50">
       <div className="bg-white dark:bg-gray-800 w-full rounded-t-2xl p-6 shadow-lg">
         <div className="flex justify-between items-center mb-4">
-          <div className="text-lg font-bold text-primary_app dark:text-white">
+          <div className="text-lg font-bold text-primary dark:text-white">
             Sort & Filter
           </div>
           <button
             onClick={onClose}
-            className="text-secondary hover:text-primary_app dark:text-gray-300 dark:hover:text-white"
+            className="text-secondary hover:text-primary dark:text-gray-300 dark:hover:text-white"
           >
             <span className="material-icons">close</span>
           </button>
         </div>
         <div className="mb-4">
-          <div className="font-semibold mb-2 text-primary_app dark:text-white">
+          <div className="font-semibold mb-2 text-primary dark:text-white">
             Sort by:
           </div>
           <div className="flex flex-col gap-2">
@@ -64,7 +63,7 @@ const FilterModal = ({
           </div>
         </div>
         <div>
-          <div className="font-semibold mb-2 text-primary_app dark:text-white">
+          <div className="font-semibold mb-2 text-primary dark:text-white">
             Minimum Rating:
           </div>
           <div className="flex gap-1">
@@ -73,7 +72,7 @@ const FilterModal = ({
                 <span
                   className={`material-icons text-2xl ${
                     i < minRating
-                      ? "text-primary_app"
+                      ? "text-primary"
                       : "text-secondary-light dark:text-gray-400"
                   }`}
                 >

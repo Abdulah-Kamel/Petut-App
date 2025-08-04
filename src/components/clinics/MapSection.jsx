@@ -15,7 +15,7 @@ const userIcon = new L.Icon({
 const MapSection = ({ userLocation }) => {
   const center = userLocation
     ? [userLocation.lat, userLocation.lng]
-    : [30.0444, 31.2357]; // القاهرة
+    : [30.0444, 31.2357];
   return (
     <div
       className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden bg-gray-200"

@@ -2,7 +2,7 @@ import React from "react";
 import ClinicCard from "./ClinicCard";
 
 const ClinicsList = ({ clinics, onClinicClick }) => {
-  if (!clinics.length) {
+  if (!Array.isArray(clinics) || clinics.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <img
@@ -14,11 +14,12 @@ const ClinicsList = ({ clinics, onClinicClick }) => {
       </div>
     );
   }
+
   return (
     <div className="flex flex-col gap-4 mt-4">
       {clinics.map((clinic) => (
         <ClinicCard
-          key={clinic.id}
+          key={clinic.id || clinic.clinicId}
           clinic={clinic}
           onClick={() => onClinicClick(clinic)}
         />
