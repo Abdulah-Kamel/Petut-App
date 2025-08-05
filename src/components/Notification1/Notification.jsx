@@ -28,7 +28,7 @@ const Notification = () => {
             console.log("🚀 بدء تهيئة OneSignal باستخدام Deferred...");
 
             await OneSignal.init({
-              appId: "c79ac96e-e8f8-4f9f-b94f-70f72d81bc3e", // ⚠️ ضع App ID الصحيح هنا
+              appId: "59bf05ab-6174-404a-a257-3e7cce35f6b3", // ⚠️ ضع App ID الصحيح هنا
               safari_web_id: "",
               notifyButton: {
                 enable: true,
