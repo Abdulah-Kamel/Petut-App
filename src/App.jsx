@@ -49,13 +49,22 @@ import Reviews from './pages/admin-dashboard/Reviews'
 import Store from './pages/admin-dashboard/Store'
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import RoleSelectionPage from "./pages/RoleSelectionPage";
-
+import Notification from "./components/Notification1/Notification.jsx";
 function App() {
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
   const cart = useSelector((state) => state.cart);
   const prevUserRef = useRef();
   const prevCartRef = useRef(cart);
+
+
+  
+  useEffect(() => {
+    // منع تهيئة OneSignal أكتر من مرة
+    if (window.OneSignal && !window.__oneSignalInitialized) {
+      window.__oneSignalInitialized = true;
+    }
+  }, []);
 
   useEffect(() => {
     if (currentUser) {
@@ -129,27 +138,35 @@ function App() {
 
   return (
     <>
-      <NotificationHandler />
+      <Notification/>
+      {/* <NotificationHandler /> */}
       <ToastContainer />
       <Routes>
-        <Route path='/doctor-dashboard' element={<DoctorDashboard />}>
+        <Route path="/doctor-dashboard" element={<DoctorDashboard />}>
           <Route index element={<HelloDoctor />} />
-          <Route path='manage-clients' element={<Manageclients />} />
-          <Route path='manage-appointments' element={<Manageappointments />} />
-          <Route path='manage-clinics' element={<Manageclinics />} />
-          <Route path='manage-profile' element={<Manageprofile />} />
+          <Route path="manage-clients" element={<Manageclients />} />
+          <Route path="manage-appointments" element={<Manageappointments />} />
+          <Route path="manage-clinics" element={<Manageclinics />} />
+          <Route path="manage-profile" element={<Manageprofile />} />
         </Route>
-        <Route path='/admin-dashboard' element={<AdminDashboard />} >
+        <Route path="/admin-dashboard" element={<AdminDashboard />}>
           <Route index element={<HelloAdmin />} />
-          <Route path='overview' element={<Overview />} />
-          <Route path='manage-users' element={<ManageUsers />} />
-          <Route path='manage-clinics' element={<ManageClinics />} />
-          <Route path='manage-reservations' element={<ManageReservations />} />
-          <Route path='reviews' element={<Reviews />} />
-          <Route path='store' element={<Store />} />
-          <Route path='charts' element={<Charts />} />
+          <Route path="overview" element={<Overview />} />
+          <Route path="manage-users" element={<ManageUsers />} />
+          <Route path="manage-clinics" element={<ManageClinics />} />
+          <Route path="manage-reservations" element={<ManageReservations />} />
+          <Route path="reviews" element={<Reviews />} />
+          <Route path="store" element={<Store />} />
+          <Route path="charts" element={<Charts />} />
         </Route>
-        <Route path="/" element={<RoleProtectedRoute><Layout /></RoleProtectedRoute>}>
+        <Route
+          path="/"
+          element={
+            <RoleProtectedRoute>
+              <Layout />
+            </RoleProtectedRoute>
+          }
+        >
           <Route index element={<HomePage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="catalog" element={<CatalogPage />} />
