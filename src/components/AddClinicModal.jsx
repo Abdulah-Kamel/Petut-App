@@ -7,7 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 // import specializations from '../spcializations/spcializations.json';
 import { db, auth } from '../firebase.js';
 import logo from '../assets/petut.png';
-export default function AddClinicModal({  fetchClinics, loading, setLoading }) {
+import { BeatLoader } from 'react-spinners';
+export default function AddClinicModal({ getClinics, loading, setLoading }) {
   const [day, setDay] = useState('');
   const [openTime, setOpenTime] = useState('');
   const [closeTime, setCloseTime] = useState('');
@@ -17,7 +18,7 @@ export default function AddClinicModal({  fetchClinics, loading, setLoading }) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('active');
+  const [status, setStatus] = useState('');
   const [address, setAddress] = useState({ governorate: '', city: '' });
 
   const [doctors, setDoctors] = useState([]);
@@ -26,6 +27,7 @@ export default function AddClinicModal({  fetchClinics, loading, setLoading }) {
 
   const [userData, setUserData] = useState(null);
   const [price, setPrice] = useState(null);
+
 
   const isAdmin = userData?.role === 'admin';
 
@@ -90,12 +92,17 @@ export default function AddClinicModal({  fetchClinics, loading, setLoading }) {
     setSelectedDoctor(null);
     setStatus('active');
     setWorkingHours([]);
+    setPrice(null);
+    setDay('');
+    setOpenTime('');
+    setCloseTime('');
+    
   };
 
   // Add clinic data to Firebase
   const handleAddClinic = async () => {
     // Validate form fields
-    if (!name.trim() || !phone.trim() || !email.trim() || !address.governorate || !address.city || workingHours.length === 0 || !price || !status) {
+    if (!name.trim() || !phone.trim() || !email.trim() || !address.governorate || !address.city || workingHours.length === 0 || price === null || price === '' || !status) {
       toast.error('Please fill in all the required fields', {
         position: "top-right",
         autoClose: 5000,
@@ -109,7 +116,12 @@ export default function AddClinicModal({  fetchClinics, loading, setLoading }) {
       });
       return
     }
+    if (isAdmin && !selectedDoctor) {
+      toast.error('Please select a doctor', { autoClose: 3000 });
+      return;
+    }
     try {
+      setLoading(true);
       // Add clinic data to Firebase 
       const clinicData = {
         name,
@@ -120,18 +132,18 @@ export default function AddClinicModal({  fetchClinics, loading, setLoading }) {
         status,
         price,
         doctorId: isAdmin ? selectedDoctor?.id : auth.currentUser.uid,
-        doctorName: isAdmin ? selectedDoctor?.fullName : auth.currentUser.displayName,
+        doctorName: isAdmin ? selectedDoctor?.fullName : userData?.fullName || '',
         createdAt: Timestamp.now(),
       };
       const docRef = await addDoc(collection(db, 'clinics'), clinicData);
       await setDoc(docRef, { ...clinicData, clinicId: docRef.id });
-      await fetchClinics();
+      await getClinics();
       toast.success('Clinic added successfully', { autoClose: 3000 });
       resetFields();
 
       setTimeout(() => {
         document.getElementById('close-btn-modal').click();
-        // window.location.reload();
+        getClinics();
       }, 3000);
     } catch (error) {
       toast.error("Failed to add clinic, error:" + error.message, { autoClose: 3000 });

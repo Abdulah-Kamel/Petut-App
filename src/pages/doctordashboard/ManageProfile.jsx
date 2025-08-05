@@ -1,25 +1,30 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { IoIosCamera } from "react-icons/io";
-import { auth,db } from '../../firebase.js';
-// import { onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from '../../firebase.js';
 import { doc, getDoc } from 'firebase/firestore';
-import Address from '../../components/Address';
 import { toast } from 'react-toastify';
 import { updateDoc } from "firebase/firestore";
 import axios from 'axios';
+import { getAuth, reauthenticateWithCredential, updatePassword, EmailAuthProvider } from "firebase/auth";
+import { BeatLoader } from 'react-spinners';
+
 
 
 export default function Manageprofile() {
   const [selectImage, setSelectImage] = useState(null);
-  const [isEditing, setIsEditing] = useState(true);
+  const [notEditable, setNotEditable] = useState(true);
+
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false)
 
   const [profileData, setProfileData] = useState({
-    name: '',
+    fullName: '',
     email: '',
     phone: '',
-    address: '',
-    image: ''
+    profileImage: ''
   });
 
 
@@ -29,10 +34,11 @@ export default function Manageprofile() {
       const user = auth.currentUser;
       if (user) {
         const docRef = doc(db, "users", user.uid);
-        // const q = query(collection(db, "users"), where("role", "==", "doctor"));
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setProfileData(docSnap.data());
+          const data = docSnap.data();
+          setProfileData(data);
+          setSelectImage(data.profileImage);
         }
       }
     };
@@ -43,19 +49,12 @@ export default function Manageprofile() {
   const uploadImageToImgbb = async (imageFile) => {
     const formData = new FormData();
     formData.append('image', imageFile);
-
     try {
       const response = await axios.post('https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307', formData);
-
-
-
       const url = response.data.data.url;
       setSelectImage(url);
-      // console.log('Image URL:', url);
       return url;
-
     } catch (error) {
-      console.error("Error uploading image:", error);
       toast.error("Image upload failed");
       return null;
     }
@@ -67,32 +66,53 @@ export default function Manageprofile() {
       const uploadedImageUrl = await uploadImageToImgbb(file);
       if (uploadedImageUrl) {
         setSelectImage(uploadedImageUrl);
-        setProfileData({ ...profileData, image: uploadedImageUrl });
+        setProfileData(profileData => ({ ...profileData, profileImage: uploadedImageUrl }));
       }
     }
   };
 
   //update profile
   const handleUpdate = async () => {
+    if (newPassword !== confirmPassword) {
+      toast.error("New passwords do not match.", { autoClose: 3000 });
+      return;
+    }
+    if (!currentPassword) {
+      toast.error("Please enter your current password.", { autoClose: 3000 });
+      return;
+    }
+    setLoading(true);
     try {
+      const auth = getAuth();
       const user = auth.currentUser;
+      const credential = EmailAuthProvider.credential(user.email, currentPassword);
+      await reauthenticateWithCredential(user, credential);
+      if (newPassword) {
+        await updatePassword(user, newPassword);
+      }
       if (user) {
         const userRef = doc(db, "users", user.uid);
         await updateDoc(userRef, {
-          name: profileData.name,
+          fullName: profileData.fullName,
           email: profileData.email,
           phone: profileData.phone,
-          address: profileData.address,
-          image: selectImage || profileData.image,
+          profileImage: selectImage || profileData.profileImage,
         });
         toast.success('Profile updated successfully', { autoClose: 3000 });
-        setIsEditing(false);
-        setProfileData({ ...profileData, image: selectImage || profileData.image });
-
+        setNotEditable(!notEditable);
+        setProfileData(profileData => ({ ...profileData, profileImage: selectImage || profileData.profileImage }));
+        setCurrentPassword('');
       }
     } catch (error) {
-      toast.error("Failed to update profile. Error: " + error.message, { autoClose: 3000 });
-      // console.error("Error updating profile:", error);
+      if (error.code === "auth/invalid-credential") {
+        toast.error("The current password you entered is incorrect.", { autoClose: 3000 });
+      } else if (error.code === "auth/too-many-requests") {
+        toast.error("Too many attempts. Please try again later.", { autoClose: 3000 });
+      } else {
+        toast.error("Failed to update profile. Error: " + error.message, { autoClose: 3000 });
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,17 +127,17 @@ export default function Manageprofile() {
           <li className="breadcrumb-item active" aria-current="page">Profile</li>
         </ol>
       </nav>
-      <div className='container-fluid mt-4'>
-        <div className='row  gap-5'>
+      <div className='container-fluid my-4'>
+        <div className='row  '>
           <div className='col-4'>
-            <div className="col-12 position-relative w-100">
-              <img className='w-100 rounded' src={selectImage ? selectImage : profileData.image ? profileData.image : "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"} alt="profile image" width={400} height={380} />
+            <div className="col-12 position-relative d-flex align-items-center justify-content-center">
+              <img className='rounded-3' src={profileData.profileImage || selectImage} alt="profile image" style={{ width: '90%', height: '100%', objectFit: 'cover' }} disabled ={notEditable} />
               <IoIosCamera size={30}
                 onClick={() => document.getElementById("inputfile").click()}
                 style={{
                   position: 'absolute',
                   top: '5%',
-                  left: '5%',
+                  left: '10%',
                   color: '#D9A741',
                   backgroundColor: '#fff',
                   borderRadius: '50%',
@@ -126,34 +146,42 @@ export default function Manageprofile() {
                 }} />
             </div>
             <div className="input-group my-3 w-75">
-              <input type="file" className="form-control d-none" id="inputfile" onChange={handleImageChange} />
+            <input type="file" className="form-control d-none" id="inputfile" onChange={handleImageChange} disabled={notEditable} />
             </div>
           </div>
-          <div className='col-7'>
-            <form action="#">
-              <div className="mb-3">
+          <div className='col-7 '>
+            <form action="#" className=''>
+              <div className="mb-3 ">
                 <label htmlFor="profile-name" className="form-label">Name</label>
-                <input type="text" className="form-control" id="profile-name" aria-describedby="emailHelp" disabled={isEditing} value={profileData.name} onChange={(e) => setProfileData({ ...profileData, name: e.target.value })} />
+                <input type="text" className="form-control" id="profile-name" aria-describedby="emailHelp" disabled={notEditable} value={profileData.fullName} onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })} />
               </div>
-              <div className="mb-3">
+              <div className="mb-3 ">
                 <label htmlFor="profile-email" className="form-label">Email</label>
-                <input type="email" className="form-control" id="profile-email" disabled={isEditing} value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} />
+                <input type="email" className="form-control" id="profile-email" disabled={notEditable} value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} />
+              </div>
+              <div className="mb-3 ">
+                <label htmlFor="phone" className="form-label">Phone</label>
+                <input type="tel" className="form-control" id="phone" disabled={notEditable} value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
               </div>
               <div className="mb-3">
-                <label htmlFor="phone" className="form-label">Phone</label>
-                <input type="tel" className="form-control" id="phone" disabled={isEditing} value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
+                <label htmlFor="current-password" className="form-label">Current Password</label>
+                <input type="password" className="form-control" id="current-password" disabled={notEditable} value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
               </div>
-              {/* <div className="mb-3">
-                <label for="address" className="form-label">Address</label>
-                <input type="text" className="form-control" id="address" aria-describedby="emailHelp" value={profileData.address} onChange={(e) => setProfileData({ ...profileData, address: e.target.value })} />
-              </div> */}
-              {!isEditing ? (
+              <div className="mb-3 ">
+                <label htmlFor="new-password" className="form-label">New Password</label>
+                <input type="password" className="form-control" id="new-password" disabled={notEditable} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              </div>
+              <div className="mb-3 ">
+                <label htmlFor="confirm-password" className="form-label">Confirm New Password</label>
+                <input type="password" className="form-control" id="confirm-password" disabled={notEditable} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+              </div>
+              {!notEditable ? (
                 <div className="d-flex gap-5 align-items-center justify-content-between">
-                  <button type="button" className="btn text-white bg-danger w-50" onClick={() => setIsEditing(!isEditing)}>Cancel</button>
-                  <button type="button" className="custom-button w-50" onClick={handleUpdate}>Update</button>
+                  <button type="button" className="btn text-white bg-danger w-50" onClick={() => setNotEditable(!notEditable)}>Cancel</button>
+                  <button type="button" className="custom-button w-50" onClick={handleUpdate} disabled={loading}>{loading ? <BeatLoader color='#fff' /> : "Update"}</button>
                 </div>
               ) : (
-                <button type="button" className="custom-button w-100" onClick={() => setIsEditing(!isEditing)}>Update Profile</button>
+                <button type="button" className="custom-button w-100" onClick={() => setNotEditable(!notEditable)}>Update Profile</button>
               )
               }
             </form>
