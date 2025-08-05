@@ -82,19 +82,19 @@ export default function AddDoctorModal({ fetchDoctors }) {
                 phone,
                 gender,
                 status,
+                profileImage: profileUrl,
                 role: 'doctor',
                 doctorDetails: {
-                    profileImage: profileUrl,
                     cardFrontImage: cardFrontUrl,
                     cardBackImage: cardBackUrl,
                     idImage: idImageUrl,
                     experience,
                     description,
                     socialMedia: {
-                        facebook:facebookLink,
-                        twitter:twitterLink,
-                        instagram:instagramLink,
-                        linkedin:linkedinLink
+                        facebook: facebookLink,
+                        twitter: twitterLink,
+                        instagram: instagramLink,
+                        linkedin: linkedinLink
                     }
                 },
                 createdAt: Timestamp.now()
@@ -196,10 +196,10 @@ export default function AddDoctorModal({ fetchDoctors }) {
                                     <textarea className="form-control" id="decription" placeholder="Enter About Doctor" maxLength={1000} value={description} onChange={(e) => setDescription(e.target.value)} ></textarea>
                                 </div>
                                 <div className="social-media d-flex align-items-center  gap-3 mt-3 me-3">
-                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Facebook Link" value={facebookLink} onChange={(e) => setFacebookLink(e.target.value)}  />
-                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Instagram Link" value={instagramLink} onChange={(e) => setInstagramLink(e.target.value)}  />
-                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Twitter Link" value={twitterLink} onChange={(e) => setTwitterLink(e.target.value)}  />
-                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Linkedin Link" value={linkedinLink} onChange={(e) => setLinkedinLink(e.target.value)}  />
+                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Facebook Link" value={facebookLink} onChange={(e) => setFacebookLink(e.target.value)} />
+                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Instagram Link" value={instagramLink} onChange={(e) => setInstagramLink(e.target.value)} />
+                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Twitter Link" value={twitterLink} onChange={(e) => setTwitterLink(e.target.value)} />
+                                    <input type="url" className="form-control w-50" id="doctor-name" placeholder="Linkedin Link" value={linkedinLink} onChange={(e) => setLinkedinLink(e.target.value)} />
                                 </div>
                             </form>
                         </div>

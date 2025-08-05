@@ -70,7 +70,7 @@ export default function Clinic({ clinic, onDelete }) {
                     <div className="option d-flex align-items-center justify-content-between gap-1">
                         <IoTimer />
                         <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#appointments-${clinic.id}`}>Appointments</button>
-                        <AppointmentsModal clinic={clinic} modalId={clinic.id} />
+                        <AppointmentsModal clinic={clinic} modalId={clinic.id}  />
                     </div>
                     <div className="option d-flex align-items-center justify-content-between gap-1">
                         <HiMiniUserGroup />

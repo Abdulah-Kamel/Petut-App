@@ -19,23 +19,19 @@
   background-color: #c19933 !important;
 }
 
-/* ✅ العنوان الرئيسي */
 .fc-toolbar-title {
   font-size: 24px !important;
   font-weight: bold !important;
 }
 
-/* زرار Today بشكل مميز */
 .fc-button.fc-today-button {
   background-color: #444 !important;
   color: white !important;
 }
 
-/* ✅ خلية اليوم الحالي */
 .fc-day-today {
   background-color: #f9bd466b !important;
   font-weight: bold !important;
-  /* padding: 20px !important; */
 }
 
 .fc-daygrid-day:hover {
@@ -43,12 +39,6 @@
   cursor: pointer !important;
 }
 
-
-
-
-
-
-/* ✅ الأحداث (event style) */
 .fc-event {
   background-color: #D9A741 !important;
   color: white !important;
@@ -60,13 +50,11 @@
   cursor: pointer !important;
 }
 
-/* ✅ اسم اليوم فوق كل عمود */
 .fc .fc-col-header-cell-cushion {
   padding: 10px 0 !important;
   text-decoration: none !important;
   color: #333 !important;
 }
-
 
 .fc-daygrid-day-number {
   color: #333 !important;

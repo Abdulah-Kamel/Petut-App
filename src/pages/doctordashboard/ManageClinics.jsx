@@ -2,12 +2,12 @@ import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Clinic from '../../components/doctordash/Clinic'
 import { RiAddLine } from "react-icons/ri";
-import AddClinic from '../../components/AddClinicModal';
 import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
-import { db,auth } from '../../firebase.js';
+import { db, auth } from '../../firebase.js';
 import { BeatLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 import { onAuthStateChanged } from 'firebase/auth';
+import AddClinicModal from '../../components/AddClinicModal';
 
 export default function Manageclinics() {
   const [loading, setLoading] = useState(true);
@@ -18,10 +18,12 @@ export default function Manageclinics() {
 
   // get clinics from Firebase
   const getClinics = async (userId) => {
+    if (!userId) {
+      toast.error("User ID is undefined");
+      return;
+    }
+    setLoading(true);
     try {
-      const user = auth.currentUser;
-      if (!user) return;
-
       const clinicsRef = collection(db, 'clinics');
       const q = query(clinicsRef, where("doctorId", "==", userId));
       const querySnapshot = await getDocs(q);
@@ -82,7 +84,7 @@ export default function Manageclinics() {
           <div className="right col-2">
             <button type="button" className="custom-button" data-bs-toggle="modal" data-bs-target="#addclinic" ><RiAddLine size={20} />New Clinic</button>
           </div>
-          <AddClinic />
+          <AddClinicModal loading={loading} setLoading={setLoading} getClinics={() => getClinics(auth.currentUser.uid)} />
         </div>
       </div>
 

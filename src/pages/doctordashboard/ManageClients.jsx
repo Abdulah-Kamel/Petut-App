@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BiSearchAlt2 } from "react-icons/bi";
-import { FaEye } from "react-icons/fa";
 import { toast } from 'react-toastify';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 import { BeatLoader } from 'react-spinners';
+import BookingsOneDoctor from './../../components/doctordash/BookingsOneDoctor';
+import { getAuth } from 'firebase/auth';
 
 
 
@@ -14,25 +15,40 @@ export default function Manageclients() {
   const [loading, setLoading] = useState(true);
 
 
-  //get clients from firestore
+  const auth = getAuth();
+  const currentDoctorId = auth.currentUser?.uid;
+
+
+
+  // get bookings from firebase
   useEffect(() => {
-    const fetchClients = async () => {
+    const fetchBookingsOneDoctor = async () => {
+      if (!currentDoctorId) return;
       try {
-        const querySnapshot = await getDocs(collection(db, "bookings"));
-        const bookingsData = querySnapshot.docs.map(doc => ({
+        setLoading(true);
+        const q = query(collection(db, "bookings"), where("doctorId", "==", currentDoctorId));
+        const snapshot = await getDocs(q);
+        if (snapshot.empty) {
+          setBookings([]);
+          return;
+        }
+        const bookingsData = snapshot.docs.map(doc => ({
           id: doc.id,
-          ...doc.data(),
+          ...doc.data()
         }));
         setBookings(bookingsData);
       } catch (error) {
-        toast.error("Failed to fetch clients, error:" + error.message, { autoClose: 3000 });
+        toast.error("Failed to fetch bookings, error:" + error.message, { autoClose: 3000 });
+
       } finally {
         setLoading(false);
+
       }
     };
+    fetchBookingsOneDoctor();
+  }, [currentDoctorId]);
 
-    fetchClients();
-  }, []);
+
 
   return (
     <Fragment>
@@ -45,12 +61,6 @@ export default function Manageclients() {
         </ol>
       </nav>
 
-
-
-
-
-      {/* value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} */}
       <div className="d-flex justify-content-between align-items-center my-3">
         <div className="search-box w-50 position-relative">
           <input
@@ -65,7 +75,6 @@ export default function Manageclients() {
             style={{ top: '50%', right: '15px', transform: 'translateY(-50%)', color: '#888' }}
           />
         </div>
-        {/* value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} */}
         <select className="form-select w-25" >
           <option value="all" >All</option>
           <option value="booked" >Booked</option>
@@ -73,47 +82,10 @@ export default function Manageclients() {
         </select>
       </div>
 
-      {loading ? (<h3 className='text-center mt-5'><BeatLoader color="#D9A741" /></h3>) : bookings?.length === 0 ? (<h3 className='text-center mt-5'>No clients found</h3>) : (
-
-        <div className="patient-table mt-4  bg-white shadow rounded w-100" style={{ maxHeight: '395px', overflowY: 'auto' }}>
-          <table className="table">
-            <thead className="table-light py-3  position-sticky top-0">
-              <tr className="">
-                <th className="px-4 py-3">clinicName</th>
-                <th className="px-4 py-3">clinicLocation</th>
-                <th className="px-4 py-3">clinicPhone</th>
-                <th className="px-4 py-3">Time</th>
-                <th className="px-4 py-3">Date</th>
-                <th className="px-4 py-3">Price</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings ? bookings.map((booking) => (
-                <tr key={booking.id}>
-                  <td className="px-4 py-3">{booking?.clinicName || "-"}</td>
-                  <td className="px-4 py-3">{booking?.clinicLocation || "-"}</td>
-                  <td className="px-4 py-3">{booking?.clinicPhone || "-"}</td>
-                  {/* <td className="px-4 py-3">{booking?.date || "-"}</td> */}
-                  <td className="px-4 py-3">{booking?.time || "-"}</td>
-                  <td className="px-4 py-3">{booking?.price || "-"}</td>
-                  <td className="px-4 py-3">
-                    <select className="form-select w-50" aria-label="Default select example">
-                      <option value="completed">{booking?.status || "-"}</option>
-                      <option value="booked">booked</option>
-                    </select>
-                  </td>
-                  <td className="px-4 py-3">
-                    <button type="button" className="btn border-0 p-0 mb-1" data-bs-toggle="modal" data-bs-target="#review">
-                      <FaEye cursor={"pointer"} />
-                    </button>
-                  </td>
-                </tr>
-              )) : <h1>Loading...</h1>}
-            </tbody>
-          </table>
-        </div>
+      {loading ? (<h3 className='text-center mt-5'><BeatLoader color="#D9A741" /></h3>) : bookings?.length === 0 ? (<h3 className='text-center mt-5'>No Bookings found </h3>) : (
+        <>
+          <BookingsOneDoctor bookings={bookings} />
+        </>
       )}
     </Fragment>
   )

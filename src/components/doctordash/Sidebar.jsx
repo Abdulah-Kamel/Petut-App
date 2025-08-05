@@ -5,13 +5,11 @@ import { FaClinicMedical } from "react-icons/fa";
 import { IoPersonSharp } from "react-icons/io5";
 import { NavLink } from 'react-router-dom';
 import { TbLogout2 } from "react-icons/tb";
-import './sidebar.css'
-// import logo from '../../../assets/petut.png'
 
 export default function Sidebar({ open, toggleSidebar }) {
     return (
         <Fragment>
-            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed  bottom-0  ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '1' }} >
+            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed  bottom-0  ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '1000' }} >
                 <ul className=" p-0 d-flex flex-column  align-items-left  justify-content-between h-100">
                     <div className="top-links">
                         {/* <div className="logo">
