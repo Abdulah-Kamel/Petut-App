@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import {auth, db, signInWithGoogle} from '../firebase';
 import {doc, getDoc} from "firebase/firestore";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -58,7 +59,8 @@ const LoginPage = () => {
       setError('');
       try {
         await signInWithEmailAndPassword(auth, formData.email, formData.password);
-        navigate('/');
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true });
       } catch (err) {
         switch (err.code) {
           case 'auth/user-not-found':
@@ -94,7 +96,8 @@ const LoginPage = () => {
         // Redirect to role selection form
         navigate(`/role-selection?uid=${user.uid}`);
       } else {
-        navigate("/");
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true });
       }
     } catch (err) {
       console.error(err);
