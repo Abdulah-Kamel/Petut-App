@@ -1,11 +1,12 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 
 const Modal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4"
+      className="fixed top-0 left-0 right-0 bottom-0 inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4"
       onClick={onClose}
     >
       <div
@@ -35,7 +36,8 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           </button>
         </footer>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
