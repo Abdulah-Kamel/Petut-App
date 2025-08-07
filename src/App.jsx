@@ -15,6 +15,8 @@ import FilterPage from "./pages/FilterPage";
 import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import DeliveryPage from "./pages/DeliveryPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import CartPage from "./pages/CartPage";
@@ -264,6 +266,8 @@ function App() {
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/role-selection" element={<RoleSelectionPage />} />
       </Routes>

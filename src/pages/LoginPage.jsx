@@ -164,7 +164,7 @@ const LoginPage = () => {
                 autoComplete="current-password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                className={`appearance-none relative block w-full px-3 py-3 border ${formErrors.password ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:bg-[#313340] dark:text-white rounded-lg placeholder-gray-500 dark:placeholder:text-white focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
                 placeholder="Password"
               />
               {formErrors.password && <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>}
@@ -187,9 +187,9 @@ const LoginPage = () => {
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-primary_app hover:underline">
+              <Link to="/forgot-password" className="font-medium text-primary_app hover:underline">
                 Forgot your password?
-              </a>
+              </Link>
             </div>
           </div>
 
