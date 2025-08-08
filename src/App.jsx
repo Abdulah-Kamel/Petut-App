@@ -52,8 +52,7 @@ import Store from './pages/admin-dashboard/Store'
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import RoleSelectionPage from "./pages/RoleSelectionPage";
 import Notification from "./components/Notification1/Notification.jsx";
-
-
+import BreedIdentifierPage from './pages/BreedIdentifierPage';
 function App() {
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
@@ -143,7 +142,6 @@ function App() {
   return (
     <>
       <Notification />
-      {/* <NotificationHandler /> */}
       <ToastContainer />
       <Routes>
         <Route path="/doctor-dashboard" element={<DoctorDashboard />}>
@@ -176,6 +174,7 @@ function App() {
           <Route path="catalog" element={<CatalogPage />} />
           <Route path="filters" element={<FilterPage />} />
           <Route path="product/:productId" element={<ProductPage />} />
+          <Route path="/identify" element={<BreedIdentifierPage />} />
           <Route
             path="delivery"
             element={
