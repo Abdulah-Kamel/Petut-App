@@ -15,12 +15,12 @@ import { IoLocation } from "react-icons/io5";
 import MapModal from './MapModal.jsx';
 
 export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
-    // 🧠 حالة المودال والبيانات
+    // حالة المودال والبيانات
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState('');
-    const [price, setPrice] = useState(null);
+    const [price, setPrice] = useState('');
     const [selectedLocation, setSelectedLocation] = useState('');
     const [day, setDay] = useState('');
     const [openTime, setOpenTime] = useState('');
@@ -29,7 +29,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
     const [doctors, setDoctors] = useState([]);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [userData, setUserData] = useState(null);
-    // 🧠 حالة ظهور مودال الخريطة
+    // حالة ظهور مودال الخريطة
     const [showMapModal, setShowMapModal] = useState(false);
 
     const navigate = useNavigate();
@@ -95,7 +95,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
         setEmail('');
         setStatus('');
         setWorkingHours([]);
-        setPrice(null);
+        setPrice('');
         setDay('');
         setOpenTime('');
         setCloseTime('');
@@ -147,29 +147,29 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
         }
     };
 
-    // 🧠 دالة لفتح مودال الخريطة وإخفاء المودال الحالي
+    // دالة لفتح مودال الخريطة وإخفاء المودال الحالي
     const handleOpenMapModal = () => {
-        // 💡 نستخدم النسخة المخزنة لإخفاء المودال
+        // نستخدم النسخة المخزنة لإخفاء المودال
         if (modalInstance) {
             modalInstance.hide();
         }
         setShowMapModal(true);
     };
 
-    // 🧠 دالة لاستقبال الموقع من مودال الخريطة
+    // دالة لاستقبال الموقع من مودال الخريطة
     const handleLocationConfirmed = (location) => {
         setSelectedLocation(location);
         setShowMapModal(false);
-        // 💡 نستخدم النسخة المخزنة لإظهار المودال
+        // نستخدم النسخة المخزنة لإظهار المودال
         if (modalInstance) {
             modalInstance.show();
         }
     };
 
-    // 🧠 دالة لإغلاق مودال الخريطة دون تغيير الموقع
+    // دالة لإغلاق مودال الخريطة دون تغيير الموقع
     const handleCloseMapModal = () => {
         setShowMapModal(false);
-        // 💡 نستخدم النسخة المخزنة لإظهار المودال
+        // نستخدم النسخة المخزنة لإظهار المودال
         if (modalInstance) {
             modalInstance.show();
         }
@@ -177,7 +177,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
 
     useEffect(() => {
         // هذا الكود سيعمل مرة واحدة فقط عند تحميل المكون
-        if (modalRef.current) {
+        if (modalRef.current && window.bootstrap) {
             // ننشئ نسخة جديدة من مودال Bootstrap
             const modal = new window.bootstrap.Modal(modalRef.current, {
                 keyboard: false,
@@ -189,7 +189,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
     }, []);
     return (
         <Fragment>
-            {/* 💡 هذا هو المودال الرئيسي الذي يحتوي على النموذج */}
+            {/* هذا هو المودال الرئيسي الذي يحتوي على النموذج */}
             <div className="modal fade" id="addclinic" ref={modalRef} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-hidden="true">
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
@@ -244,7 +244,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
                                     </select>
                                 </div>
 
-                                {/* 💡 هذا هو الزر الذي سيفتح مودال الخريطة */}
+                                {/* هذا هو الزر الذي سيفتح مودال الخريطة */}
                                 <div className="address d-flex align-items-center gap-3 mb-3">
                                     <p className='mb-0'>Choose Location</p>
                                     <button onClick={handleOpenMapModal} className='custom-button d-flex align-items-center gap-2' type='button' data-bs-toggle="modal" data-bs-target="#map-modal">
@@ -298,7 +298,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
                 </div>
             </div>
 
-            {/* 💡 هذا هو المودال الجديد الذي سيحتوي على الخريطة */}
+            {/* هذا هو المودال الجديد الذي سيحتوي على الخريطة */}
             {showMapModal && (
                 <MapModal
                     onLocationConfirmed={handleLocationConfirmed}
