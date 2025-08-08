@@ -1,0 +1,92 @@
+{
+  "Golden Retriever": {
+    "type": "Dog",
+    "lifespan": "10-12 years",
+    "care": "Friendly, loyal, and highly active companion. Requires regular brushing due to thick double coat. Loves swimming and retrieving games. Excellent family dog with gentle temperament around children.",
+    "characteristics": ["Intelligent", "Loyal", "Water-loving", "Family-friendly"],
+    "exercise": "High energy - needs 1-2 hours daily exercise",
+    "grooming": "Weekly brushing required, daily during shedding seasons",
+    "products": ["Slicker brush", "Tennis balls", "Dog swimming vest", "Waterproof collar", "Interactive puzzle toys"]
+  },
+  "Shih Tzu": {
+    "type": "Dog",
+    "lifespan": "10-18 years",
+    "care": "Charming lap dog with luxurious coat. Originally bred for Chinese royalty. Requires daily brushing and regular eye cleaning. Perfect for apartment living due to low exercise needs.",
+    "characteristics": ["Affectionate", "Outgoing", "Playful", "Alert"],
+    "exercise": "Low to moderate - short daily walks sufficient",
+    "grooming": "Daily brushing essential, professional grooming monthly",
+    "products": ["Pin brush", "Eye cleaning wipes", "Small orthopedic bed", "Puzzle toys for small breeds", "Bow ties and accessories"]
+  },
+  "Labrador Retriever": {
+    "type": "Dog",
+    "lifespan": "10-12 years",
+    "care": "America's most popular dog breed. Extremely social and energetic. Originally bred as fishing dogs in Newfoundland. Requires consistent exercise and mental stimulation. Outstanding with children.",
+    "characteristics": ["Outgoing", "Active", "Strong", "Kind"],
+    "exercise": "Very high energy - needs 2+ hours daily activity",
+    "grooming": "Weekly brushing, more during shedding seasons",
+    "products": ["Fetch toys", "Cooling mat", "Premium dry food", "Running leash", "Treat-dispensing toys", "Swimming toys"]
+  },
+  "Persian Cat": {
+    "type": "Cat",
+    "lifespan": "12-17 years",
+    "care": "Elegant and quiet breed with distinctive flat face. Prefers calm, predictable environments. Requires daily brushing to prevent matting. Known for sweet, gentle personality and love of routine.",
+    "characteristics": ["Gentle", "Quiet", "Sweet", "Docile"],
+    "exercise": "Low activity level - enjoys gentle play",
+    "grooming": "Daily brushing absolutely necessary, monthly baths",
+    "products": ["Long-haired cat brush", "Eye cleaning solution", "Silky coat shampoo", "Metal comb", "Cat steps for furniture"]
+  },
+  "Ragdoll": {
+    "type": "Cat",
+    "lifespan": "12-17 years",
+    "care": "Large, docile breed famous for going limp when picked up. Extremely people-oriented and follows owners around. Semi-long coat requires regular brushing. Known as 'puppy cats' due to their dog-like loyalty.",
+    "characteristics": ["Docile", "Placid", "Affectionate", "Intelligent"],
+    "exercise": "Moderate - enjoys interactive play sessions",
+    "grooming": "Brush 2-3 times weekly, daily during shedding",
+    "products": ["Large luxury cat bed", "Medium-bristle brush", "Interactive feather wand", "Tall scratching post", "Cat harness for walks"]
+  },
+  "Maine Coon": {
+    "type": "Cat",
+    "lifespan": "12-15 years",
+    "care": "Largest domestic cat breed, often called 'gentle giants'. Originally working cats from Maine farms. Highly social and dog-like in personality. Surprisingly enjoys water activities. Requires space to roam.",
+    "characteristics": ["Gentle", "Intelligent", "Playful", "Social"],
+    "exercise": "Active breed - needs climbing and hunting simulation",
+    "grooming": "Brush 2-3 times weekly, coat is surprisingly manageable",
+    "products": ["Extra-large cat bed", "Wide-bristle brush", "Multi-level cat tree", "Water fountain", "Large interactive toys"]
+  },
+  "Turtle": {
+    "type": "Reptile",
+    "lifespan": "20-80+ years (species dependent)",
+    "care": "Long-lived reptiles requiring species-specific habitats. Aquatic species need filtered water systems, terrestrial species need proper substrate. All require UVB lighting and temperature regulation for health.",
+    "characteristics": ["Calm", "Long-lived", "Independent", "Fascinating"],
+    "exercise": "Swimming space for aquatic species, roaming area for land species",
+    "grooming": "Minimal - clean habitat maintenance is key",
+    "products": ["Species-appropriate tank", "UVB lighting system", "Water heater", "Quality turtle food", "Water filtration system", "Basking platform"]
+  },
+  "Hamster": {
+    "type": "Rodent",
+    "lifespan": "2-3 years",
+    "care": "Small, nocturnal rodents with cheek pouches for food storage. Naturally solitary (Syrian) or social (dwarf species). Extremely active at night. Requires spacious habitat with multiple levels and hiding spots.",
+    "characteristics": ["Active", "Curious", "Nocturnal", "Energetic"],
+    "exercise": "Very active - needs exercise wheel and climbing opportunities",
+    "grooming": "Self-grooming, provide sand bath for some species",
+    "products": ["Large multi-level cage", "Silent exercise wheel", "Aspen wood shavings", "Tunnels and tubes", "High-quality hamster mix", "Water bottle with sipper tube"]
+  },
+  "Budgie": {
+    "type": "Bird",
+    "lifespan": "5-10 years",
+    "care": "Intelligent, social parrots native to Australia. Highly vocal and can learn to mimic words. Require mental stimulation and social interaction. Best kept in pairs or groups for psychological well-being.",
+    "characteristics": ["Social", "Intelligent", "Vocal", "Active"],
+    "exercise": "Daily flight time outside cage essential",
+    "grooming": "Self-grooming, provide cuttlefish bone for beak maintenance",
+    "products": ["Spacious flight cage", "Natural wood perches", "Seed and pellet mix", "Mirror and toys", "Cuttlefish bone", "Bird bath"]
+  },
+  "Rabbit": {
+    "type": "Mammal",
+    "lifespan": "8-12 years",
+    "care": "Social animals that can be litter-trained and live indoors. Require high-fiber diet with unlimited timothy hay. Need space to hop and binky (happy jumps). Can form strong bonds with owners.",
+    "characteristics": ["Social", "Active", "Intelligent", "Affectionate"],
+    "exercise": "Several hours daily hopping time required",
+    "grooming": "Regular brushing, nail trimming needed",
+    "products": ["Large rabbit hutch", "Timothy hay", "Pellet food", "Litter box", "Chew toys", "Exercise pen", "Grooming brush"]
+  }
+}
