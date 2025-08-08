@@ -14,7 +14,7 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
     const [name, setName] = useState(defaultName);
     const [email, setEmail] = useState(defaultEmail);
     const [phone, setPhone] = useState(defaultPhone);
-    const [price, setPrice] = useState(defaultPrice);
+    const [price, setPrice] = useState(defaultPrice || '');
     const [address, setAddress] = useState(defaultAddress);
 
     const [doctorName, setDoctorName] = useState(defaultDoctorName);
@@ -45,7 +45,7 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
 
 
     useEffect(() => {
-        if (modalRef.current) {
+        if (modalRef.current && window.bootstrap) {
             const modal = new window.bootstrap.Modal(modalRef.current, {
                 keyboard: false,
                 backdrop: 'static'
@@ -148,7 +148,7 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
         setEmail(defaultEmail);
         setPhone(defaultPhone);
         setStatus(defaultStatus);
-        setPrice(defaultPrice);
+        setPrice(defaultPrice || '');
         setDoctorName(defaultDoctorName);
         setWorkingHours(defaultWorkingHours);
         setnotEditable(true);
