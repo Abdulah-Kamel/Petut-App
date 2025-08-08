@@ -31,25 +31,25 @@ export default function SupportPage() {
 
   const statCards = [
     {
-      title: 'إجمالي التذاكر',
+      title: 'Total Tickets',
       value: stats.total,
       icon: RiCustomerService2Line,
       color: 'bg-blue-500'
     },
     {
-      title: 'تذاكر مفتوحة',
+      title: 'Open Tickets',
       value: stats.open,
       icon: RiMessage3Line,
       color: 'bg-red-500'
     },
     {
-      title: 'قيد المعالجة',
+      title: 'In Progress',
       value: stats.inProgress,
       icon: RiTimeLine,
       color: 'bg-yellow-500'
     },
     {
-      title: 'محلولة',
+      title: 'Resolved',
       value: stats.resolved,
       icon: RiCheckLine,
       color: 'bg-green-500'
@@ -60,7 +60,7 @@ export default function SupportPage() {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          إدارة الدعم الفني
+          Support Management
         </h1>
       </div>
 

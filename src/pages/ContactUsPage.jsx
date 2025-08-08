@@ -121,7 +121,7 @@ export default function ContactUsPage() {
               ) : (
                 <>
                   <RiSendPlaneFill />
-                  إرسال الرسالة
+                  Send Message
                 </>
               )}
             </button>

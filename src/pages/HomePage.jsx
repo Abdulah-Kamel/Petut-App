@@ -118,8 +118,8 @@ const HomePage = () => {
               <Link to="/clinics" className="btn-primary-app px-8 py-4 rounded-full text-lg font-semibold transition-colors whitespace-nowrap cursor-pointer">
                 Schedule Appointment
               </Link>
-              <Link to="/clinics" className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-neutral hover:text-neutral-dark transition-colors whitespace-nowrap cursor-pointer">
-                Emergency Care
+              <Link to="/contact-us" className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-neutral hover:text-neutral-dark transition-colors whitespace-nowrap cursor-pointer">
+                Contact Support
               </Link>
             </div>
           </div>

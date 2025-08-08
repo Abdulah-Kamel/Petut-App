@@ -36,9 +36,9 @@ export default function SupportTicketsTable() {
         status: newStatus,
         updatedAt: new Date()
       });
-      toast.success('تم تحديث حالة التذكرة');
+      toast.success('Ticket status updated successfully');
     } catch (error) {
-      toast.error('حدث خطأ في تحديث الحالة');
+      toast.error('Error updating ticket status');
       console.error(error);
     }
   };
@@ -89,18 +89,18 @@ export default function SupportTicketsTable() {
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-          تذاكر الدعم الفني
+          Support Tickets
         </h2>
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
         >
-          <option value="all">جميع التذاكر</option>
-          <option value="open">مفتوحة</option>
-          <option value="in_progress">قيد المعالجة</option>
-          <option value="resolved">محلولة</option>
-          <option value="closed">مغلقة</option>
+          <option value="all">All Tickets</option>
+          <option value="open">Open</option>
+          <option value="in_progress">In Progress</option>
+          <option value="resolved">Resolved</option>
+          <option value="closed">Closed</option>
         </select>
       </div>
 
@@ -108,23 +108,23 @@ export default function SupportTicketsTable() {
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-700">
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-700 dark:text-gray-300">
-                المستخدم
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+                User
               </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-700 dark:text-gray-300">
-                الموضوع
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+                Subject
               </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-700 dark:text-gray-300">
-                الأولوية
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+                Priority
               </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-700 dark:text-gray-300">
-                الحالة
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+                Status
               </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-700 dark:text-gray-300">
-                التاريخ
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+                Date
               </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-700 dark:text-gray-300">
-                الإجراءات
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+                Actions
               </th>
             </tr>
           </thead>
@@ -148,9 +148,9 @@ export default function SupportTicketsTable() {
                 </td>
                 <td className="px-4 py-4">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(ticket.priority)}`}>
-                    {ticket.priority === 'urgent' ? 'عاجل' :
-                     ticket.priority === 'high' ? 'عالي' :
-                     ticket.priority === 'medium' ? 'متوسط' : 'منخفض'}
+                    {ticket.priority === 'urgent' ? 'Urgent' :
+                     ticket.priority === 'high' ? 'High' :
+                     ticket.priority === 'medium' ? 'Medium' : 'Low'}
                   </span>
                 </td>
                 <td className="px-4 py-4">
@@ -159,10 +159,10 @@ export default function SupportTicketsTable() {
                     onChange={(e) => updateTicketStatus(ticket.id, e.target.value)}
                     className={`px-2 py-1 text-xs font-medium rounded-full border-0 ${getStatusColor(ticket.status)}`}
                   >
-                    <option value="open">مفتوحة</option>
-                    <option value="in_progress">قيد المعالجة</option>
-                    <option value="resolved">محلولة</option>
-                    <option value="closed">مغلقة</option>
+                    <option value="open">Open</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="closed">Closed</option>
                   </select>
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">
@@ -180,7 +180,7 @@ export default function SupportTicketsTable() {
                     className="bg-primary_app text-white px-3 py-1 rounded-lg text-sm hover:bg-opacity-90 transition-colors flex items-center gap-1"
                   >
                     <RiMessage3Line />
-                    محادثة
+                    Chat
                   </button>
                 </td>
               </tr>
@@ -190,7 +190,7 @@ export default function SupportTicketsTable() {
 
         {filteredTickets.length === 0 && (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-            لا توجد تذاكر دعم فني
+            No support tickets found
           </div>
         )}
       </div>

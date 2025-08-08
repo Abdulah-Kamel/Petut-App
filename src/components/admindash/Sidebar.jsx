@@ -7,6 +7,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { GrOverview } from "react-icons/gr";
 import { IoStatsChart } from "react-icons/io5";
 import { MdReviews } from "react-icons/md";
+import { RiCustomerService2Line } from "react-icons/ri";
 // import logo from '../../assets/petut.png';
 import { HiShoppingBag } from "react-icons/hi2";
 import { auth } from '../../firebase';
@@ -109,6 +110,17 @@ export default function Sidebar({ open,toggleSidebar }) {
                             >
                                 <IoStatsChart size={25} />
                                  <span className="fw-bold">Charts</span>
+                            </NavLink>
+                        </li>
+                        <li className="mb-2 p-3">
+                            <NavLink
+                                to="/admin-dashboard/support"
+                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
+                                className="text-decoration-none d-flex align-items-center gap-2"
+                                onClick={toggleSidebar}
+                            >
+                                <RiCustomerService2Line size={25} />
+                                <span className="fw-bold">Support</span>
                             </NavLink>
                         </li>
                     </div>

@@ -47,6 +47,9 @@ import ManageReservations from './pages/admin-dashboard/ManageReservations'
 import Charts from './pages/admin-dashboard/Charts'
 import Reviews from './pages/admin-dashboard/Reviews'
 import Store from './pages/admin-dashboard/Store'
+import SupportPage from './pages/admin-dashboard/SupportPage'
+import ContactUsPage from './pages/ContactUsPage'
+import MyTicketsPage from './pages/MyTicketsPage'
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import RoleSelectionPage from "./pages/RoleSelectionPage";
 import Notification from "./components/Notification1/Notification.jsx";
@@ -165,6 +168,7 @@ function App() {
           <Route path="reviews" element={<Reviews />} />
           <Route path="store" element={<Store />} />
           <Route path="charts" element={<Charts />} />
+          <Route path="support" element={<SupportPage />} />
         </Route>
         <Route
           path="/"
@@ -321,6 +325,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <AvatarSelectionScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="contact-us"
+            element={
+              <ProtectedRoute>
+                <ContactUsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="my-tickets"
+            element={
+              <ProtectedRoute>
+                <MyTicketsPage />
               </ProtectedRoute>
             }
           />
