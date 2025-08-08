@@ -2,16 +2,17 @@ import React, { Fragment, useState } from 'react';
 import logo from '../../assets/petut.png';
 import { BeatLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
-import { collection, doc, updateDoc } from 'firebase/firestore';
+import { collection, doc, Timestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 import axios from 'axios';
 
-export default function EditProductModal({ product, modalId, onProductUpdate }) {
+export default function EditProductModal({ product, setProducts, modalId, onProductUpdate }) {
     const {
         productName: defaultName,
         description: defaultDescription,
         rate: defaultRate,
         price: defaultPrice,
+        weight: defaultWeight,
         category: defaultCategory,
         imageUrl: defaultImageUrl,
     } = product;
@@ -20,6 +21,7 @@ export default function EditProductModal({ product, modalId, onProductUpdate }) 
     const [description, setDescription] = useState(defaultDescription);
     const [rate, setRate] = useState(defaultRate);
     const [price, setPrice] = useState(defaultPrice);
+    const [weight, setWeight] = useState(defaultWeight);
     const [category, setCategory] = useState(defaultCategory);
     const [imageUrl, setImageUrl] = useState(defaultImageUrl);
     const [notEditable, setNotEditable] = useState(true);
@@ -53,6 +55,7 @@ export default function EditProductModal({ product, modalId, onProductUpdate }) 
                 description,
                 rate,
                 price,
+                weight,
                 category,
                 imageURL: url,
             });
@@ -63,14 +66,24 @@ export default function EditProductModal({ product, modalId, onProductUpdate }) 
                     description,
                     rate,
                     price,
+                    weight,
                     category,
                     imageURL: url,
                 });
             }
             toast.success('Product updated successfully', { autoClose: 3000 });
+            setProducts(products => [...products, {
+                productName,
+                description,
+                price,
+                weight,
+                rate,
+                category,
+                imageURL: url,
+                createdAt: Timestamp.now()
+            }]);
             setTimeout(() => {
                 document.getElementById('close-btn-modal').click();
-                window.location.reload();
             }, 1000);
         } catch (error) {
             toast.error('Failed to update product: ' + error.message, { autoClose: 3000 });
@@ -84,6 +97,7 @@ export default function EditProductModal({ product, modalId, onProductUpdate }) 
         setDescription(defaultDescription);
         setRate(defaultRate);
         setPrice(defaultPrice);
+        setWeight(defaultWeight);
         setCategory(defaultCategory);
         setImageUrl(defaultImageUrl);
     };
@@ -152,6 +166,21 @@ export default function EditProductModal({ product, modalId, onProductUpdate }) 
                                         disabled={notEditable}
                                     />
                                 </div>
+                                <div className="product-weight d-flex align-items-center gap-3 mb-3">
+                                    <label htmlFor="product-weight" className="form-label">
+                                        Weight
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control w-75"
+                                        id="product-weight"
+                                        placeholder="Enter Weight"
+                                        value={weight}
+                                        onChange={(e) => setWeight(e.target.value)}
+                                        disabled={notEditable}
+                                    />
+                                </div>
+
                                 <div className="product-image d-flex align-items-center gap-3 mb-3">
                                     <label htmlFor="product-image" className="form-label">
                                         Image
@@ -217,7 +246,7 @@ export default function EditProductModal({ product, modalId, onProductUpdate }) 
                         </div>
                         <div className="modal-footer d-flex gap-3">
 
-                        {notEditable ? (
+                            {notEditable ? (
                                 <>
                                     <button type="button" className="custom-button w-25 text-white bg-danger" id="close-btn-modal" data-bs-dismiss="modal" aria-label="Close">Close</button>
                                     <button type="button" className="custom-button w-25" onClick={() => setNotEditable(false)}>Edit Product</button>
