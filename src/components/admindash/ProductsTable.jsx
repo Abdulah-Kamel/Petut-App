@@ -86,7 +86,7 @@ export default function ProductsTable({ products, setProducts, handleDeleteProdu
                                             <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editproduct-${product.id}`}>
                                                 <TbEdit />
                                             </button>
-                                            <EditProductModal product={product} modalId={product.id} setProducts={setProducts} onProductUpdate={(updatedProduct) => {
+                                            <EditProductModal product={product} products={products} modalId={product.id} setProducts={setProducts} onProductUpdate={(updatedProduct) => {
                                                 const updatedList = products.map((p) =>
                                                     p.id === updatedProduct.id ? updatedProduct : p
                                                 );

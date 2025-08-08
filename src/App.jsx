@@ -52,6 +52,8 @@ import Store from './pages/admin-dashboard/Store'
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import RoleSelectionPage from "./pages/RoleSelectionPage";
 import Notification from "./components/Notification1/Notification.jsx";
+
+
 function App() {
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
@@ -60,7 +62,7 @@ function App() {
   const prevCartRef = useRef(cart);
 
 
-  
+
   useEffect(() => {
     // منع تهيئة OneSignal أكتر من مرة
     if (window.OneSignal && !window.__oneSignalInitialized) {
@@ -140,7 +142,7 @@ function App() {
 
   return (
     <>
-      <Notification/>
+      <Notification />
       {/* <NotificationHandler /> */}
       <ToastContainer />
       <Routes>
@@ -271,6 +273,7 @@ function App() {
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/role-selection" element={<RoleSelectionPage />} />
       </Routes>
+
     </>
   );
 }

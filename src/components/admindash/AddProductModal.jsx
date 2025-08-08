@@ -12,6 +12,7 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
     const [productName, setProductName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
+    const [weight, setWeight] = useState('');
     const [rate, setRate] = useState('');
     const [category, setCategory] = useState('');
     const [imageFile, setImageFile] = useState(null);
@@ -23,6 +24,7 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
         setProductName('');
         setDescription('');
         setPrice('');
+        setWeight('');
         setRate('');
         setCategory('');
         setImageFile(null);
@@ -31,16 +33,16 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
 
     // add product to firebase
     const handleAddProduct = async () => {
+        setLoading(true);
         if (!productName || !description || !price || !rate || !category || !imageFile) {
             toast.error('Please fill in all the required fields', { autoClose: 3000 });
             return;
         }
         if (!imageFile) return;
-        setLoading(true);
-
+        
         const formData = new FormData();
         formData.append('image', imageFile);
-
+        
         try {
             // upload image
             const response = await axios.post('https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307', formData);
@@ -51,6 +53,7 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
                 productName,
                 description,
                 price,
+                weight,
                 rate,
                 category,
                 imageURL: url,
@@ -65,6 +68,7 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
                 productName,
                 description,
                 price,
+                weight,
                 rate,
                 category,
                 imageURL: url,
@@ -102,6 +106,10 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
                                 <div className="product-price d-flex align-items-center gap-3 mb-3">
                                     <label htmlFor="product-price" className="form-label">Price</label>
                                     <input type="number" className="form-control w-75" id="product-price" placeholder="Enter Price" value={price} onChange={(e) => setPrice(e.target.value)} />
+                                </div>
+                                <div className="product-weight d-flex align-items-center gap-3 mb-3">
+                                    <label htmlFor="product-weight" className="form-label">weight</label>
+                                    <input type="text" className="form-control w-75" id="product-weight" placeholder="Enter weight" value={weight} onChange={(e) => setWeight(e.target.value)} />
                                 </div>
 
                                 <div className="product-image d-flex align-items-center gap-3 mb-3">

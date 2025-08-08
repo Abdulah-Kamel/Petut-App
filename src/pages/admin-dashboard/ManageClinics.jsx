@@ -19,7 +19,7 @@ import AddClinicModal from '../../components/AddClinicModal';
 
 export default function ManageClinics() {
     const [clinics, setClinics] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const statistics = [
         { title: 'Total clinics', count: '100', icon: <FaClinicMedical size={40} /> },
@@ -71,7 +71,7 @@ export default function ManageClinics() {
                 <div className='d-flex align-items-center justify-content-end mt-4 pb-5' >
                     <button className='custom-button d-flex align-items-center fw-bold' data-bs-toggle="modal" data-bs-target="#addclinic" > <RiAddLine size={20} /> Add clinic</button>
                 </div>
-                <AddClinicModal clinics={clinics} setClinics={setClinics} fetchClinics={fetchClinics} />
+                <AddClinicModal clinics={clinics} setClinics={setClinics} fetchClinics={fetchClinics} setLoading={setLoading} />
 
                 <ClinicsTable clinics={clinics} fetchClinics={fetchClinics} onDelete={handleDeleteClinic} loading={loading} setLoading={setLoading} />
             </div>
