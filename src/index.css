@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;500;600;700&family=Exo+2:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Exo', 'Exo 2', system-ui, sans-serif;
+    text-decoration: none;
+  }
+  body {
+    @apply bg-secondary-light dark:bg-secondary-dark text-neutral;
+  }
+}
+
+@layer components {
+  .btn-primary-app {
+    @apply bg-primary_app text-white font-semibold py-2 px-4 rounded-lg hover:bg-primary_app/90 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-neutral font-semibold py-2 px-4 rounded-lg hover:bg-secondary/90 transition-colors;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-[#313340] rounded-lg shadow-md overflow-hidden;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary_app;
+  }
+  
+  .nav-link {
+    @apply text-neutral dark:text-white hover:text-primary_app dark:hover:text-primary_app transition-colors;
+  }
+  
+  .badge {
+    @apply inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none rounded-full;
+  }
+  
+  .badge-primary {
+    @apply badge bg-primary_app text-white;
+  }
+  
+  .badge-secondary {
+    @apply badge bg-secondary text-neutral;
+  }
+}
+
