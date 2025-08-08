@@ -7,10 +7,6 @@ import { store } from './store/store.js'
 import { AuthProvider } from './context/AuthContext.jsx'
 import 'leaflet/dist/leaflet.css';
 import './index.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
-import * as bootstrap from 'bootstrap';
-window.bootstrap = bootstrap;
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
