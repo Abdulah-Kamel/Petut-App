@@ -101,7 +101,7 @@ const CommunityScreen = () => {
           className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary_app"
         >
           <option value="latest">Latest</option>
-          <option value="nearest">Nearest</option>
+          <option value="Oldest">Nearest</option>
         </select>
       </div>
 
