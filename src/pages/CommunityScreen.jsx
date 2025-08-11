@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, where, orderBy, onSnapshot, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 import UserAvatar from '../components/UserAvatar';
 
 const CommunityScreen = () => {
@@ -10,6 +11,7 @@ const CommunityScreen = () => {
   const [selectedTopic, setSelectedTopic] = useState('All');
   const [sortBy, setSortBy] = useState('latest');
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   
   const topics = ['All', 'Adoption', 'Breeding', 'Others'];
 
@@ -133,7 +135,7 @@ const CommunityScreen = () => {
             <div 
               key={post.id} 
               className="bg-white rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => window.location.href = `/post/${post.id}`}
+              onClick={() => navigate(`/post/${post.id}`)}
             >
               {/* Author Info */}
               <div className="flex items-center justify-between mb-3">
@@ -142,7 +144,7 @@ const CommunityScreen = () => {
                     className="cursor-pointer hover:opacity-80"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.location.href = `/profile/${post.userId}`;
+                      navigate(`/profile/${post.userId}`);
                     }}
                   >
                     <UserAvatar 
@@ -156,7 +158,7 @@ const CommunityScreen = () => {
                       className="font-semibold cursor-pointer hover:text-primary_app"
                       onClick={(e) => {
                         e.stopPropagation();
-                        window.location.href = `/profile/${post.userId}`;
+                        navigate(`/profile/${post.userId}`);
                       }}
                     >
                       {post.authorName}
@@ -184,7 +186,7 @@ const CommunityScreen = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.location.href = `/edit-post/${post.id}`;
+                            navigate(`/edit-post/${post.id}`);
                           }}
                           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
@@ -228,7 +230,7 @@ const CommunityScreen = () => {
 
       {/* Floating Action Button */}
       <button 
-        onClick={() => window.location.href = '/create-post'}
+        onClick={() => navigate('/create-post')}
         className="fixed bottom-6 right-6 bg-primary_app text-white w-14 h-14 rounded-full shadow-lg hover:bg-opacity-90 flex items-center justify-center"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
