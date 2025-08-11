@@ -8,7 +8,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { getUserProfile, setUserProfile } from "../../firebase";
 import ProfileImageManager from "./ProfileImageManager";
-import AvatarSelectionModal from "./AvatarSelectionModal";
+
 
 const ProfileForm = ({ currentUser }) => {
   const { authUser } = useAuth ? useAuth() : { authUser: null };
@@ -24,7 +24,7 @@ const ProfileForm = ({ currentUser }) => {
   const [loading, setLoading] = useState(false);
   const [profileImage, setProfileImage] = useState( ""); // base64 for preview
   const [profileImageFile, setProfileImageFile] = useState(null);
-  const [showAvatarModal, setShowAvatarModal] = useState(false);
+
   async function fetchProfile() {
     if (currentUser?.uid) {
       const profile = await getUserProfile(currentUser.uid);
@@ -57,10 +57,7 @@ const ProfileForm = ({ currentUser }) => {
     setProfileImageFile(null);
   };
 
-  const handleAvatarSelect = (avatarId) => {
-    setProfileImage(avatarId);
-    setProfileImageFile(null);
-  };
+
 
   const handleProfileSave = async (e) => {
     e.preventDefault();
@@ -92,11 +89,7 @@ const ProfileForm = ({ currentUser }) => {
             throw new Error(result.error.message || "Image upload failed");
           }
         }
-        // If it's a DiceBear URL or regular avatar ID, keep it as is
-        else if (profileImage && typeof profileImage === 'string' && 
-                (profileImage.startsWith('https://api.dicebear.com') || profileImage.includes('_'))) {
-          imageUrl = profileImage;
-        }
+
 
         // Save to Firestore
         const profileData = {
@@ -166,7 +159,7 @@ const ProfileForm = ({ currentUser }) => {
               profileImage={profileImage}
               onImageChange={handleImageChange}
               onImageDelete={handleImageDelete}
-              onAvatarSelect={() => setShowAvatarModal(true)}
+              onAvatarSelect={null}
               userName={fullName}
             />
           </div>
@@ -322,13 +315,7 @@ const ProfileForm = ({ currentUser }) => {
           )}
         </div>
       </form>
-      
-      {/* Avatar Selection Modal */}
-      <AvatarSelectionModal
-        isOpen={showAvatarModal}
-        onClose={() => setShowAvatarModal(false)}
-        onSelect={handleAvatarSelect}
-      />
+
     </div>
   );
 };

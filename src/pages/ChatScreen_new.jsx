@@ -200,8 +200,6 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
     return 'Now';
   };
 
-
-
   const MessageBubble = ({ message }) => {
     const isMe = message.senderId === user?.uid;
     
@@ -222,11 +220,11 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
         
         <div className={`max-w-[70%] px-4 py-3 relative shadow-sm ${
           isMe 
-            ? 'bg-primary_app text-white rounded-l-2xl rounded-tr-2xl rounded-br-md ml-auto border-2 border-primary_app-dark' 
-            : 'bg-secondary-light text-neutral rounded-r-2xl rounded-tl-2xl rounded-bl-md border-2 border-secondary'
+            ? 'bg-blue-600 text-white rounded-l-2xl rounded-tr-2xl rounded-br-md ml-auto border-2 border-blue-700' 
+            : 'bg-gray-100 text-gray-900 rounded-r-2xl rounded-tl-2xl rounded-bl-md border-2 border-gray-300'
         }`}>
           {isMe && (
-            <div className="absolute -top-2 right-2 bg-primary_app-dark text-white text-xs px-2 py-1 rounded-full shadow-sm">
+            <div className="absolute -top-2 right-2 bg-blue-700 text-white text-xs px-2 py-1 rounded-full shadow-sm">
               You
             </div>
           )}
@@ -244,7 +242,7 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
           )}
           
           <div className={`flex items-center mt-1 text-xs ${
-            isMe ? 'justify-end text-orange-100' : 'justify-start text-neutral/70'
+            isMe ? 'justify-end text-blue-100' : 'justify-start text-gray-500'
           }`}>
             <span>{formatTime(message.timestamp)}</span>
             {isMe && (
@@ -278,22 +276,22 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
       }
     }}>
       {/* Header */}
-      <div className="bg-white border-b px-3 sm:px-4 py-3 flex items-center justify-between flex-shrink-0">
+      <div className="bg-white border-b px-4 py-3 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center min-w-0 flex-1">
-          <div className="relative mr-2 sm:mr-3 flex-shrink-0">
+          <div className="relative mr-3 flex-shrink-0">
             <UserAvatar 
               imageData={otherUserImage} 
-              userName={otherUserName} 
-              size="w-8 h-8 sm:w-10 sm:h-10" 
+              userName="Customer Support" 
+              size="w-10 h-10" 
             />
             {isOnline && (
-              <div className="absolute bottom-0 right-0 w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full border-2 border-white"></div>
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
             )}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="font-semibold text-sm sm:text-base truncate">{otherUserName}</h3>
-            <p className={`text-xs sm:text-sm ${isOnline ? 'text-green-500' : 'text-gray-500'}`}>
-              {isOnline ? 'Online' : 'Last seen recently'}
+            <h3 className="font-semibold text-base truncate">Customer Support</h3>
+            <p className={`text-sm ${isOnline ? 'text-green-500' : 'text-gray-500'}`}>
+              {isOnline ? 'Online' : 'We\'ll respond soon'}
             </p>
           </div>
         </div>
@@ -310,22 +308,13 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
           {showMenu && (
             <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border z-10">
               <button
-                onClick={viewProfile}
-                className="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center gap-2 text-sm"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                View Profile
-              </button>
-              <button
                 onClick={deleteChat}
                 className="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center gap-2 text-sm text-red-600"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
-                Delete Chat
+                End Chat
               </button>
             </div>
           )}
@@ -336,8 +325,9 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
       <div className="flex-1 overflow-y-auto p-4 min-h-0 bg-gray-50">
         {messages.length === 0 ? (
           <div className="text-center text-gray-500 mt-8">
-           
-        
+            <div className="text-4xl mb-4">🎧</div>
+            <p className="text-lg">Welcome to Customer Support</p>
+            <p className="text-sm">How can we help you today?</p>
           </div>
         ) : (
           <>
@@ -350,8 +340,8 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
       </div>
 
       {/* Input */}
-      <div className="bg-white border-t p-2 sm:p-4 flex-shrink-0">
-        <div className="flex items-center space-x-1 sm:space-x-2">
+      <div className="bg-white border-t p-4 flex-shrink-0">
+        <div className="flex items-center space-x-2">
           <input
             type="file"
             ref={fileInputRef}
@@ -364,7 +354,7 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
             onClick={() => fileInputRef.current?.click()}
             className="p-2 text-primary_app hover:bg-gray-50 rounded-full flex-shrink-0"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
@@ -379,7 +369,7 @@ const ChatScreen = ({ chatId, otherUserId, otherUserName, otherUserImage }) => {
               }}
               className="p-2 text-primary_app hover:bg-gray-50 rounded-full flex-shrink-0"
             >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </button>

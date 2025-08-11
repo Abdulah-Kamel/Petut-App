@@ -95,9 +95,10 @@ class SimpleChatService {
         const otherUserId = participants.find(id => id !== currentUserId);
         
         batch.update(chatRef, {
-          lastMessage: content,
+          lastMessage: type === 'image' ? '📷 صورة' : content,
           lastMessageTime: serverTimestamp(),
           lastMessageSenderId: currentUserId,
+          lastMessageType: type,
           [`unreadCount.${otherUserId}`]: increment(1),
           [`unreadCount.${currentUserId}`]: 0,
         });

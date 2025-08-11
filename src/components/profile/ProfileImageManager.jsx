@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { HiOutlineCamera, HiOutlineTrash, HiOutlineUser } from 'react-icons/hi';
-import { AvatarIcon } from '../../utils/avatarMapping.jsx';
-import { isDiceBearAvatar } from '../../utils/fluttermojiUtils';
+
 import ImageEditor from '../common/ImageEditor';
 
 const ProfileImageManager = ({ 
@@ -97,33 +96,10 @@ const ProfileImageManager = ({
     setShowOptions(false);
   };
 
-  const handleAvatarSelect = () => {
-    if (onAvatarSelect) {
-      onAvatarSelect();
-    }
-    setShowOptions(false);
-  };
+
 
   const renderImage = () => {
     if (profileImage) {
-      // Check if it's a DiceBear avatar
-      if (isDiceBearAvatar(profileImage)) {
-        return (
-          <img
-            src={profileImage}
-            alt={userName}
-            className="w-full h-full rounded-full object-cover border border-gray-200 dark:border-gray-600"
-          />
-        );
-      }
-      // Check if it's a regular avatar ID
-      else if (typeof profileImage === 'string' && (profileImage.includes('_') || profileImage.length < 50)) {
-        return (
-          <div className="w-full h-full rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center border border-gray-200 dark:border-gray-600">
-            <AvatarIcon avatarId={profileImage} size={48} />
-          </div>
-        );
-      }
       // Regular image
       return (
         <img
@@ -172,14 +148,7 @@ const ProfileImageManager = ({
             <span>رفع صورة جديدة</span>
           </button>
           
-          <button
-            onClick={handleAvatarSelect}
-            className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center space-x-3 text-gray-700 dark:text-gray-200 border-t border-gray-100 dark:border-gray-600"
-          >
-            <HiOutlineUser className="text-lg" />
-            <span>اختيار أفاتار</span>
-          </button>
-          
+
           {profileImage && (
             <button
               onClick={handleDelete}

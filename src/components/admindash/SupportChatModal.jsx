@@ -43,13 +43,13 @@ export default function SupportChatModal({ ticket, onClose }) {
         senderId: user.uid,
         senderName: user.displayName || 'Admin',
         message: newMessage.trim(),
-        timestamp: serverTimestamp(),
+        timestamp: new Date(),
         isAdmin: true
       };
 
       await updateDoc(doc(db, 'support_tickets', ticket.id), {
         messages: arrayUnion(messageData),
-        updatedAt: serverTimestamp(),
+        updatedAt: new Date(),
         status: 'in_progress'
       });
 

@@ -7,7 +7,8 @@ import { TbLogout2 } from "react-icons/tb";
 import { GrOverview } from "react-icons/gr";
 import { IoStatsChart } from "react-icons/io5";
 import { MdReviews } from "react-icons/md";
-import { RiCustomerService2Line } from "react-icons/ri";
+import { RiCustomerService2Line, RiCustomerServiceLine } from "react-icons/ri";
+import { BiSupport } from "react-icons/bi";
 // import logo from '../../assets/petut.png';
 import { HiShoppingBag } from "react-icons/hi2";
 import { auth } from '../../firebase';
@@ -26,8 +27,8 @@ export default function Sidebar({ open,toggleSidebar }) {
       };
     return (
         <Fragment>
-            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed bottom-0 ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '999' }} >
-                <ul className=" p-0 d-flex flex-column align-items-left  justify-content-between h-100" >
+            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-absolute ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '999', minHeight: 'calc(100vh - 100px)' }} >
+                <ul className=" p-0 d-flex flex-column align-items-left justify-content-between" style={{ minHeight: '100vh' }}>
                     <div className="top-links">
                         {/* <div className="logo">
                             <img src={logo} width={'80px'} height={'80px'} alt="logo" className='text-left' />
@@ -119,7 +120,9 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 className="text-decoration-none d-flex align-items-center gap-2"
                                 onClick={toggleSidebar}
                             >
-                                <RiCustomerService2Line size={25} />
+                                <BiSupport size={25} style={{ display: 'inline-block', minWidth: '25px' }} />
+                                {/* Fallback icon if BiSupport doesn't load */}
+                                <span style={{ display: 'none' }}>🎧</span>
                                 <span className="fw-bold">Support</span>
                             </NavLink>
                         </li>

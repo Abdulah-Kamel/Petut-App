@@ -50,6 +50,8 @@ import Store from './pages/admin-dashboard/Store'
 import SupportPage from './pages/admin-dashboard/SupportPage'
 import ContactUsPage from './pages/ContactUsPage'
 import MyTicketsPage from './pages/MyTicketsPage'
+import SupportChatPage from './pages/SupportChatPage'
+import NotificationsPage from './pages/NotificationsPage'
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import RoleSelectionPage from "./pages/RoleSelectionPage";
 import Notification from "./components/Notification1/Notification.jsx";
@@ -59,7 +61,7 @@ import CreatePostScreen from "./pages/CreatePostScreen";
 import PostDetailsScreen from "./pages/PostDetailsScreen";
 import ProfileViewScreen from "./pages/ProfileViewScreen";
 import EditPostScreen from "./pages/EditPostScreen";
-import AvatarSelectionScreen from "./pages/AvatarSelectionScreen";
+
 function App() {
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
@@ -320,14 +322,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="avatar-selection"
-            element={
-              <ProtectedRoute>
-                <AvatarSelectionScreen />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="contact-us"
             element={
@@ -341,6 +336,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <MyTicketsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="support-chat/:ticketId"
+            element={
+              <ProtectedRoute>
+                <SupportChatPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationsPage />
               </ProtectedRoute>
             }
           />

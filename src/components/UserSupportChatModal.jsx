@@ -19,11 +19,18 @@ export default function UserSupportChatModal({ ticket, onClose }) {
       if (doc.exists()) {
         const data = doc.data();
         setMessages(data.messages || []);
+        
+        // Mark as seen when user opens the chat
+        if (user) {
+          updateDoc(doc.ref, {
+            userLastSeen: new Date()
+          }).catch(console.error);
+        }
       }
     });
 
     return () => unsubscribe();
-  }, [ticket?.id]);
+  }, [ticket?.id, user]);
 
   useEffect(() => {
     scrollToBottom();
@@ -35,28 +42,39 @@ export default function UserSupportChatModal({ ticket, onClose }) {
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    if (!newMessage.trim() || !user) return;
+    if (!newMessage.trim() || !user || !ticket?.id) {
+      toast.error('Unable to send message. Please try again.');
+      return;
+    }
 
     setLoading(true);
     try {
       const messageData = {
         senderId: user.uid,
-        senderName: user.displayName || 'مستخدم',
+        senderName: user.displayName || user.email || 'User',
         message: newMessage.trim(),
-        timestamp: serverTimestamp(),
+        timestamp: new Date(),
         isAdmin: false
       };
 
-      await updateDoc(doc(db, 'support_tickets', ticket.id), {
+      const ticketRef = doc(db, 'support_tickets', ticket.id);
+      await updateDoc(ticketRef, {
         messages: arrayUnion(messageData),
-        updatedAt: serverTimestamp()
+        updatedAt: new Date(),
+        status: ticket.status === 'resolved' ? 'open' : ticket.status
       });
 
       setNewMessage('');
       toast.success('Message sent successfully');
     } catch (error) {
-      toast.error('Error sending message');
-      console.error(error);
+      console.error('Error sending message:', error);
+      if (error.code === 'permission-denied') {
+        toast.error('You do not have permission to send messages to this ticket');
+      } else if (error.code === 'not-found') {
+        toast.error('Ticket not found. Please refresh the page');
+      } else {
+        toast.error('Failed to send message. Please try again');
+      }
     } finally {
       setLoading(false);
     }
@@ -65,7 +83,7 @@ export default function UserSupportChatModal({ ticket, onClose }) {
   const formatMessageTime = (timestamp) => {
     if (!timestamp) return '';
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleTimeString('ar-EG', { 
+    return date.toLocaleTimeString('en-US', { 
       hour: '2-digit', 
       minute: '2-digit' 
     });
