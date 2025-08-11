@@ -260,7 +260,7 @@ const ClinicDetailsScreen = () => {
                       payments
                     </span>
                     <span>
-                      {clinic.price ? `${clinic.price} $` : "Price not set"}
+                      {clinic.price ? `${clinic.price} EGP` : "Price not set"}
                     </span>
                   </div>
                 </div>
@@ -362,7 +362,7 @@ const ClinicDetailsScreen = () => {
               </button>
 
               <button
-                className="flex-1 flex items-center justify-center gap-2 bg-primary text-black   font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-primary/90 disabled:opacity-50  disabled:cursor-not-allowed transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary text-white   font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-primary/90 disabled:opacity-50  disabled:cursor-not-allowed transition-colors"
                 disabled={!selectedDateTime || loading}
                 onClick={handleBook}
               >

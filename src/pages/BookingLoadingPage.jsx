@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
+import DarkModeToggle from "../components/DarkModeToggle";
+
 const messages = [
   "Confirming your appointment...",
   "Processing payment...",
@@ -42,12 +44,12 @@ const BookingLoadingPage = () => {
   return (
     <div className="min-h-screen bg-secondary-light dark:bg-gray-900 flex flex-col">
       {/* Header with Dark Mode Toggle */}
-      <div className=" p-4 flex items-center justify-center relative">
+      <div className="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-center relative">
         <h2 className="font-bold text-lg dark:text-white">
           Processing Booking
         </h2>
         <div className="absolute right-4">
-         
+          <DarkModeToggle />
         </div>
       </div>
 

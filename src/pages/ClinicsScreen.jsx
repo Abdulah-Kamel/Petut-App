@@ -210,7 +210,7 @@ const ClinicsScreen = () => {
 
   return (
     <div className="min-h-screen bg-secondary-light dark:bg-gray-900">
-      <div className="relative bg-primary_app shadow-lg">
+      <div className="relative bg-primary shadow-lg">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative max-w-6xl mx-auto px-6 py-12 md:py-16">
           <div className="flex items-center gap-4 mb-4 md:mb-8">

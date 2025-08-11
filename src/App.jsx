@@ -15,8 +15,6 @@ import FilterPage from "./pages/FilterPage";
 import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
 import DeliveryPage from "./pages/DeliveryPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import CartPage from "./pages/CartPage";
@@ -49,9 +47,20 @@ import ManageReservations from './pages/admin-dashboard/ManageReservations'
 import Charts from './pages/admin-dashboard/Charts'
 import Reviews from './pages/admin-dashboard/Reviews'
 import Store from './pages/admin-dashboard/Store'
+import SupportPage from './pages/admin-dashboard/SupportPage'
+import ContactUsPage from './pages/ContactUsPage'
+import MyTicketsPage from './pages/MyTicketsPage'
+import SupportChatPage from './pages/SupportChatPage'
+import NotificationsPage from './pages/NotificationsPage'
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import RoleSelectionPage from "./pages/RoleSelectionPage";
 import Notification from "./components/Notification1/Notification.jsx";
+import CommunityScreen from "./pages/CommunityScreen";
+import ChatsListScreen from "./pages/ChatsListScreen";
+import CreatePostScreen from "./pages/CreatePostScreen";
+import PostDetailsScreen from "./pages/PostDetailsScreen";
+import ProfileViewScreen from "./pages/ProfileViewScreen";
+import EditPostScreen from "./pages/EditPostScreen";
 import BreedIdentifierPage from './pages/BreedIdentifierPage';
 function App() {
   const dispatch = useDispatch();
@@ -160,6 +169,7 @@ function App() {
           <Route path="reviews" element={<Reviews />} />
           <Route path="store" element={<Store />} />
           <Route path="charts" element={<Charts />} />
+          <Route path="support" element={<SupportPage />} />
         </Route>
         <Route
           path="/"
@@ -264,11 +274,90 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="community"
+            element={
+              <ProtectedRoute>
+                <CommunityScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="chats"
+            element={
+              <ProtectedRoute>
+                <ChatsListScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="create-post"
+            element={
+              <ProtectedRoute>
+                <CreatePostScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="post/:postId"
+            element={
+              <ProtectedRoute>
+                <PostDetailsScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="profile/:userId"
+            element={
+              <ProtectedRoute>
+                <ProfileViewScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="edit-post/:postId"
+            element={
+              <ProtectedRoute>
+                <EditPostScreen />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="contact-us"
+            element={
+              <ProtectedRoute>
+                <ContactUsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="my-tickets"
+            element={
+              <ProtectedRoute>
+                <MyTicketsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="support-chat/:ticketId"
+            element={
+              <ProtectedRoute>
+                <SupportChatPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationsPage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/role-selection" element={<RoleSelectionPage />} />
       </Routes>

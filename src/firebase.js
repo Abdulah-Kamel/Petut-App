@@ -95,7 +95,9 @@ export async function getUserProfile(uid) {
 }
 
 export const setUserProfile = async (uid, data) => {
+  console.log('setUserProfile called with:', uid, data);
   const userDocRef = doc(db, "users", uid);
   // Use { merge: true } to update fields without overwriting the entire document
   await setDoc(userDocRef, data, { merge: true });
+  console.log('Data saved to Firebase successfully');
 };
