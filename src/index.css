@@ -48,3 +48,6 @@
   }
 }
 
+.leaflet-control-geocoder.leaflet-bar.leaflet-control {
+  display: none !important;
+}

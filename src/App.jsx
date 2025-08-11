@@ -61,7 +61,7 @@ import CreatePostScreen from "./pages/CreatePostScreen";
 import PostDetailsScreen from "./pages/PostDetailsScreen";
 import ProfileViewScreen from "./pages/ProfileViewScreen";
 import EditPostScreen from "./pages/EditPostScreen";
-
+import BreedIdentifierPage from './pages/BreedIdentifierPage';
 function App() {
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
@@ -70,7 +70,7 @@ function App() {
   const prevCartRef = useRef(cart);
 
 
-  
+
   useEffect(() => {
     // منع تهيئة OneSignal أكتر من مرة
     if (window.OneSignal && !window.__oneSignalInitialized) {
@@ -150,8 +150,7 @@ function App() {
 
   return (
     <>
-      <Notification/>
-      {/* <NotificationHandler /> */}
+      <Notification />
       <ToastContainer />
       <Routes>
         <Route path="/doctor-dashboard" element={<DoctorDashboard />}>
@@ -185,6 +184,7 @@ function App() {
           <Route path="catalog" element={<CatalogPage />} />
           <Route path="filters" element={<FilterPage />} />
           <Route path="product/:productId" element={<ProductPage />} />
+          <Route path="/identify" element={<BreedIdentifierPage />} />
           <Route
             path="delivery"
             element={
@@ -361,6 +361,7 @@ function App() {
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/role-selection" element={<RoleSelectionPage />} />
       </Routes>
+
     </>
   );
 }

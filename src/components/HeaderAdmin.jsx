@@ -29,8 +29,8 @@ export default function HeaderAdmin({toggleSidebar}) {
 
     return ( 
         <Fragment>
-            <header className="header-dash">
-                <nav className="navbar container-fluid background py-3 px-4 align-items-center position-fixed top-0 start-0 end-0 z-1 " style={{ height: '100px', borderBottom: '1px solid #D9A741' }}>
+            <header className="header-dash ">
+                <nav className="navbar container-fluid background py-3 px-4 align-items-center   position-fixed top-0 start-0 end-0 z-1 " style={{ height: '100px', borderBottom: '1px solid #D9A741' }}>
                     {/* <div className="">
                         <img src={logo} alt="logo" style={{ width: '80px', height: '80px'}} />
                     </div> */}
