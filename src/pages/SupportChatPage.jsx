@@ -57,10 +57,10 @@ const SupportChatPage = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-800';
-      case 'in_progress': return 'bg-orange-100 text-orange-800';
-      case 'closed': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'open': return 'bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200';
+      case 'in_progress': return 'bg-orange-100 dark:bg-orange-800 text-orange-800 dark:text-orange-200';
+      case 'closed': return 'bg-gray-100 dark:bg-[#313340] text-gray-800 dark:text-gray-300';
+      default: return 'bg-gray-100 dark:bg-[#313340] text-gray-800 dark:text-gray-300';
     }
   };
 
@@ -75,33 +75,33 @@ const SupportChatPage = () => {
 
   if (!ticket) {
     return (
-      <div className="min-h-screen bg-secondary-light flex items-center justify-center">
+      <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary_app mx-auto mb-4"></div>
-          <p className="text-neutral/70">Loading conversation...</p>
+          <p className="text-gray-600 dark:text-gray-300">Loading conversation...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-secondary-light">
+    <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark">
       {/* Header */}
-      <div className="card shadow-sm border-b">
+      <div className="bg-white dark:bg-[#313340] shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button
                 onClick={() => navigate('/my-tickets')}
-                className="mr-4 p-2 hover:bg-gray-100 rounded-full"
+                className="mr-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full text-gray-900 dark:text-white"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <div>
-                <h1 className="text-xl font-semibold text-neutral">{ticket.subject}</h1>
-                <p className="text-sm text-neutral/70">Ticket ID: {ticket.id}</p>
+                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{ticket.subject}</h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Ticket ID: {ticket.id}</p>
               </div>
             </div>
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(ticket.status)}`}>
@@ -113,7 +113,7 @@ const SupportChatPage = () => {
 
       {/* Messages */}
       <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg h-[600px] overflow-y-auto p-4 mb-4 space-y-4">
+        <div className="bg-white dark:bg-[#313340] rounded-lg shadow-lg h-[600px] overflow-y-auto p-4 mb-4 space-y-4">
           {ticket.messages.map((message, index) => {
             const isSupport = message.isAdmin || false;
             const isMe = !isSupport && message.senderId === currentUser?.uid;
@@ -125,10 +125,10 @@ const SupportChatPage = () => {
               >
                 {isSupport && (
                   <div className="mr-3 flex-shrink-0">
-                    <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
                       <span className="text-white text-xs font-bold">S</span>
                     </div>
-                    <div className="text-xs text-gray-500 text-center mt-1">
+                    <div className="text-xs text-gray-400 text-center mt-1">
                       Support
                     </div>
                   </div>
@@ -138,11 +138,11 @@ const SupportChatPage = () => {
                   className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg shadow-sm relative ${
                     isMe
                       ? 'bg-primary_app text-white rounded-l-2xl rounded-tr-2xl rounded-br-md'
-                      : 'bg-gray-200 text-gray-800 rounded-r-2xl rounded-tl-2xl rounded-bl-md'
+                      : 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-r-2xl rounded-tl-2xl rounded-bl-md'
                   }`}
                 >
                   <div className={`flex items-center gap-2 mb-2 text-xs ${
-                    isMe ? 'text-white/80' : 'text-gray-600'
+                    isMe ? 'text-white/80' : 'text-gray-600 dark:text-gray-400'
                   }`}>
                     <span className="font-medium">
                       {isMe ? 'You' : 'Customer Support'}
@@ -172,7 +172,7 @@ const SupportChatPage = () => {
 
         {/* Message Input */}
         {ticket.status !== 'closed' && (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
+          <div className="bg-white dark:bg-[#313340] rounded-lg shadow-lg p-4">
             <div className="flex gap-3">
               <input
                 type="text"
@@ -180,7 +180,7 @@ const SupportChatPage = () => {
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                 placeholder="Type your message to support..."
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary_app focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary_app focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 disabled={isLoading}
               />
               <button
@@ -195,8 +195,8 @@ const SupportChatPage = () => {
         )}
 
         {ticket.status === 'closed' && (
-          <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-center">
-            <p className="text-gray-600 dark:text-gray-400">This ticket has been closed. No new messages can be sent.</p>
+          <div className="bg-gray-100 dark:bg-[#313340] rounded-lg p-4 text-center">
+            <p className="text-gray-600 dark:text-gray-300">This ticket has been closed. No new messages can be sent.</p>
           </div>
         )}
       </div>

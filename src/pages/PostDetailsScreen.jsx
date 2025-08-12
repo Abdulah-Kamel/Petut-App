@@ -16,6 +16,7 @@ const PostDetailsScreen = () => {
   const [loading, setLoading] = useState(false);
   const [postData, setPostData] = useState(null);
   const [postLoading, setPostLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     if (!postId) return;
@@ -168,7 +169,7 @@ const PostDetailsScreen = () => {
 
   if (postLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark flex justify-center items-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary_app"></div>
       </div>
     );
@@ -176,24 +177,27 @@ const PostDetailsScreen = () => {
 
   if (!postData) {
     return (
-      <div className="text-center py-8">
-        <p>Post not found</p>
+      <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark flex items-center justify-center">
+        <div className="text-center py-8">
+          <p className="text-neutral dark:text-white">Post not found</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white min-h-screen px-2 sm:px-4">
-      {/* Back Button */}
-      <div className="p-3 sm:p-4 border-b">
-        <button onClick={() => navigate('/community')} className="text-primary_app hover:text-opacity-70 text-sm sm:text-base">
-          ← Back to Community
-        </button>
-      </div>
+    <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark">
+      <div className="max-w-4xl mx-auto px-2 sm:px-4">
+        {/* Back Button */}
+        <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+          <button onClick={() => navigate('/community')} className="text-primary_app hover:text-opacity-70 text-sm sm:text-base transition-colors">
+            ← Back to Community
+          </button>
+        </div>
 
-      {/* Post Content */}
-      <div className="p-3 sm:p-4">
-        <div className="bg-white rounded-lg shadow-md p-3 sm:p-4 mb-4">
+        {/* Post Content */}
+        <div className="p-3 sm:p-4">
+          <div className="card p-3 sm:p-4 mb-4">
           {/* Author Info */}
           <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
@@ -208,8 +212,8 @@ const PostDetailsScreen = () => {
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-semibold text-sm sm:text-base truncate">{postData.authorName || 'Unknown'}</p>
-                <p className="text-xs sm:text-sm text-gray-500">{formatTime(postData.timestamp)}</p>
+                <p className="font-semibold text-sm sm:text-base truncate text-neutral dark:text-white">{postData.authorName || 'Unknown'}</p>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{formatTime(postData.timestamp)}</p>
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
@@ -242,35 +246,36 @@ const PostDetailsScreen = () => {
             </div>
           </div>
 
-          {/* Content */}
-          <p className="mb-3 text-sm sm:text-base leading-relaxed">{postData.content}</p>
+            {/* Content */}
+            <p className="mb-3 text-sm sm:text-base leading-relaxed text-neutral dark:text-white">{postData.content}</p>
           
           {/* Image */}
           {postData.imageUrl && (
             <img
               src={`data:image/jpeg;base64,${postData.imageUrl}`}
               alt="Post"
-              className="w-full rounded-lg max-h-64 sm:max-h-96 object-cover"
+              className="w-64 h-64 object-contain rounded-lg mx-auto cursor-pointer hover:opacity-90 transition-opacity"
+              onClick={() => setSelectedImage(postData.imageUrl)}
             />
           )}
-        </div>
-
-        {/* Comments Section */}
-        <div className="mb-4">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-base sm:text-lg font-bold">Comments</h3>
-            <span className="text-sm text-gray-500">{comments.length}</span>
           </div>
 
-          {/* Comments List */}
-          <div className="space-y-2 sm:space-y-3 mb-4 max-h-64 sm:max-h-96 overflow-y-auto">
-            {comments.length === 0 ? (
-              <p className="text-center text-gray-500 py-4">
-                No comments yet. Be the first to comment!
-              </p>
-            ) : (
-              comments.map((comment) => (
-                <div key={comment.id} className="bg-gray-50 rounded-lg p-2 sm:p-3">
+          {/* Comments Section */}
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-base sm:text-lg font-bold text-neutral dark:text-white">Comments</h3>
+              <span className="text-sm text-gray-500 dark:text-gray-400">{comments.length}</span>
+            </div>
+
+            {/* Comments List */}
+            <div className="space-y-2 sm:space-y-3 mb-4 max-h-64 sm:max-h-96 overflow-y-auto">
+              {comments.length === 0 ? (
+                <p className="text-center text-gray-500 dark:text-gray-400 py-4">
+                  No comments yet. Be the first to comment!
+                </p>
+              ) : (
+                comments.map((comment) => (
+                  <div key={comment.id} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-2 sm:p-3">
                   <div className="flex items-start gap-2 sm:gap-3">
                     <div 
                       className="cursor-pointer hover:opacity-80 flex-shrink-0"
@@ -293,7 +298,7 @@ const PostDetailsScreen = () => {
                         >
                           {comment.authorName || 'Unknown'}
                         </span>
-                        <span className="text-xs text-gray-500 flex-shrink-0">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
                           {formatTime(comment.timestamp)}
                         </span>
                         {user?.uid !== comment.userId && (
@@ -308,31 +313,31 @@ const PostDetailsScreen = () => {
                           </button>
                         )}
                       </div>
-                      <p className="text-xs sm:text-sm leading-relaxed break-words">{comment.comment}</p>
+                      <p className="text-xs sm:text-sm leading-relaxed break-words text-neutral dark:text-white">{comment.comment}</p>
                     </div>
                   </div>
                 </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Comment Input */}
-        <div className="border-t pt-3 sm:pt-4 sticky bottom-0 bg-white">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && addComment()}
-              placeholder="Write a comment..."
-              className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-full focus:outline-none focus:border-primary_app"
-            />
-            <button
-              onClick={addComment}
-              disabled={loading || !commentText.trim()}
-              className="bg-primary_app text-white px-3 sm:px-4 py-2 rounded-full hover:bg-opacity-90 disabled:opacity-50 flex-shrink-0"
-            >
+          {/* Comment Input */}
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-3 sm:pt-4 sticky bottom-0 bg-secondary-light dark:bg-secondary-dark">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && addComment()}
+                placeholder="Write a comment..."
+                className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-full focus:outline-none focus:border-primary_app bg-white dark:bg-[#313340] text-neutral dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+              />
+              <button
+                onClick={addComment}
+                disabled={loading || !commentText.trim()}
+                className="bg-primary_app text-white px-3 sm:px-4 py-2 rounded-full hover:bg-opacity-90 disabled:opacity-50 flex-shrink-0 transition-colors"
+              >
               {loading ? (
                 <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -342,11 +347,34 @@ const PostDetailsScreen = () => {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
-              )}
-            </button>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={`data:image/jpeg;base64,${selectedImage}`}
+              alt="Full size"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-75"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
