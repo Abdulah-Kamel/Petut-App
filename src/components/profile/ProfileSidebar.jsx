@@ -19,8 +19,9 @@ const ProfileSidebar = ({
 }) => {
   const navItems = [
     { id: "profile", label: "Profile", icon: <HiOutlineUserCircle className="h-5 w-5 mr-3" /> },
-    { id: "orders", label: "Orders", icon: <HiOutlineShoppingCart className="h-5 w-5 mr-3" /> },
     { id: "pets", label: "My Pets", icon: <FaCat className="h-5 w-5 mr-3" /> },
+    { id: "orders", label: "Orders", icon: <HiOutlineShoppingCart className="h-5 w-5 mr-3" /> },
+    {id: "reservations", label: "Reservations", icon: <HiOutlineCube className="h-5 w-5 mr-3" />},
     { id: "favorites", label: "Favorites", icon: <HiOutlineHeart className="h-5 w-5 mr-3" /> },
     { id: "settings", label: "Settings", icon: <HiOutlineCog className="h-5 w-5 mr-3" /> },
   ];
@@ -44,10 +45,10 @@ const ProfileSidebar = ({
   return (
     <div className="md:w-1/4">
       <div className="bg-white dark:bg-[#313340] rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="p-6 text-center border-b border-gray-200 dark:border-gray-300">
+        <div className="p-6 flex flex-col align-items-center text-center border-b border-gray-200 dark:border-gray-300">
           <div className="mx-auto mb-4">
             <UserAvatar
-              imageData={profileImage || currentUser?.photoURL}
+              imageData={profileImage || currentUser?.profileImage}
               userName={currentUser?.displayName || "User"}
               size="w-24 h-24"
             />
