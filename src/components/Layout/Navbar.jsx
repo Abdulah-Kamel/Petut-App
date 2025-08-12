@@ -65,37 +65,35 @@ const Navbar = () => {
               <img src={logo} width={'100px'} height={'100px'} alt="logo" className="" />
               <p className="text-xl font-bold text-neutral dark:text-white">
                 <span className="text-primary_app me-2">Petut</span>
+                <br/>
                 Pet Care
               </p>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden lg:flex items-center space-x-6">
               <Link to="/" className="nav-link whitespace-nowrap">
                 Home
               </Link>
               <Link to="/catalog" className="nav-link whitespace-nowrap">
                 Catalog
               </Link>
-              {currentUser && (
                 <Link to="/favorites" className="nav-link whitespace-nowrap">
                   Favorites
                 </Link>
-              )}
-              <Link to="/clinics" className="nav-link whitespace-nowrap">
+                <Link to="/clinics" className="nav-link whitespace-nowrap">
                 Health
-              </Link>
-              <Link to="/community" className="nav-link whitespace-nowrap">
+                </Link>
+                <Link to="/community" className="nav-link whitespace-nowrap">
                 Community
-              </Link>
-              <Link to="/contact-us" className="nav-link whitespace-nowrap">
+                </Link>
+                <Link to="/contact-us" className="nav-link whitespace-nowrap">
                 Support
-              </Link>
-
+                </Link>
             </div>
 
             {/* Desktop User Actions */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden lg:flex items-center space-x-4">
               <button
                 onClick={() => navigate("/cart")}
                 className="relative p-2 text-neutral dark:text-white hover:text-primary_app dark:hover:text-primary_app transition-colors"
@@ -182,7 +180,7 @@ const Navbar = () => {
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-2">
+            <div className="lg:hidden flex items-center space-x-2">
               <button
                 onClick={() => navigate("/cart")}
                 className="relative p-2 text-neutral dark:text-white hover:text-primary_app transition-colors"
@@ -243,7 +241,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu */}
-          <div className={`md:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+          <div className={`lg:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-full opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
             <div className="px-2 pt-2 pb-4 space-y-1 sm:px-3 bg-white dark:bg-[#313340] shadow-lg rounded-b-lg">
               <Link
                 to="/catalog"
