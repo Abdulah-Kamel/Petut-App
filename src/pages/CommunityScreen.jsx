@@ -11,6 +11,7 @@ const CommunityScreen = () => {
   const [selectedTopic, setSelectedTopic] = useState('All');
   const [sortBy, setSortBy] = useState('latest');
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
   const navigate = useNavigate();
   
   const topics = ['All', 'Adoption', 'Breeding', 'Others'];
@@ -85,21 +86,21 @@ const CommunityScreen = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64 bg-secondary-dark">
+      <div className="flex justify-center items-center h-64 bg-secondary-light dark:bg-secondary-dark">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-secondary-dark">
+    <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark">
       <div className="max-w-2xl mx-auto p-4">
       {/* Sort Options */}
       <div className="flex justify-end items-center mb-4">
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-3 py-1 border border-gray-600 bg-[#313340] text-white rounded-lg text-sm focus:outline-none focus:border-primary_app"
+          className="px-3 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#313340] text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:border-primary_app"
         >
           <option value="latest">Latest</option>
           <option value="Oldest">oldest</option>
@@ -115,7 +116,7 @@ const CommunityScreen = () => {
             className={`px-4 py-2 rounded-full whitespace-nowrap ${
               selectedTopic === topic
                 ? 'bg-primary_app text-white'
-                : 'bg-[#313340] text-gray-300 hover:bg-gray-600'
+                : 'bg-gray-200 dark:bg-[#313340] text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
             }`}
           >
             {topic}
@@ -125,7 +126,7 @@ const CommunityScreen = () => {
 
       {/* Posts */}
       {posts.length === 0 ? (
-        <div className="text-center text-gray-400 py-8">
+        <div className="text-center text-gray-500 dark:text-gray-400 py-8">
           No posts yet. Be the first to share!
         </div>
       ) : (
@@ -133,7 +134,7 @@ const CommunityScreen = () => {
           {posts.map((post) => (
             <div 
               key={post.id} 
-              className="bg-[#313340] rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow"
+              className="bg-white dark:bg-[#313340] rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => navigate(`/post/${post.id}`)}
             >
               {/* Author Info */}
@@ -154,7 +155,7 @@ const CommunityScreen = () => {
                   </div>
                   <div>
                     <p 
-                      className="font-semibold cursor-pointer hover:text-primary_app text-white"
+                      className="font-semibold cursor-pointer hover:text-primary_app text-gray-900 dark:text-white"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/profile/${post.userId}`);
@@ -162,7 +163,7 @@ const CommunityScreen = () => {
                     >
                       {post.authorName}
                     </p>
-                    <p className="text-sm text-gray-400">{formatTime(post.timestamp)}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{formatTime(post.timestamp)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -177,17 +178,17 @@ const CommunityScreen = () => {
                           const menu = e.target.nextSibling;
                           menu.classList.toggle('hidden');
                         }}
-                        className="text-gray-400 hover:text-gray-200 p-1"
+                        className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 p-1"
                       >
                         ⋮
                       </button>
-                      <div className="hidden absolute right-0 mt-2 w-32 bg-[#313340] rounded-md shadow-lg z-10">
+                      <div className="hidden absolute right-0 mt-2 w-32 bg-white dark:bg-[#313340] rounded-md shadow-lg z-10">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/edit-post/${post.id}`);
                           }}
-                          className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600"
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           Edit
                         </button>
@@ -196,7 +197,7 @@ const CommunityScreen = () => {
                             e.stopPropagation();
                             deletePost(post.id);
                           }}
-                          className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-600"
+                          className="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           Delete
                         </button>
@@ -207,19 +208,23 @@ const CommunityScreen = () => {
               </div>
 
               {/* Content */}
-              <p className="mb-3 text-gray-300">{post.content}</p>
+              <p className="mb-3 text-gray-900 dark:text-gray-300">{post.content}</p>
               
               {/* Image */}
               {post.imageUrl && (
                 <img
                   src={`data:image/jpeg;base64,${post.imageUrl}`}
                   alt="Post"
-                  className="w-full h-48 object-cover rounded-lg mb-3"
+                  className="w-64 h-64 object-contain rounded-lg mb-3 mx-auto cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage(post.imageUrl);
+                  }}
                 />
               )}
 
               {/* Actions */}
-              <div className="flex items-center text-gray-400 text-sm">
+              <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                 <span>💬 {post.commentsCount || 0} comments</span>
               </div>
             </div>
@@ -237,6 +242,28 @@ const CommunityScreen = () => {
         </svg>
       </button>
       </div>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={`data:image/jpeg;base64,${selectedImage}`}
+              alt="Full size"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-75"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

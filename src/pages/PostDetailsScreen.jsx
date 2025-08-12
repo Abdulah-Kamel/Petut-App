@@ -16,6 +16,7 @@ const PostDetailsScreen = () => {
   const [loading, setLoading] = useState(false);
   const [postData, setPostData] = useState(null);
   const [postLoading, setPostLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     if (!postId) return;
@@ -253,7 +254,8 @@ const PostDetailsScreen = () => {
             <img
               src={`data:image/jpeg;base64,${postData.imageUrl}`}
               alt="Post"
-              className="w-full rounded-lg max-h-64 sm:max-h-96 object-cover"
+              className="w-64 h-64 object-contain rounded-lg mx-auto cursor-pointer hover:opacity-90 transition-opacity"
+              onClick={() => setSelectedImage(postData.imageUrl)}
             />
           )}
           </div>
@@ -351,6 +353,28 @@ const PostDetailsScreen = () => {
           </div>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={`data:image/jpeg;base64,${selectedImage}`}
+              alt="Full size"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-75"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
