@@ -79,6 +79,8 @@ export default function Store() {
 
         } catch (error) {
             toast.error("Failed to delete product, error:" + error.message, { autoClose: 3000 });
+        }finally {
+            setProductLoading(false);
         }
     }
     //delete order from firebase
@@ -123,7 +125,7 @@ export default function Store() {
             <div className='d-flex align-items-center justify-content-end mt-4' >
                 <button className='custom-button d-flex align-items-center fw-bold' data-bs-toggle="modal" data-bs-target="#addproduct" > <RiAddLine size={20} /> Add Product</button>
             </div>
-            <AddProductModal products={products} setProducts={setProducts}  />
+            <AddProductModal products={products} setProducts={setProducts} loading={productLoading} setLoading={setProductLoading}  />
             {productLoading ? (<h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3>) : products?.length === 0 ? <h3 className='text-center my-5'>No Products found</h3> : (
 
                 <>

@@ -18,8 +18,6 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
     const [imageFile, setImageFile] = useState(null);
 
     const [imageUrl, setImageUrl] = useState('');
-    // const [loading, setLoading] = useState(false);
-
     const reserFeilds = () => {
         setProductName('');
         setDescription('');
@@ -109,7 +107,7 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
                                 </div>
                                 <div className="product-weight d-flex align-items-center gap-3 mb-3">
                                     <label htmlFor="product-weight" className="form-label">weight</label>
-                                    <input type="text" className="form-control w-75" id="product-weight" placeholder="Enter weight" value={weight} onChange={(e) => setWeight(e.target.value)} />
+                                    <input type="text" className="form-control w-75" id="product-weight" placeholder="Enter weight" value={weight} onChange={(e) => setWeight(e.target.value)} optional />
                                 </div>
 
                                 <div className="product-image d-flex align-items-center gap-3 mb-3">
@@ -118,9 +116,6 @@ export default function AddProductModal({setProducts, loading, setLoading }) {
                                 </div>
                                 {imageUrl && (
                                     <div>
-                                        <p>Image URL:</p>
-                                        <a href={imageUrl} target="_blank" rel="noopener noreferrer">{imageUrl}</a>
-                                        <br />
                                         <img src={imageUrl} alt="preview" style={{ width: 100, marginTop: 10 }} />
                                     </div>
                                 )}
