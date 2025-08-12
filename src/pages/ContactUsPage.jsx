@@ -73,11 +73,11 @@ const ContactUsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary-light py-8">
+    <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark py-8">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-neutral mb-4">Contact Us</h1>
-          <p className="text-neutral/70">We're here to help! Choose the best way to reach us</p>
+          <h1 className="text-3xl font-bold text-neutral dark:text-white mb-4">Contact Us</h1>
+          <p className="text-neutral/70 dark:text-gray-300">We're here to help! Choose the best way to reach us</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -90,8 +90,8 @@ const ContactUsPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-neutral">Live Chat</h3>
-                <p className="text-neutral/70">For immediate assistance</p>
+                <h3 className="text-xl font-semibold text-neutral dark:text-white">Live Chat</h3>
+                <p className="text-neutral/70 dark:text-gray-300">For immediate assistance</p>
               </div>
             </div>
             <button
@@ -112,29 +112,29 @@ const ContactUsPage = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-neutral">Create Support Ticket</h3>
-                <p className="text-neutral/70">For detailed support requests</p>
+                <h3 className="text-xl font-semibold text-neutral dark:text-white">Create Support Ticket</h3>
+                <p className="text-neutral/70 dark:text-gray-300">For detailed support requests</p>
               </div>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral mb-2">Subject</label>
+                <label className="block text-sm font-medium text-neutral dark:text-white mb-2">Subject</label>
                 <input
                   type="text"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="input-field"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary_app bg-white dark:bg-[#313340] text-neutral dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   placeholder="Enter issue subject..."
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral mb-2">Priority</label>
+                <label className="block text-sm font-medium text-neutral dark:text-white mb-2">Priority</label>
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
-                  className="input-field"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary_app bg-white dark:bg-[#313340] text-neutral dark:text-white"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
@@ -143,12 +143,12 @@ const ContactUsPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral mb-2">Message</label>
+                <label className="block text-sm font-medium text-neutral dark:text-white mb-2">Message</label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   rows={4}
-                  className="input-field"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary_app bg-white dark:bg-[#313340] text-neutral dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   placeholder="Describe your issue in detail..."
                 />
               </div>
@@ -168,7 +168,7 @@ const ContactUsPage = () => {
         <div className="text-center mt-8">
           <button
             onClick={() => navigate('/my-tickets')}
-            className="text-primary_app hover:text-primary_app/80 font-medium"
+            className="text-primary_app hover:text-primary_app/80 font-medium transition-colors"
           >
             View My Support Tickets
           </button>

@@ -83,27 +83,26 @@ const CommunityScreen = () => {
     return 'Just now';
   };
 
-
-
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex justify-center items-center h-64 bg-secondary-dark">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="min-h-screen bg-secondary-dark">
+      <div className="max-w-2xl mx-auto p-4">
       {/* Sort Options */}
       <div className="flex justify-end items-center mb-4">
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary_app"
+          className="px-3 py-1 border border-gray-600 bg-[#313340] text-white rounded-lg text-sm focus:outline-none focus:border-primary_app"
         >
           <option value="latest">Latest</option>
-          <option value="Oldest">Nearest</option>
+          <option value="Oldest">oldest</option>
         </select>
       </div>
 
@@ -116,7 +115,7 @@ const CommunityScreen = () => {
             className={`px-4 py-2 rounded-full whitespace-nowrap ${
               selectedTopic === topic
                 ? 'bg-primary_app text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-[#313340] text-gray-300 hover:bg-gray-600'
             }`}
           >
             {topic}
@@ -126,7 +125,7 @@ const CommunityScreen = () => {
 
       {/* Posts */}
       {posts.length === 0 ? (
-        <div className="text-center text-gray-500 py-8">
+        <div className="text-center text-gray-400 py-8">
           No posts yet. Be the first to share!
         </div>
       ) : (
@@ -134,7 +133,7 @@ const CommunityScreen = () => {
           {posts.map((post) => (
             <div 
               key={post.id} 
-              className="bg-white rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow"
+              className="bg-[#313340] rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => navigate(`/post/${post.id}`)}
             >
               {/* Author Info */}
@@ -155,7 +154,7 @@ const CommunityScreen = () => {
                   </div>
                   <div>
                     <p 
-                      className="font-semibold cursor-pointer hover:text-primary_app"
+                      className="font-semibold cursor-pointer hover:text-primary_app text-white"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/profile/${post.userId}`);
@@ -163,7 +162,7 @@ const CommunityScreen = () => {
                     >
                       {post.authorName}
                     </p>
-                    <p className="text-sm text-gray-500">{formatTime(post.timestamp)}</p>
+                    <p className="text-sm text-gray-400">{formatTime(post.timestamp)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -178,17 +177,17 @@ const CommunityScreen = () => {
                           const menu = e.target.nextSibling;
                           menu.classList.toggle('hidden');
                         }}
-                        className="text-gray-500 hover:text-gray-700 p-1"
+                        className="text-gray-400 hover:text-gray-200 p-1"
                       >
                         ⋮
                       </button>
-                      <div className="hidden absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10">
+                      <div className="hidden absolute right-0 mt-2 w-32 bg-[#313340] rounded-md shadow-lg z-10">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/edit-post/${post.id}`);
                           }}
-                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600"
                         >
                           Edit
                         </button>
@@ -197,7 +196,7 @@ const CommunityScreen = () => {
                             e.stopPropagation();
                             deletePost(post.id);
                           }}
-                          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                          className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-600"
                         >
                           Delete
                         </button>
@@ -208,7 +207,7 @@ const CommunityScreen = () => {
               </div>
 
               {/* Content */}
-              <p className="mb-3">{post.content}</p>
+              <p className="mb-3 text-gray-300">{post.content}</p>
               
               {/* Image */}
               {post.imageUrl && (
@@ -220,7 +219,7 @@ const CommunityScreen = () => {
               )}
 
               {/* Actions */}
-              <div className="flex items-center text-gray-500 text-sm">
+              <div className="flex items-center text-gray-400 text-sm">
                 <span>💬 {post.commentsCount || 0} comments</span>
               </div>
             </div>
@@ -228,15 +227,16 @@ const CommunityScreen = () => {
         </div>
       )}
 
-      {/* Floating Action Button */}
+      {/* Floating Action Button - Bottom Left */}
       <button 
         onClick={() => navigate('/create-post')}
-        className="fixed bottom-6 right-6 bg-primary_app text-white w-14 h-14 rounded-full shadow-lg hover:bg-opacity-90 flex items-center justify-center"
+        className="fixed bottom-6 left-6 bg-primary_app text-white w-14 h-14 rounded-full shadow-lg hover:bg-opacity-90 flex items-center justify-center"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
         </svg>
       </button>
+      </div>
     </div>
   );
 };

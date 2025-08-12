@@ -54,20 +54,20 @@ const MyTicketsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-secondary-light flex items-center justify-center">
+      <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary_app mx-auto mb-4"></div>
-          <p className="text-neutral/70">Loading tickets...</p>
+          <p className="text-neutral/70 dark:text-gray-300">Loading tickets...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-secondary-light py-8">
+    <div className="min-h-screen bg-secondary-light dark:bg-secondary-dark py-8">
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-neutral">My Support Tickets</h1>
+          <h1 className="text-3xl font-bold text-neutral dark:text-white">My Support Tickets</h1>
           <button
             onClick={() => navigate('/contact-us')}
             className="btn-primary-app px-4 py-2"
@@ -79,12 +79,12 @@ const MyTicketsPage = () => {
         {tickets.length === 0 ? (
           <div className="card p-8 text-center">
             <div className="mb-4">
-              <svg className="w-16 h-16 text-neutral/40 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-16 h-16 text-neutral/40 dark:text-gray-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-neutral mb-2">No Support Tickets</h3>
-            <p className="text-neutral/70 mb-4">You haven't created any support tickets yet</p>
+            <h3 className="text-lg font-medium text-neutral dark:text-white mb-2">No Support Tickets</h3>
+            <p className="text-neutral/70 dark:text-gray-300 mb-4">You haven't created any support tickets yet</p>
             <button
               onClick={() => navigate('/contact-us')}
               className="btn-primary-app px-6 py-2"
@@ -102,8 +102,8 @@ const MyTicketsPage = () => {
               >
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-neutral mb-2">{ticket.subject}</h3>
-                    <p className="text-neutral/70 text-sm line-clamp-2 mb-3">
+                    <h3 className="text-lg font-semibold text-neutral dark:text-white mb-2">{ticket.subject}</h3>
+                    <p className="text-neutral/70 dark:text-gray-300 text-sm line-clamp-2 mb-3">
                       {ticket.messages[0]?.message}
                     </p>
                   </div>
@@ -128,7 +128,7 @@ const MyTicketsPage = () => {
                   )}
                 </div>
 
-                <div className="flex justify-between items-center text-sm text-neutral/70">
+                <div className="flex justify-between items-center text-sm text-neutral/70 dark:text-gray-400">
                   <span>Messages: {ticket.messages.length}</span>
                   <span>Last updated: {new Date(ticket.updatedAt).toLocaleDateString('en-US')}</span>
                 </div>
