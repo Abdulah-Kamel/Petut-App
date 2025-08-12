@@ -4,23 +4,22 @@ import { collection, addDoc, Timestamp, setDoc, query, where, getDocs, doc, getD
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'leaflet/dist/leaflet.css';
 import { db, auth } from '../firebase.js';
 import logo from '../assets/petut.png';
 import { BeatLoader } from 'react-spinners';
 import { IoLocation } from "react-icons/io5";
-
-// استدعاء مكون الخريطة الجديد
 import MapModal from './MapModal.jsx';
 
+
 export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
-    // حالة المودال والبيانات
+    // 🧠 حالة المودال والبيانات
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState('');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState(null);
     const [selectedLocation, setSelectedLocation] = useState('');
     const [day, setDay] = useState('');
     const [openTime, setOpenTime] = useState('');
@@ -29,7 +28,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
     const [doctors, setDoctors] = useState([]);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [userData, setUserData] = useState(null);
-    // حالة ظهور مودال الخريطة
+    // 🧠 حالة ظهور مودال الخريطة
     const [showMapModal, setShowMapModal] = useState(false);
 
     const navigate = useNavigate();
@@ -95,7 +94,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
         setEmail('');
         setStatus('');
         setWorkingHours([]);
-        setPrice('');
+        setPrice(null);
         setDay('');
         setOpenTime('');
         setCloseTime('');
@@ -147,29 +146,29 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
         }
     };
 
-    // دالة لفتح مودال الخريطة وإخفاء المودال الحالي
+    // 🧠 دالة لفتح مودال الخريطة وإخفاء المودال الحالي
     const handleOpenMapModal = () => {
-        // نستخدم النسخة المخزنة لإخفاء المودال
+        // 💡 نستخدم النسخة المخزنة لإخفاء المودال
         if (modalInstance) {
             modalInstance.hide();
         }
         setShowMapModal(true);
     };
 
-    // دالة لاستقبال الموقع من مودال الخريطة
+    // 🧠 دالة لاستقبال الموقع من مودال الخريطة
     const handleLocationConfirmed = (location) => {
         setSelectedLocation(location);
         setShowMapModal(false);
-        // نستخدم النسخة المخزنة لإظهار المودال
+        // 💡 نستخدم النسخة المخزنة لإظهار المودال
         if (modalInstance) {
             modalInstance.show();
         }
     };
 
-    // دالة لإغلاق مودال الخريطة دون تغيير الموقع
+    // 🧠 دالة لإغلاق مودال الخريطة دون تغيير الموقع
     const handleCloseMapModal = () => {
         setShowMapModal(false);
-        // نستخدم النسخة المخزنة لإظهار المودال
+        // 💡 نستخدم النسخة المخزنة لإظهار المودال
         if (modalInstance) {
             modalInstance.show();
         }
@@ -177,9 +176,9 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
 
     useEffect(() => {
         // هذا الكود سيعمل مرة واحدة فقط عند تحميل المكون
-        if (modalRef.current && window.bootstrap) {
+        if (modalRef.current) {
             // ننشئ نسخة جديدة من مودال Bootstrap
-            const modal = new window.bootstrap.Modal(modalRef.current, {
+            const modal = new Modal(modalRef.current, {
                 keyboard: false,
                 backdrop: 'static'
             });
@@ -189,7 +188,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
     }, []);
     return (
         <Fragment>
-            {/* هذا هو المودال الرئيسي الذي يحتوي على النموذج */}
+            {/* 💡 هذا هو المودال الرئيسي الذي يحتوي على النموذج */}
             <div className="modal fade" id="addclinic" ref={modalRef} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-hidden="true">
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
@@ -221,15 +220,16 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
                                         <label className="form-label">Doctor</label>
                                         <select
                                             className="form-select w-50"
-                                            value={selectedDoctor ? `${selectedDoctor.id}|${selectedDoctor.fullName}` : ''}
+                                            value={selectedDoctor?.id || ''}
                                             onChange={(e) => {
-                                                const [id, fullName] = e.target.value.split('|');
-                                                setSelectedDoctor({ id, fullName });
+                                                const id = e.target.value;
+                                                const doc = doctors.find(d => d.id === id);
+                                                setSelectedDoctor(doc ? { id: doc.id, fullName: doc.fullName } : null);
                                             }}
                                         >
                                             <option value="">Select a doctor</option>
                                             {doctors.map((doctor) => (
-                                                <option key={doctor.id} value={`${doctor.id}|${doctor.fullName}`}>{doctor.fullName}</option>
+                                                <option key={doctor.id} value={doctor.id}>{doctor.fullName}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -244,12 +244,14 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
                                     </select>
                                 </div>
 
-                                {/* هذا هو الزر الذي سيفتح مودال الخريطة */}
+                                {/* 💡 هذا هو الزر الذي سيفتح مودال الخريطة */}
                                 <div className="address d-flex align-items-center gap-3 mb-3">
                                     <p className='mb-0'>Choose Location</p>
                                     <button onClick={handleOpenMapModal} className='custom-button d-flex align-items-center gap-2' type='button' data-bs-toggle="modal" data-bs-target="#map-modal">
                                         <IoLocation /> choose location
                                     </button>
+                
+                                   
                                 </div>
                                 {selectedLocation && (
                                     <p className="mb-0">{selectedLocation.governorate} - {selectedLocation.city} - {selectedLocation.street}</p>
@@ -298,7 +300,7 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
                 </div>
             </div>
 
-            {/* هذا هو المودال الجديد الذي سيحتوي على الخريطة */}
+            {/* 💡 هذا هو المودال الجديد الذي سيحتوي على الخريطة */}
             {showMapModal && (
                 <MapModal
                     onLocationConfirmed={handleLocationConfirmed}

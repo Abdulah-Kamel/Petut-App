@@ -3,7 +3,7 @@ import logo from '../assets/petut.png';
 import { useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 
-export default function ConfirmModal({ onDelete, setShowConfirm, selectedId, whatDelete }) {
+export default function ConfirmModal({ onDelete, setShowConfirm,  whatDelete }) {
 
     const [loading, setLoading] = useState(false);
     return createPortal (
@@ -40,9 +40,9 @@ export default function ConfirmModal({ onDelete, setShowConfirm, selectedId, wha
                             onClick={async () => {
                                 setLoading(true);
 
-                                await onDelete(selectedId);
-                                setLoading(false);
+                                await onDelete();
                                 setShowConfirm(false);
+                                setLoading(false);
                             }}
                         >
                             {loading ? ( <BeatLoader size={8} color="#fff" /> ) : "yes, delete"}

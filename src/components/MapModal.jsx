@@ -9,6 +9,7 @@ import { BeatLoader } from 'react-spinners';
 // 💡 تأكد من أن هذه الأسطر موجودة كما هي
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 import 'leaflet-control-geocoder'; 
+import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
 export default function MapModal({ onLocationConfirmed, onClose, initialLocation }) {
     const mapRef = useRef(null);
@@ -20,7 +21,7 @@ export default function MapModal({ onLocationConfirmed, onClose, initialLocation
 useEffect(() => {
     const modalElement = document.getElementById('map-modal');
     if (modalElement) {
-        const modal = new window.bootstrap.Modal(modalElement, {
+        const modal = new Modal(modalElement, {
             keyboard: false,
             // 💡 أضف هذا السطر لجعل الخلفية ثابتة
             backdrop: 'static'

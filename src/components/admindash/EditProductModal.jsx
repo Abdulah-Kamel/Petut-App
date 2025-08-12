@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { collection, doc, Timestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 import axios from 'axios';
+import { Modal } from "bootstrap";
 
 export default function EditProductModal({ product, setProducts, modalId, onProductUpdate }) {
     const {
@@ -14,7 +15,7 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
         price: defaultPrice,
         weight: defaultWeight,
         category: defaultCategory,
-        imageUrl: defaultImageUrl,
+        imageURL: defaultImageUrl,
     } = product;
 
     const [productName, setProductName] = useState(defaultName);
@@ -23,19 +24,21 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
     const [price, setPrice] = useState(defaultPrice);
     const [weight, setWeight] = useState(defaultWeight);
     const [category, setCategory] = useState(defaultCategory);
-    const [imageUrl, setImageUrl] = useState(defaultImageUrl);
+    const [imageURL, setImageUrl] = useState(defaultImageUrl);
     const [notEditable, setNotEditable] = useState(true);
     const [loading, setLoading] = useState(false);
 
+    // update product to firebase 
     const handelUpdateProduct = async () => {
         setLoading(true);
+        // setNotEditable(true);
 
-        let url = imageUrl;
+        let url = imageURL;
 
-        if (typeof imageUrl !== 'string') {
+        if (typeof imageURL !== 'string') {
             try {
                 const formData = new FormData();
-                formData.append('image', imageUrl);
+                formData.append('image', imageURL);
                 const response = await axios.post(
                     'https://api.imgbb.com/1/upload?key=da1538fed0bcb5a7c0c1273fc4209307',
                     formData
@@ -72,6 +75,8 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
                 });
             }
             toast.success('Product updated successfully', { autoClose: 3000 });
+            setNotEditable(true);
+            document.getElementById('close-btn-modal').click();
             setProducts(products => [...products, {
                 productName,
                 description,
@@ -82,9 +87,7 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
                 imageURL: url,
                 createdAt: Timestamp.now()
             }]);
-            setTimeout(() => {
-                document.getElementById('close-btn-modal').click();
-            }, 1000);
+
         } catch (error) {
             toast.error('Failed to update product: ' + error.message, { autoClose: 3000 });
         } finally {
@@ -178,6 +181,7 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
                                         value={weight}
                                         onChange={(e) => setWeight(e.target.value)}
                                         disabled={notEditable}
+                                        optional
                                     />
                                 </div>
 
@@ -185,25 +189,20 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
                                     <label htmlFor="product-image" className="form-label">
                                         Image
                                     </label>
-                                    <input
-                                        type="file"
-                                        className="form-control w-75"
-                                        id="product-image"
-                                        accept="image/*"
-                                        onChange={(e) => setImageUrl(e.target.files[0])}
-                                        disabled={notEditable}
-                                    />
+                                    {notEditable ? (
+                                        <div className="form-control w-75 d-flex align-items-center">
+                                            <img src={imageURL} alt="Product" style={{ maxWidth: "180px" }} />
+                                        </div>
+                                    ) : (
+                                        <input
+                                            type="file"
+                                            className="form-control w-75"
+                                            id="product-image"
+                                            accept="image/*"
+                                            onChange={(e) => setImageUrl(e.target.files[0])}
+                                        />
+                                    )}
                                 </div>
-                                {typeof imageUrl === 'string' && imageUrl.startsWith('http') && (
-                                    <div>
-                                        <p>Image URL:</p>
-                                        <a href={imageUrl} target="_blank" rel="noopener noreferrer">
-                                            {imageUrl}
-                                        </a>
-                                        <br />
-                                        <img src={imageUrl} alt="preview" style={{ width: 100, marginTop: 10 }} />
-                                    </div>
-                                )}
                                 <div className="product-rate d-flex align-items-center gap-3 mb-3">
                                     <label htmlFor="product-rate" className="form-label">
                                         Rating
@@ -264,26 +263,6 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
 
                             )}
                         </div>
-                        {/* <div className="modal-footer d-flex gap-3">
-                            <button
-                                type="button"
-                                className="btn btn-danger"
-                                id="close-btn-modal"
-                                data-bs-dismiss="modal"
-                                style={{ width: '100px' }}
-                            >
-                                Close
-                            </button>
-                            <button
-                                type="button"
-                                className="custom-button"
-                                style={{ width: '150px' }}
-                                onClick={handelUpdateProduct}
-                                disabled={loading}
-                            >
-                                {loading ? <BeatLoader color='#fff' /> : 'Update Product'}
-                            </button>
-                        </div> */}
                     </div>
                 </div>
             </div>
