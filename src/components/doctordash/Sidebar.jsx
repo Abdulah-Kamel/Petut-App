@@ -12,10 +12,6 @@ export default function Sidebar({ open, toggleSidebar }) {
             <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed  bottom-0  ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '1000' }} >
                 <ul className=" p-0 d-flex flex-column  align-items-left  justify-content-between h-100">
                     <div className="top-links">
-                        {/* <div className="logo">
-                            <img src={logo} width={'80px'} height={'80px'} alt="logo" className='text-left' />
-
-                        </div> */}
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/doctor-dashboard/manage-clients"
