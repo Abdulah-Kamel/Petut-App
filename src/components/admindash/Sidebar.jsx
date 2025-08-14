@@ -9,7 +9,6 @@ import { IoStatsChart } from "react-icons/io5";
 import { MdReviews } from "react-icons/md";
 import { RiCustomerService2Line, RiCustomerServiceLine } from "react-icons/ri";
 import { BiSupport } from "react-icons/bi";
-// import logo from '../../assets/petut.png';
 import { HiShoppingBag } from "react-icons/hi2";
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
@@ -27,13 +26,9 @@ export default function Sidebar({ open,toggleSidebar }) {
       };
     return (
         <Fragment>
-            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-absolute ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '999', minHeight: 'calc(100vh - 100px)' }} >
-                <ul className=" p-0 d-flex flex-column align-items-left justify-content-between" style={{ minHeight: '100vh' }}>
+            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed  bottom-0  ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '1000' }} >
+                <ul className=" p-0 d-flex flex-column  align-items-left  justify-content-between h-100" >
                     <div className="top-links">
-                        {/* <div className="logo">
-                            <img src={logo} width={'80px'} height={'80px'} alt="logo" className='text-left' />
-
-                        </div> */}
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/overview"
