@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { FaUsers } from "react-icons/fa6";
 import { FaChartBar, FaClinicMedical } from "react-icons/fa";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -14,16 +14,17 @@ import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
-export default function Sidebar({ open,toggleSidebar }) {
-
-      const handleLogout = async () => {
+export default function Sidebar({ open, toggleSidebar }) {
+    const navigate = useNavigate();
+    const handleLogout = async () => {
         try {
-          await signOut(auth);
-          navigate("/login");
+            await signOut(auth);
+            toast.success("success logout", { autoClose: 3000 });
+            navigate("/login");
         } catch (error) {
-          toast.error("Failed to log out", { autoClose: 3000 });
+            toast.error("Failed to log out, error:" + error.message, { autoClose: 3000 });
         }
-      };
+    };
     return (
         <Fragment>
             <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed  bottom-0  ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '1000' }} >
@@ -105,7 +106,7 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 onClick={toggleSidebar}
                             >
                                 <IoStatsChart size={25} />
-                                 <span className="fw-bold">Charts</span>
+                                <span className="fw-bold">Charts</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
@@ -116,7 +117,6 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 onClick={toggleSidebar}
                             >
                                 <BiSupport size={25} style={{ display: 'inline-block', minWidth: '25px' }} />
-                                {/* Fallback icon if BiSupport doesn't load */}
                                 <span style={{ display: 'none' }}>🎧</span>
                                 <span className="fw-bold">Support</span>
                             </NavLink>
@@ -128,12 +128,7 @@ export default function Sidebar({ open,toggleSidebar }) {
                                 to="/login"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
-                                onClick={
-                                    () => {
-                                        handleLogout();
-                                        toggleSidebar;
-                                    }
-                                }
+                                onClick={handleLogout}
                             >
                                 <TbLogout2 size={25} />
                                 <span className="fw-bold">Logout</span>

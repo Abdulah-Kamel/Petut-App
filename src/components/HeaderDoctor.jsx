@@ -15,7 +15,7 @@ export default function HeaderDoctor({ toggleSidebar, doctorData }) {
                         <span className="navbar-brand mb-0 h1 d-flex align-items-center gap-3 fs-3"><FaBars size={30} onClick={toggleSidebar} cursor={"pointer"} />Dashboard</span>
                         <div className="d-flex align-items-center gap-2 text-white justify-content-between">
 
-                            <button type="button" class="position-relative me-3">
+                            <button type="button" className="position-relative me-3">
                                 <FaBell size={20} cursor={"pointer"} color='#000' />
                                 <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger  rounded-circle" style={{ fontSize: '12px', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >1</span>
                             </button>
