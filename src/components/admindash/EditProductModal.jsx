@@ -74,25 +74,47 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
                     imageURL: url,
                 });
             }
+            setProducts(products =>
+                products.map(product =>
+                    product.id === modalId
+                        ? {
+                            ...product,
+                            productName,
+                            description,
+                            price,
+                            weight,
+                            rate,
+                            category,
+                            imageURL: url,
+                            updatedAt: Timestamp.now()
+                        }
+                        : product
+                )
+            );
+            // setNotEditable(true);
             toast.success('Product updated successfully', { autoClose: 3000 });
-            setNotEditable(true);
-            document.getElementById('close-btn-modal').click();
-            setProducts(products => [...products, {
-                productName,
-                description,
-                price,
-                weight,
-                rate,
-                category,
-                imageURL: url,
-                createdAt: Timestamp.now()
-            }]);
+            const modalElement = document.getElementById(`editproduct-${modalId}`);
+            const modalInstance = Modal.getInstance(modalElement) || new Modal(modalElement);
+            modalInstance.hide();
 
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.remove();
+            }
         } catch (error) {
             toast.error('Failed to update product: ' + error.message, { autoClose: 3000 });
         } finally {
             setLoading(false);
         }
+
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0';
+        document.documentElement.style.overflow = 'auto';
     };
 
     const resetFields = () => {
@@ -244,21 +266,19 @@ export default function EditProductModal({ product, setProducts, modalId, onProd
                             </form>
                         </div>
                         <div className="modal-footer d-flex gap-3">
-
                             {notEditable ? (
                                 <>
                                     <button type="button" className="custom-button w-25 text-white bg-danger" id="close-btn-modal" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                                    <button type="button" className="custom-button w-25" onClick={() => setNotEditable(false)}>Edit Product</button>
+                                    <button type="button" className="custom-button w-25" onClick={() => setNotEditable(!notEditable)}>Edit Product</button>
                                 </>
                             ) : (
                                 <div className="d-flex gap-3 w-100 justify-content-end">
                                     <button type="button" className="btn text-white bg-danger w-25 " onClick={() => {
-
                                         resetFields();
-                                        setNotEditable(true);
+                                        setNotEditable(!notEditable);
                                     }
-                                    } >Cancel</button>
-                                    <button type="button" className="custom-button w-25 d-flex align-items-center justify-content-center" onClick={handelUpdateProduct} disabled={notEditable || loading}>{loading ? <BeatLoader size={10} color="#fff" /> : "Edit Product"} </button>
+                                    }>Cancel</button>
+                                    <button type="button" className="custom-button w-25 d-flex align-items-center justify-content-center" onClick={handelUpdateProduct} disabled={loading}>{loading ? <BeatLoader size={10} color="#fff" /> : "Edit Product"} </button>
                                 </div>
 
                             )}
