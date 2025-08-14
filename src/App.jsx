@@ -153,14 +153,21 @@ function App() {
       <Notification />
       <ToastContainer />
       <Routes>
-        <Route path="/doctor-dashboard" element={<DoctorDashboard />}>
+
+        <Route path="/doctor-dashboard" element={
+          <ProtectedRoute>
+            <DoctorDashboard />
+          </ProtectedRoute>}>
           <Route index element={<HelloDoctor />} />
           <Route path="manage-clients" element={<Manageclients />} />
           <Route path="manage-appointments" element={<Manageappointments />} />
           <Route path="manage-clinics" element={<Manageclinics />} />
           <Route path="manage-profile" element={<Manageprofile />} />
         </Route>
-        <Route path="/admin-dashboard" element={<AdminDashboard />}>
+        <Route path="/admin-dashboard" element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>}>
           <Route index element={<HelloAdmin />} />
           <Route path="overview" element={<Overview />} />
           <Route path="manage-users" element={<ManageUsers />} />

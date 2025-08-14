@@ -3,10 +3,24 @@ import { MdManageAccounts } from "react-icons/md";
 import { GrSchedules } from "react-icons/gr";
 import { FaClinicMedical } from "react-icons/fa";
 import { IoPersonSharp } from "react-icons/io5";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { TbLogout2 } from "react-icons/tb";
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase.js';
+import { toast } from 'react-toastify';
+
 
 export default function Sidebar({ open, toggleSidebar }) {
+    const navigate = useNavigate();
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            toast.success("success logout", { autoClose: 3000 });
+            navigate("/login");
+        } catch (error) {
+            toast.error("Failed to log out, error:" + error.message, { autoClose: 3000 });
+        }
+    };
     return (
         <Fragment>
             <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed  bottom-0  ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '1000' }} >
@@ -64,7 +78,7 @@ export default function Sidebar({ open, toggleSidebar }) {
                                 to="/login"
                                 style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
                                 className="text-decoration-none d-flex align-items-center gap-2"
-                                onClick={toggleSidebar}
+                                onClick={handleLogout}
                             >
                                 <TbLogout2 size={25} />
                                 <span className="fw-bold">Log out</span>
