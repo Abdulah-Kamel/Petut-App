@@ -8,7 +8,21 @@ const DoctorForm = () => {
     const [searchParams] = useSearchParams()
     const uid = searchParams.get('uid')
     const navigate = useNavigate()
+    const [profileImageFile, setProfileImageFile] = useState(null);
+    const [profileImage, setProfileImage] = useState( ""); // base64 for preview
+    // Handle image upload and convert to base64
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
 
+        setProfileImageFile(file);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setProfileImage(reader.result); // base64 string for preview
+        };
+        reader.readAsDataURL(file);
+    };
     const [formData, setFormData] = useState({
         fullName: auth.currentUser?.displayName || '',
         email: auth.currentUser?.email || '',
@@ -147,9 +161,15 @@ const DoctorForm = () => {
             const cardFrontImageUrl = await uploadToImgBB(cardFrontImage);
             const cardBackImageUrl = await uploadToImgBB(cardBackImage);
             const idImageUrl = await uploadToImgBB(idImage);
+                // Upload profile image if a new one was selected
+            let profileImageUrl = profileImage; // Keep existing image if no new one is uploaded
+            if (profileImageFile) {
+                profileImageUrl = await uploadToImgBB(profileImageFile);
+            }
 
             const finalFormData = {
                 ...formData,
+                profileImage: profileImageUrl,
                 doctorDetails: {
                     ...formData.doctorDetails,
                     cardFrontImage: cardFrontImageUrl,
@@ -205,6 +225,33 @@ const DoctorForm = () => {
                             </div>
                         </div>
                     )}
+
+                    {/* Profile Image Upload */}
+                    <div className="flex gap-1 flex-col items-center space-x-4 mb-6">
+                        <div className="max-lg:mb-4">
+                            {profileImage ? (
+                                <img
+                                    src={profileImage}
+                                    alt="Profile"
+                                    className="w-28 h-28 rounded-full object-cover border"
+                                />
+                            ) : (
+                                <div className="w-28 h-28 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-400 dark:text-gray-300">
+                                    No Image
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex gap-1 flex-col items-center justify-center">
+                            <label htmlFor="profileImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Profile Image</label>
+                            <input
+                                id="profileImage"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="w-full py-3 px-8 border dark:text-white border-gray-300 dark:border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary_app cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 hover:ring-1 hover:ring-primary_app"
+                            />
+                        </div>
+                    </div>
 
                     <div className="space-y-4">
                         <div>
