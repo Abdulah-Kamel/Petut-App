@@ -8,12 +8,12 @@ import AddDoctorModal from '../../components/admindash/AddDoctorModal';
 import Clientstable from '../../components/admindash/ClientsTable';
 import AddAdminModal from '../../components/admindash/AddAdminModal';
 import AdminsTable from '../../components/admindash/AdminsTable';
-
+import logo from '../../assets/petut.png';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase.js";
 import { toast } from "react-toastify";
 
- 
+
 
 export default function ManageUsers() {
     const [activeTab, setActiveTab] = useState('doctors');
@@ -84,9 +84,14 @@ export default function ManageUsers() {
     return (
         <Fragment>
             <div className='container-fluid mt-4'>
-                <div className='mb-3'>
-                    <h1>Users management</h1>
-                    <p className=''>Manage all doctors and clients in the system</p>
+                <div className="d-flex  justify-content-between ">
+                    <div className=''>
+                        <h1>Users management</h1>
+                        <p className=''>Manage all doctors and clients in the system</p>
+                    </div>
+                    <div className="right">
+                        <img src={logo} width={'100px'} height={'100px'} alt="logo" />
+                    </div>
                 </div>
                 <div style={{}}>
                     <div style={{ display: 'flex', borderBottom: '1px solid #ccc' }}>

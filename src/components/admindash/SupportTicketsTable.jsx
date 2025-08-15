@@ -104,7 +104,7 @@ export default function SupportTicketsTable() {
         </select>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto" style={{ maxHeight: '620px', overflowY: 'auto' }}>
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-700">
