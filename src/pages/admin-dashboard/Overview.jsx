@@ -6,6 +6,7 @@ import { FaClinicMedical } from "react-icons/fa";
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaSackDollar } from "react-icons/fa6";
 import Charts from './Charts';
+import logo from '../../assets/petut.png'
 
 export default function Overview() {
     const statistics = [
@@ -21,10 +22,14 @@ export default function Overview() {
         <Fragment>
             <div className='container-fluid mt-4'>
                 <div className='statistics mb-5'>
-                    <div className='mb-3'>
-                        <h1>Main control panel</h1>
-                        <p className=''>Activities Overview</p>
-                    </div>
+                    <div className="d-flex  justify-content-between">
+                        <div className='left'>
+                            <h1>Main control panel</h1>
+                            <p className=''>Activities Overview</p>
+                        </div>
+                        <div className="right">
+                            <img src={logo} width={'100px'} height={'100px'} alt="logo" />
+                        </div>                    </div>
                     <div className="statistics mt-5 d-flex align-items-center justify-content-center gap-4 flex-wrap">
                         {statistics.map((statistic, index) => (
                             <Statistic key={index} title={statistic.title} count={statistic.count} icon={statistic.icon} />

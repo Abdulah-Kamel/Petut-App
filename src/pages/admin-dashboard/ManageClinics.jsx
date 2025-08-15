@@ -14,7 +14,7 @@ import ClinicsTable from '../../components/admindash/ClinicsTable';
 import { toast } from 'react-toastify';
 import { FaEye } from "react-icons/fa";
 import AddClinicModal from '../../components/AddClinicModal';
-
+import logo from '../../assets/petut.png';
 
 
 export default function ManageClinics() {
@@ -58,9 +58,14 @@ export default function ManageClinics() {
     return (
         <Fragment>
             <div className='container-fluid mt-4'>
-                <div className=''>
-                    <h1>Clinic management</h1>
-                    <p className=''>Managing all clinics and responsible doctors</p>
+                <div className="d-flex justify-content-between">
+                    <div className='left'>
+                        <h1>Clinic management</h1>
+                        <p className=''>Managing all clinics and responsible doctors</p>
+                    </div>
+                    <div className="right">
+                        <img src={logo} width={'100px'} height={'100px'} alt="logo" />
+                    </div>
                 </div>
                 <div className="statistics mt-5 pb-5 d-flex align-items-center justify-content-center gap-3 flex-wrap">
                     {statistics.map((statistic, index) => (

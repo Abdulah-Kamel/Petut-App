@@ -14,6 +14,7 @@ import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
+
 export default function Sidebar({ open, toggleSidebar }) {
     const navigate = useNavigate();
     const handleLogout = async () => {
@@ -117,7 +118,6 @@ export default function Sidebar({ open, toggleSidebar }) {
                                 onClick={toggleSidebar}
                             >
                                 <BiSupport size={25} style={{ display: 'inline-block', minWidth: '25px' }} />
-                                <span style={{ display: 'none' }}>🎧</span>
                                 <span className="fw-bold">Support</span>
                             </NavLink>
                         </li>
