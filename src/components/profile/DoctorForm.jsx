@@ -184,7 +184,7 @@ const DoctorForm = () => {
             })
             // navigate('/')
 
-            navigate("/pending-approval", { replace: true });
+            navigate("/review-account", { replace: true });
 
 
         } catch (err) {
