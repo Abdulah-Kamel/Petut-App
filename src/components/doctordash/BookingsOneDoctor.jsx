@@ -2,14 +2,14 @@ import React, { Fragment } from 'react'
 import { FaEye } from "react-icons/fa";
 
 
-export default function BookingsOneDoctor({ bookings}) {
+export default function BookingsOneDoctor({ bookings, isDarkMode}) {
 
     
     return (
         <Fragment>
-            <div className="patient-table mt-4  bg-white shadow rounded w-100" style={{ maxHeight: '395px', overflowY: 'auto' }}>
-                <table className="table">
-                    <thead className="table-light py-3  position-sticky top-0">
+            <div className={`patient-table mt-4 ${isDarkMode ? 'bg-dark-2' : 'bg-white'} shadow rounded w-100`} style={{ maxHeight: '395px', overflowY: 'auto' }}>
+                <table className={`table ${isDarkMode ? 'table-dark' : ''}`}>
+                    <thead className={`${isDarkMode ? 'bg-dark-2' : 'table-light'} py-3  position-sticky top-0`}>
                         <tr className="">
                             <th className="px-4 py-3">clinicName</th>
                             <th className="px-4 py-3">clinicLocation</th>
@@ -31,7 +31,7 @@ export default function BookingsOneDoctor({ bookings}) {
                                 <td className="px-4 py-3">{booking?.time || "-"}</td>
                                 <td className="px-4 py-3">{booking?.price || "-"}</td>
                                 <td className="px-4 py-3">
-                                    <select className="form-select w-50" aria-label="Default select example">
+                                    <select className={`form-select w-50 ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} aria-label="Default select example">
                                         <option value="completed">{booking?.status || "-"}</option>
                                         <option value="booked">booked</option>
                                     </select>

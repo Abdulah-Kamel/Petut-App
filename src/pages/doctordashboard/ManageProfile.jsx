@@ -8,6 +8,7 @@ import { updateDoc } from "firebase/firestore";
 import axios from 'axios';
 import { getAuth, reauthenticateWithCredential, updatePassword, EmailAuthProvider } from "firebase/auth";
 import { BeatLoader } from 'react-spinners';
+import { useDarkMode } from '../../context/DarkModeContext.jsx';
 
 
 
@@ -19,6 +20,7 @@ export default function Manageprofile() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false)
+  const { isDarkMode } = useDarkMode();
 
   const [profileData, setProfileData] = useState({
     fullName: '',
@@ -119,69 +121,73 @@ export default function Manageprofile() {
 
   return (
     <Fragment>
-      <nav aria-label="breadcrumb" className='container-fluid d-flex align-items-center justify-content-between w-100' style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', marginTop: '20px', padding: '10px 40px', borderRadius: '8px' }} >
+      <nav aria-label="breadcrumb" className={`container-fluid d-flex align-items-center justify-content-between w-100 ${isDarkMode ? 'bg-dark-2 text-white' : 'bg-white'}`} style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', marginTop: '20px', padding: '10px 40px', borderRadius: '8px' }} >
         <span className='fw-bold'>Profile</span>
         <ol className="breadcrumb mb-0 py-3 text-align-center" >
           <li className="breadcrumb-item"><Link to="/" className='text-decoration-none' style={{ color: '#D9A741' }}>Home</Link></li>
-          <li className="breadcrumb-item active" aria-current="page">Dashboard</li>
-          <li className="breadcrumb-item active" aria-current="page">Profile</li>
+          <li className={`breadcrumb-item active ${isDarkMode ? 'text-white-50' : ''}`} aria-current="page">Dashboard</li>
+          <li className={`breadcrumb-item active ${isDarkMode ? 'text-white-50' : ''}`} aria-current="page">Profile</li>
         </ol>
       </nav>
       <div className='container-fluid my-4'>
-        <div className='row  '>
-          <div className='col-4'>
-            <div className="col-12 position-relative d-flex align-items-center justify-content-center">
-              <img className='rounded-3' src={profileData.profileImage || selectImage} alt="profile image" style={{ width: '90%', height: '100%', objectFit: 'cover' }} disabled ={notEditable} />
-              <IoIosCamera size={30}
-                onClick={() => document.getElementById("inputfile").click()}
-                style={{
-                  position: 'absolute',
-                  top: '5%',
-                  left: '10%',
-                  color: '#D9A741',
-                  backgroundColor: '#fff',
-                  borderRadius: '50%',
-                  padding: '5px',
-                  cursor: 'pointer'
-                }} />
-            </div>
-            <div className="input-group my-3 w-75">
-            <input type="file" className="form-control d-none" id="inputfile" onChange={handleImageChange} disabled={notEditable} />
+        <div className='row'>
+          <div className='col-md-4'>
+            <div className={`p-3 rounded ${isDarkMode ? 'bg-dark-2' : 'bg-light'}`}>
+              <div className="position-relative d-flex align-items-center justify-content-center">
+                <img className='rounded-3' src={profileData.profileImage || selectImage} alt="profile image" style={{ width: '100%', height: 'auto', objectFit: 'cover' }} />
+                {!notEditable && (
+                  <IoIosCamera size={30}
+                    onClick={() => document.getElementById("inputfile").click()}
+                    style={{
+                      position: 'absolute',
+                      top: '5%',
+                      left: '5%',
+                      color: '#D9A741',
+                      backgroundColor: isDarkMode ? '#343a40' : '#fff',
+                      borderRadius: '50%',
+                      padding: '5px',
+                      cursor: 'pointer'
+                    }} />
+                )}
+              </div>
+              <div className="input-group my-3">
+                <input type="file" className="form-control d-none" id="inputfile" onChange={handleImageChange} disabled={notEditable} />
+              </div>
             </div>
           </div>
-          <div className='col-7 '>
-            <form action="#" className=''>
-              <div className="mb-3 ">
-                <label htmlFor="profile-name" className="form-label">Name</label>
-                <input type="text" className="form-control" id="profile-name" aria-describedby="emailHelp" disabled={notEditable} value={profileData.fullName} onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })} />
-              </div>
-              <div className="mb-3 ">
-                <label htmlFor="profile-email" className="form-label">Email</label>
-                <input type="email" className="form-control" id="profile-email" disabled={notEditable} value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} />
-              </div>
-              <div className="mb-3 ">
-                <label htmlFor="phone" className="form-label">Phone</label>
-                <input type="tel" className="form-control" id="phone" disabled={notEditable} value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
+          <div className='col-md-8'>
+            <form action="#" className={`p-4 rounded ${isDarkMode ? 'bg-dark-2' : 'bg-light'}`}>
+              <div className="mb-3">
+                <label htmlFor="profile-name" className={`form-label ${isDarkMode ? 'text-white' : ''}`}>Name</label>
+                <input type="text" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id="profile-name" disabled={notEditable} value={profileData.fullName} onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })} />
               </div>
               <div className="mb-3">
-                <label htmlFor="current-password" className="form-label">Current Password</label>
-                <input type="password" className="form-control" id="current-password" disabled={notEditable} value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+                <label htmlFor="profile-email" className={`form-label ${isDarkMode ? 'text-white' : ''}`}>Email</label>
+                <input type="email" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id="profile-email" disabled={notEditable} value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} />
               </div>
-              <div className="mb-3 ">
-                <label htmlFor="new-password" className="form-label">New Password</label>
-                <input type="password" className="form-control" id="new-password" disabled={notEditable} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              <div className="mb-3">
+                <label htmlFor="phone" className={`form-label ${isDarkMode ? 'text-white' : ''}`}>Phone</label>
+                <input type="tel" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id="phone" disabled={notEditable} value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
               </div>
-              <div className="mb-3 ">
-                <label htmlFor="confirm-password" className="form-label">Confirm New Password</label>
-                <input type="password" className="form-control" id="confirm-password" disabled={notEditable} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+              <div className="mb-3">
+                <label htmlFor="current-password" className={`form-label ${isDarkMode ? 'text-white' : ''}`}>Current Password</label>
+                <input type="password" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id="current-password" disabled={notEditable} value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="new-password" className={`form-label ${isDarkMode ? 'text-white' : ''}`}>New Password</label>
+                <input type="password" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id="new-password" disabled={notEditable} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="confirm-password" className={`form-label ${isDarkMode ? 'text-white' : ''}`}>Confirm New Password</label>
+                <input type="password" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id="confirm-password" disabled={notEditable} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
               </div>
               {!notEditable ? (
-                <div className="d-flex gap-5 align-items-center justify-content-between">
-                  <button type="button" className="btn text-white bg-danger w-50" onClick={() => setNotEditable(!notEditable)}>Cancel</button>
-                  <button type="button" className="custom-button w-50" onClick={handleUpdate} disabled={loading}>{loading ? <BeatLoader color='#fff' /> : "Update"}</button>
+                <div className="d-flex gap-3">
+                  <button type="button" className="btn btn-secondary w-50" onClick={() => setNotEditable(!notEditable)}>Cancel</button>
+                  <button type="button" className="btn btn-primary w-50" onClick={handleUpdate} disabled={loading}>{loading ? <BeatLoader color='#fff' size={8} /> : "Update"}</button>
                 </div>
               ) : (
-                <button type="button" className="custom-button w-100" onClick={() => setNotEditable(!notEditable)}>Update Profile</button>
+                <button type="button" className="btn btn-primary w-100" onClick={() => setNotEditable(!notEditable)}>Update Profile</button>
               )
               }
             </form>
