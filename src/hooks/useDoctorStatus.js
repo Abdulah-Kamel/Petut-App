@@ -11,9 +11,9 @@ export default function useDoctorStatus() {
     if (!auth.currentUser) return;
 
     const unsub = onSnapshot(
-      doc(db, "doctors", auth.currentUser.uid),
+      doc(db, "users", auth.currentUser.uid),
       (snapshot) => {
-        if (snapshot.exists()) {
+        if (snapshot.exists() && snapshot.data().role === "doctor") {
           setStatus(snapshot.data().status);
         }
         setLoading(false);
