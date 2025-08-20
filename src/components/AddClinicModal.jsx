@@ -200,19 +200,19 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
                             <form>
                                 <div className="clinic-name d-flex align-items-center gap-3 mb-3">
                                     <label className="form-label">Clinic Name</label>
-                                    <input type="text" className="form-control w-75" value={name} onChange={(e) => setName(e.target.value)} />
+                                    <input type="text" className="form-control w-75" placeholder='Enter Clinic Name' value={name} onChange={(e) => setName(e.target.value)} />
                                 </div>
                                 <div className="clinic-phone d-flex align-items-center gap-3 mb-3">
                                     <label className="form-label">Phone</label>
-                                    <input type="tel" className="form-control w-75" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                    <input type="tel" className="form-control w-75" placeholder='Enter Phone Number' value={phone} onChange={(e) => setPhone(e.target.value)} />
                                 </div>
                                 <div className="clinic-email d-flex align-items-center gap-3 mb-3">
                                     <label className="form-label">Email</label>
-                                    <input type="email" className="form-control w-75" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                    <input type="email" className="form-control w-75" placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} />
                                 </div>
                                 <div className="clinic-price d-flex align-items-center gap-3 mb-3">
                                     <label className="form-label">Cost</label>
-                                    <input type="number" className="form-control w-75" value={price} onChange={(e) => setPrice(e.target.value)} />
+                                    <input type="number" className="form-control w-75" placeholder='Enter Cost' value={price} onChange={(e) => setPrice(e.target.value)} />
                                 </div>
 
                                 {isAdmin && (
