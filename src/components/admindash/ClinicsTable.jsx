@@ -11,7 +11,7 @@ import { BeatLoader } from 'react-spinners';
 import ViewClinicModal from './ViewClinicModal';
 import { useState } from 'react';
 
-export default function ClinicsTable({ clinics, fetchClinics, onDelete, loading }) {
+export default function ClinicsTable({ clinics,setClinics, fetchClinics, onDelete, loading }) {
 
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -90,10 +90,10 @@ export default function ClinicsTable({ clinics, fetchClinics, onDelete, loading 
                                         <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editclinic-${clinic.id}`} >
                                             <TbEdit size={20} className='mb-1' />
                                         </button>
-                                        <EditClinicModal clinic={clinic} modalId={clinic.id} />
+                                        <EditClinicModal clinic={clinic} setClinics={setClinics} modalId={clinic.id} fetchClinics={fetchClinics} />
                                         <MdDelete cursor={"pointer"} size={20} className='text-danger' onClick={() => {
                                             setShowConfirm(true);
-                                            setSelectedClinicId(clinic.id);
+                                            setSelectedClinicId(clinic.id); 
                                         }} />
                                     </td>
                                 </tr>

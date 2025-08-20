@@ -85,7 +85,7 @@ useEffect(() => {
     }, []);
 
     return (
-        <div className="modal fade" id="map-modal" tabIndex={-1} aria-labelledby="mapModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div className="modal fade" id="map-modal" tabIndex={-1} aria-labelledby="mapModalLabel" aria-hidden="true" data-bs-backdrop="static" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
             <div className="modal-dialog modal-xl">
                 <div className="modal-content" style={{ height: '90vh' }}>
                     <div className="modal-header">
