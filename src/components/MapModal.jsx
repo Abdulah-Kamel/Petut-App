@@ -6,12 +6,12 @@ import { toast } from 'react-toastify';
 import 'leaflet/dist/leaflet.css';
 import { BeatLoader } from 'react-spinners';
 
-// 💡 تأكد من أن هذه الأسطر موجودة كما هي
+// تأكد من أن هذه الأسطر موجودة كما هي
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 import 'leaflet-control-geocoder'; 
 import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
-export default function MapModal({ onLocationConfirmed, onClose, initialLocation }) {
+export default function MapModal({ onConfirm, onClose, initialLocation, isDarkMode }) {
     const mapRef = useRef(null);
     const [selectedLocation, setSelectedLocation] = useState(initialLocation);
     const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ useEffect(() => {
     if (modalElement) {
         const modal = new Modal(modalElement, {
             keyboard: false,
-            // 💡 أضف هذا السطر لجعل الخلفية ثابتة
+            // أضف هذا السطر لجعل الخلفية ثابتة
             backdrop: 'static'
         });
         modal.show();
@@ -33,11 +33,19 @@ useEffect(() => {
     useEffect(() => {
         if (!mapRef.current) {
             setLoading(true);
-            const initialCoords = initialLocation ? [initialLocation.latitude, initialLocation.longitude] : [30.0444, 31.2357];
+            const initialCoords = initialLocation && initialLocation.latitude ? [initialLocation.latitude, initialLocation.longitude] : [30.0444, 31.2357];
             const map = L.map('map-container').setView(initialCoords, 13);
             
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            const tileLayerUrl = isDarkMode 
+                ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            
+            const tileLayerAttribution = isDarkMode
+                ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+            L.tileLayer(tileLayerUrl, {
+                attribution: tileLayerAttribution
             }).addTo(map);
 
             const geocoder = L.Control.Geocoder.nominatim();
@@ -87,15 +95,15 @@ useEffect(() => {
     return (
         <div className="modal fade" id="map-modal" tabIndex={-1} aria-labelledby="mapModalLabel" aria-hidden="true" data-bs-backdrop="static" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
             <div className="modal-dialog modal-xl">
-                <div className="modal-content" style={{ height: '90vh' }}>
-                    <div className="modal-header">
+                <div className={`modal-content ${isDarkMode ? 'bg-dark-2 text-white' : ''}`} style={{ height: '90vh' }}>
+                    <div className={`modal-header ${isDarkMode ? 'border-secondary' : ''}`}>
                         <h5 className="modal-title" id="mapModalLabel">Select Clinic Location</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" onClick={onClose}></button>
+                        <button type="button" className={`btn-close ${isDarkMode ? 'btn-close-white' : ''}`} data-bs-dismiss="modal" onClick={onClose}></button>
                     </div>
                     <div className="modal-body">
                         {loading && (
                             <div className="d-flex justify-content-center align-items-center position-absolute w-100 h-100" >
-                                <BeatLoader color="#007bff" />
+                                <BeatLoader color={isDarkMode ? "#fff" : "#007bff"} />
                             </div>
                         )}
                         <div id="map-container" style={{ height: '100%', width: '100%' }}></div>
@@ -105,9 +113,9 @@ useEffect(() => {
                             </div>
                         )}
                     </div>
-                    <div className="modal-footer mt-5">
+                    <div className={`modal-footer mt-5 ${isDarkMode ? 'border-secondary' : ''}`}>
                         <button type="button" className="btn btn-secondary" onClick={onClose} data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn custom-button" onClick={() => onLocationConfirmed(selectedLocation)} data-bs-dismiss="modal" disabled={loading}>
+                        <button type="button" className="btn btn-primary" onClick={() => onConfirm(selectedLocation)} data-bs-dismiss="modal" disabled={loading}>
                             Confirm Location
                         </button>
                     </div>

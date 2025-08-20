@@ -51,3 +51,60 @@
 .leaflet-control-geocoder.leaflet-bar.leaflet-control {
   display: none !important;
 }
+
+.bg-dark-2 {
+  background-color: #212529 !important;
+}
+
+/* Dark mode styles for FullCalendar */
+.dark-mode-calendar .fc {
+  color: #fff; /* Sets text color for the entire calendar */
+}
+
+.dark-mode-calendar .fc-toolbar-title {
+  color: #fff; /* Title color */
+}
+
+.dark-mode-calendar .fc-button {
+  background-color: #343a40 !important; /* Button background */
+  color: #fff !important; /* Button text color */
+  border-color: #495057 !important; /* Button border */
+}
+
+.dark-mode-calendar .fc-button:hover {
+  background-color: #495057 !important; /* Button hover background */
+}
+
+.dark-mode-calendar .fc-daygrid-day {
+  background-color: #212529; /* Day cell background */
+  border-color: #343a40; /* Day cell border */
+    color: #fff;
+}
+
+.dark-mode-calendar .fc-day-today {
+  background-color: #343a40 !important; /* Today's date background */
+}
+
+.dark-mode-calendar .fc-col-header-cell {
+  background-color: #343a40; /* Header cells (Sun, Mon, etc.) */
+  color: #fff;
+  border-color: #495057;
+}
+
+.dark-mode-calendar  .fc-daygrid-day-number{
+  color: #fff !important; /* Date number color */
+}
+
+.dark-mode-calendar .fc-event {
+  background-color: #D9A741 !important; /* Event background */
+  border-color: #D9A741 !important; /* Event border */
+  color: #000 !important; /* Event text color */
+}
+
+.dark-mode-calendar .fc .fc-col-header-cell-cushion{
+    color: #fff !important;
+}
+
+.dark-mode-calendar .fc-scrollgrid  .fc-scrollgrid-liquid{
+    border: 2px solid !important;
+}

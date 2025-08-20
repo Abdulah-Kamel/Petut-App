@@ -24,12 +24,14 @@ const DoctorForm = () => {
         reader.readAsDataURL(file);
     };
     const [formData, setFormData] = useState({
+        uid: uid || '',
         fullName: auth.currentUser?.displayName || '',
         email: auth.currentUser?.email || '',
         phone: auth.currentUser?.phone || '',
         gender: auth.currentUser?.gender || '',
         role: 'doctor',
         status: "pending",
+        rating:0,
         doctorDetails: {
             cardBackImage: "",
             cardFrontImage: "",
@@ -300,17 +302,17 @@ const DoctorForm = () => {
                         {formErrors['doctorDetails.experience'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.experience']}</p>}
                     </div>
                     <div>
-                        <label htmlFor="cardFrontImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Syndicate Card Front</label>
+                        <label htmlFor="cardFrontImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">ID Image Front</label>
                         <input id="cardFrontImage" name="doctorDetails.cardFrontImage" type="file" onChange={handleChange} className={`block w-full text-sm text-gray-900 border ${formErrors['doctorDetails.cardFrontImage'] ? 'border-red-500' : 'border-gray-300'} rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400`} aria-describedby="user_avatar_help" required />
                         {formErrors['doctorDetails.cardFrontImage'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.cardFrontImage']}</p>}
                     </div>
                     <div>
-                        <label htmlFor="cardBackImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Syndicate Card Back</label>
+                        <label htmlFor="cardBackImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">ID Image Back</label>
                         <input id="cardBackImage" name="doctorDetails.cardBackImage" type="file" onChange={handleChange} className={`block w-full text-sm text-gray-900 border ${formErrors['doctorDetails.cardBackImage'] ? 'border-red-500' : 'border-gray-300'} rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400`} aria-describedby="user_avatar_help" required />
                         {formErrors['doctorDetails.cardBackImage'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.cardBackImage']}</p>}
                     </div>
                     <div>
-                        <label htmlFor="idImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">ID Image</label>
+                        <label htmlFor="idImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Syndicate Card</label>
                         <input id="idImage" name="doctorDetails.idImage" type="file" onChange={handleChange} className={`block w-full text-sm text-gray-900 border ${formErrors['doctorDetails.idImage'] ? 'border-red-500' : 'border-gray-300'} rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400`} aria-describedby="user_avatar_help" required />
                         {formErrors['doctorDetails.idImage'] && <p className="mt-1 text-sm text-red-500">{formErrors['doctorDetails.idImage']}</p>}
                     </div>
