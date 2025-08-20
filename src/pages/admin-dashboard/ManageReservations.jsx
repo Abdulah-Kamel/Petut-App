@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import ReservationTable from '../../components/admindash/ReservationTable'
-// import { RiAddLine } from "react-icons/ri";
-// import AddReservation from '../../components/admindash/AddReservation';
+
 
 export default function ManageReservations() {
 

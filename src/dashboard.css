@@ -1,3 +1,4 @@
+/* Base styles */
 a {
   text-decoration: none;
 }
@@ -8,7 +9,6 @@ ul {
 
 .x {
   border: 1px solid red;
-
 }
 
 .flex-1 {
@@ -19,36 +19,101 @@ ul {
   gap: 140px;
 }
 
-.background {
-  background-color: #F7F3EB;
+/* Header height utility */
+.header-height {
+  height: 100px;
 }
 
+/* Profile image styling */
+.admin-profile-image,
+.doctor-profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Notification badge styling */
+.notification-badge {
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Color scheme variables matching main app */
+:root {
+  --primary-app: #FF8D4D;
+  --primary-app-dark: #5A282B;
+  --secondary: #FFB9A9;
+  --secondary-light: #FFEFE9;
+  --secondary-dark: #1E202D;
+  --accent: #FF5464;
+  --neutral: #5A282B;
+
+  /* Light mode backgrounds */
+  --bg-primary: #F7F3EB;
+  --bg-secondary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border-color: var(--primary-app);
+  --icon-color: var(--text-primary);
+}
+
+/* Dark mode variables */
+.dark {
+  --bg-primary: #313340;
+  --bg-secondary: #1E202D;
+  --text-primary: #ffffff;
+  --text-secondary: #d1d5db;
+  --border-color: var(--primary-app);
+  --icon-color: var(--text-primary);
+}
+
+/* Background classes */
+.background {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.background-secondary {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Button styles matching main app */
 .custom-button {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 3px;
-  background-color: #D9A741;
+  background-color: var(--primary-app);
   color: #fff;
   padding: 6px 12px;
   border-radius: 4px;
-  border: 1px solid #D9A741;
+  border: 1px solid var(--primary-app);
   cursor: pointer;
   transition: 0.3s ease-in-out;
 }
 
 .custom-button:hover {
   background-color: transparent;
-  color: #D9A741;
-  border: 1px solid #D9A741;
+  color: var(--primary-app);
+  border: 1px solid var(--primary-app);
 }
 
+/* Sidebar styles with dark mode support */
 .sidebar.collapsed {
   width: 250px;
   padding: 20px 15px;
   left: -300px;
   transition: 0.3s ease-in-out;
-
+  background-color: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
 }
 
 .sidebar.expanded {
@@ -56,18 +121,241 @@ ul {
   padding: 20px 15px;
   left: 0;
   transition: 0.3s ease-in-out;
-
+  background-color: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
 }
 
+/* Navigation link styles */
+.nav-link {
+  color: var(--text-primary) !important;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-app) !important;
+}
+
+.nav-link.active {
+  color: var(--primary-app) !important;
+}
+
+/* Header styles */
+.header-dash {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.header-dash .navbar-brand {
+  color: var(--text-primary) !important;
+}
+
+.header-dash svg {
+  color: var(--icon-color) !important;
+}
+
+/* Ensure navbar brand text is white in dark mode */
+.dark .header-dash .navbar-brand {
+  color: #ffffff !important;
+}
+
+/* Ensure all header text elements are white in dark mode */
+.dark .header-dash span {
+  color: #ffffff !important;
+}
+
+/* Form and input styles */
 ::placeholder {
   opacity: 0.4 !important;
-  color: #000 !important;
+  color: var(--text-secondary) !important;
 }
 
-input {
+input, select, textarea {
   font-size: medium !important;
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--text-secondary) !important;
 }
 
+.dark input, .dark select, .dark textarea {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: #374151 !important;
+}
+
+/* Table styles */
 table tr:last-child td {
   border-bottom: none !important;
+}
+
+/* Dark mode table styles only */
+.dark .table {
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+.dark .table th {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.dark .table td {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Card styles */
+.card {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--text-secondary) !important;
+}
+
+/* Modal styles */
+.modal-content {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.modal-header {
+  border-bottom-color: var(--text-secondary) !important;
+}
+
+.modal-footer {
+  border-top-color: var(--text-secondary) !important;
+}
+
+/* Button variants */
+.btn-primary {
+  background-color: var(--primary-app) !important;
+  border-color: var(--primary-app) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-app-dark) !important;
+  border-color: var(--primary-app-dark) !important;
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+  background: none;
+  border: 1px solid var(--text-secondary);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  background-color: var(--primary-app);
+  color: white;
+  border-color: var(--primary-app);
+}
+
+/* Utility classes for dark mode compatibility */
+.text-primary-app {
+  color: var(--primary-app) !important;
+}
+
+.bg-primary-app {
+  background-color: var(--primary-app) !important;
+}
+
+.border-primary-app {
+  border-color: var(--primary-app) !important;
+}
+
+/* Statistics and dashboard specific styles */
+.statistic-card {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.statistic-card:hover {
+  border-color: var(--primary-app);
+  box-shadow: 0 4px 8px rgba(255, 141, 77, 0.1);
+}
+
+/* Statistic icons with dark mode support */
+.statistic-icon {
+  color: var(--primary-app) !important;
+  transition: color 0.3s ease;
+}
+
+/* Alternative: Use dark color for better visibility on light card backgrounds */
+.dark .statistic-icon {
+  color: #374151 !important;
+}
+
+/* Tab container and button styles */
+.tab-container {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-active {
+  border-bottom: 3px solid #D9A741;
+  color: #D9A741 !important;
+  font-weight: bold;
+}
+
+.tab-inactive {
+  border-bottom: none;
+  color: #333;
+  font-weight: normal;
+}
+
+/* Dark mode tab styles - inactive tabs are white */
+.dark .tab-inactive {
+  color: #ffffff !important;
+}
+
+.dark .tab-active {
+  color: #D9A741 !important;
+}
+
+/* Tab button icons */
+.tab-button svg {
+  transition: color 0.3s ease;
+}
+
+.dark .tab-inactive svg {
+  color: #ffffff !important;
+}
+
+.tab-active svg {
+  color: #D9A741 !important;
+}
+
+/* Table action button icons */
+.table-action-icon {
+  color: var(--icon-color) !important;
+  transition: color 0.3s ease;
+}
+
+/* Dark mode - make action icons white (except delete which keeps its text-danger class) */
+.dark .table-action-icon {
+  color: #ffffff !important;
+}
+
+.table-action-icon:hover {
+  opacity: 0.7;
+}
+
+
+.table{
+    margin-bottom: 0;
 }

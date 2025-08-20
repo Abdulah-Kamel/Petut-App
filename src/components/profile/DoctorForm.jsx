@@ -9,7 +9,7 @@ const DoctorForm = () => {
     const uid = searchParams.get('uid')
     const navigate = useNavigate()
     const [profileImageFile, setProfileImageFile] = useState(null);
-    const [profileImage, setProfileImage] = useState( ""); // base64 for preview
+    const [profileImage, setProfileImage] = useState(""); // base64 for preview
     // Handle image upload and convert to base64
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -139,7 +139,7 @@ const DoctorForm = () => {
         }
 
         const uploadToImgBB = async (file) => {
-            const apiKey = "01a0445653bd47247515dce07a3f1400"; 
+            const apiKey = "01a0445653bd47247515dce07a3f1400";
             const body = new FormData();
             body.append("image", file);
 
@@ -161,7 +161,7 @@ const DoctorForm = () => {
             const cardFrontImageUrl = await uploadToImgBB(cardFrontImage);
             const cardBackImageUrl = await uploadToImgBB(cardBackImage);
             const idImageUrl = await uploadToImgBB(idImage);
-                // Upload profile image if a new one was selected
+            // Upload profile image if a new one was selected
             let profileImageUrl = profileImage; // Keep existing image if no new one is uploaded
             if (profileImageFile) {
                 profileImageUrl = await uploadToImgBB(profileImageFile);
@@ -182,7 +182,11 @@ const DoctorForm = () => {
                 ...finalFormData,
                 createdAt: serverTimestamp()
             })
-            navigate('/')
+            // navigate('/')
+
+            navigate("/review-account", { replace: true });
+
+
         } catch (err) {
             console.error(err)
             setError(`Failed to complete profile: ${err.message}`)
@@ -257,27 +261,27 @@ const DoctorForm = () => {
                         <div>
                             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Full Name</label>
                             <input id="fullName" name="fullName" type="text" value={formData.fullName} onChange={handleChange}
-                                   className={`appearance-none block w-full px-3 py-3 border ${formErrors.fullName ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}
-                                   placeholder="Full Name" />
+                                className={`appearance-none block w-full px-3 py-3 border ${formErrors.fullName ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}
+                                placeholder="Full Name" />
                             {formErrors.fullName && <p className="mt-1 text-sm text-red-500">{formErrors.fullName}</p>}
                         </div>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Email</label>
                             <input id="email" name="email" type="email" value={formData.email} onChange={handleChange}
-                                   className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
-                                   placeholder="Email" disabled />
+                                className="appearance-none block w-full px-3 py-3 border border-gray-300 dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm"
+                                placeholder="Email" disabled />
                         </div>
                         <div>
                             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Phone</label>
                             <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange}
-                                   className={`appearance-none block w-full px-3 py-3 border ${formErrors.phone ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}
-                                   placeholder="Phone Number" />
+                                className={`appearance-none block w-full px-3 py-3 border ${formErrors.phone ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}
+                                placeholder="Phone Number" />
                             {formErrors.phone && <p className="mt-1 text-sm text-red-500">{formErrors.phone}</p>}
                         </div>
                         <div>
                             <label htmlFor="gender" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Gender</label>
                             <select id="gender" name="gender" value={formData.gender} onChange={handleChange}
-                                    className={`appearance-none block w-full px-3 py-3 border ${formErrors.gender ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}>
+                                className={`appearance-none block w-full px-3 py-3 border ${formErrors.gender ? 'border-red-500' : 'border-gray-300'} dark:border-gray-500 dark:placeholder:text-white  dark:bg-[#313340] dark:text-white rounded-lg focus:outline-none focus:ring-primary_app focus:border-primary sm:text-sm`}>
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
@@ -330,15 +334,15 @@ const DoctorForm = () => {
                     </div>
                     <div>
                         <button type="submit" disabled={loading}
-                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-primary_app hover:bg-primary_app/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary_app disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-primary_app hover:bg-primary_app/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary_app disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
                             {loading ? (
                                 <span className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                  </svg>
-                  Saving...
-                </span>
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    Saving...
+                                </span>
                             ) : 'Save Profile'}
                         </button>
                     </div>

@@ -80,11 +80,11 @@ export default function ProductsTable({ products, setProducts, handleDeleteProdu
                                         <td className="px-4 py-3 align-middle"><span style={{ color: 'white', backgroundColor: product.category === 'cat' ? '#A66DD4   ' : product.category === 'dog' ? '#4DA6FF  ' : product.category === 'bird' ? '#4CAF50 ' : product.category === 'toys' ? '#FFA726' : '#A66DD4', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span></td>
                                         <td className="px-4 py-3 align-middle ">
                                             <button type="button" className="btn border-0 p-0 me-1" data-bs-toggle="modal" data-bs-target={`#viewproduct-${product.id}`}>
-                                                <FaEye />
+                                                <FaEye className="table-action-icon"/>
                                             </button>
                                             <ViewProductModal product={product} modalId={product.id} />
                                             <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editproduct-${product.id}`}>
-                                                <TbEdit />
+                                                <TbEdit className="table-action-icon"/>
                                             </button>
                                             <EditProductModal product={product} products={products} modalId={product.id} setProducts={setProducts} onProductUpdate={(updatedProduct) => {
                                                 const updatedList = products.map((p) =>

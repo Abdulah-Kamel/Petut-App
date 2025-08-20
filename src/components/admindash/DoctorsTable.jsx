@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { TbEdit } from "react-icons/tb";
 import { MdDelete, MdHeight } from "react-icons/md";
-import { deleteDoc, doc } from 'firebase/firestore';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 import { toast } from 'react-toastify';
 import EditDoctorModal from './EditDoctorModal';
@@ -24,9 +24,21 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedDoctorId, setSelectedDoctorId] = useState(null);
 
+    const handleStatusChange = async (doctorId, newStatus) => {
+        try {
+            const docRef = doc(db, "users", doctorId);
+            await updateDoc(docRef, { status: newStatus });
+            setDoctors(prev => prev.map(d => d.id === doctorId ? { ...d, status: newStatus } : d));
+            toast.success(`Doctor status updated to ${newStatus}`);
+        } catch (error) {
+            toast.error("Failed to update status: " + error.message);
+        }
+    };
+
+
     // get doctors from firestore
     useEffect(() => {
-        fetchDoctors(); 
+        fetchDoctors();
     }, []);
 
     // delete doctor from firestore
@@ -50,6 +62,8 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
         const statusMatch = statusFilter === 'all' || doctor.status === statusFilter;
         return (nameMatch || emailMatch) && statusMatch && genderMatch;
     })
+
+
     return (
         <Fragment>
 
@@ -59,7 +73,7 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
                     <input
                         className="form-control pe-5"
                         type="text"
-                        placeholder="Search by name, email, or specialization"
+                        placeholder="Search by name, email"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -76,8 +90,9 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
                 </select>
                 <select className="form-select w-25" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                     <option value="all" >All</option>
-                    <option value="active" >active</option>
-                    <option value="inactive" >inactive</option>
+                    <option value="pending" >Pending</option>
+                    <option value="approved" >Approved</option>
+                    <option value="rejected" >Rejected</option>
                 </select>
             </div>
             {loading ? <h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3> : doctors?.length === 0 ? <h3 className='text-center mt-5'>No Doctors found</h3> : filteredDoctors.length === 0 ? (
@@ -111,18 +126,25 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
                                             </div>
                                         </td>
                                         <td className="px-4 py-3 align-middle" ><span style={{ color: 'white', backgroundColor: doctor.gender === 'male' ? '#007BFF ' : '#E91E63 ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{doctor.gender}</span></td>
-                                        <td className="px-4 py-3 align-middle"><span style={{ color: 'white', backgroundColor: doctor.status === 'active' ? '#28a745  ' : '#6c757d   ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{doctor.status}</span></td>
-                                        <td className="px-4 py-3 align-middle  ">
+                                        {/* <td className="px-4 py-3 align-middle"><span style={{ color: 'white', backgroundColor: doctor.status === 'active' ? '#28a745  ' : '#6c757d   ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{doctor.status}</span></td> */}
+                                        <td className="px-4 py-3 align-middle" >
+                                            <select className='form-select w-75' name="status" id="status" value={doctor.status} onChange={(e) => handleStatusChange(doctor.id, e.target.value)}>
+                                                <option value="pending">Pending</option>
+                                                <option value="approved">Approved</option>
+                                                <option value="rejected">Rejected</option>
+                                            </select>
+                                        </td>
+                                        <td className="px-4 py-3 align-middle">
 
                                             <div className="d-flex justify-content-start align-items-center gap-2">
 
                                                 <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewdoctor-${doctor.id}`}>
-                                                    <FaEye cursor={"pointer"} size={20} />
+                                                    <FaEye cursor={"pointer"} size={20} className="table-action-icon" />
                                                 </button>
                                                 <ViewDoctorModal doctor={doctor} modalId={doctor.id} />
 
                                                 <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editdoctor-${doctor.id}`}>
-                                                    <TbEdit className='' size={20} />
+                                                    <TbEdit className='table-action-icon' size={20} />
                                                 </button>
                                                 <EditDoctorModal doctor={doctor} doctors={doctors} setDoctors={setDoctors} modalId={doctor.id} />
                                                 <button type="button" className="btn border-0 p-0" >

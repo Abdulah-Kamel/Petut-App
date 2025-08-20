@@ -3,8 +3,8 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import './calendar.css'
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../../firebase.js';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { auth, db } from '../../../firebase.js';
 import { toast } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
 import logo from '../../../assets/petut.png';
@@ -20,8 +20,14 @@ export default function Calendar() {
     //get booking data from firebase
     useEffect(() => {
         const fetchAllBookings = async () => {
+            const currentUser = auth.currentUser;
+            if (!currentUser) return; // لو المستخدم مش مسجل دخول
             try {
-                const querySnapshot = await getDocs(collection(db, "bookings"));
+                const q = query(
+                    collection(db, "bookings"),
+                    where("doctorId", "==", currentUser.uid)
+                );
+                const querySnapshot = await getDocs(q);
                 const bookingsData = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
@@ -58,8 +64,8 @@ export default function Calendar() {
         };
     });
     const selectedDayBookings = bookings.filter(book => {
-    const bookDate = book.date?.toDate ? book.date.toDate().toISOString().split("T")[0] : new Date(book.date).toISOString().split("T")[0];
-    return bookDate === selectedDate;
+        const bookDate = book.date?.toDate ? book.date.toDate().toISOString().split("T")[0] : new Date(book.date).toISOString().split("T")[0];
+        return bookDate === selectedDate;
 
     });
 
@@ -100,8 +106,8 @@ export default function Calendar() {
                                 <div className="modal-body">
                                     {selectedDayBookings.length > 0 ? (
                                         <ul className=" p-0">
-                                            {selectedDayBookings.map((item, index) => (
-                                                <li key={index}>
+                                            {selectedDayBookings.map((item) => (
+                                                <li key={item.id}>
                                                     <strong>{item.status}</strong> at {item.clinicPhone} in {item.clinicName}
                                                 </li>
                                             ))}
