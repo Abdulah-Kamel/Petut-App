@@ -3,6 +3,7 @@ import { db } from '../../firebase';
 import { collection, query, orderBy, onSnapshot, doc, updateDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { RiEyeLine, RiMessage3Line, RiTimeLine } from 'react-icons/ri';
+import { BeatLoader } from 'react-spinners';
 import SupportChatModal from './SupportChatModal';
 
 export default function SupportTicketsTable() {
@@ -43,23 +44,13 @@ export default function SupportTicketsTable() {
     }
   };
 
-  const getPriorityColor = (priority) => {
+  const getPriorityClass = (priority) => {
     switch (priority) {
-      case 'urgent': return 'text-red-600 bg-red-100';
-      case 'high': return 'text-orange-600 bg-orange-100';
-      case 'medium': return 'text-yellow-600 bg-yellow-100';
-      case 'low': return 'text-green-600 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'open': return 'text-blue-600 bg-blue-100';
-      case 'in_progress': return 'text-yellow-600 bg-yellow-100';
-      case 'resolved': return 'text-green-600 bg-green-100';
-      case 'closed': return 'text-gray-600 bg-gray-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'urgent': return 'badge text-bg-danger';
+      case 'high': return 'badge text-bg-warning';
+      case 'medium': return 'badge text-bg-info';
+      case 'low': return 'badge text-bg-success';
+      default: return 'badge text-bg-secondary';
     }
   };
 
@@ -71,7 +62,7 @@ export default function SupportTicketsTable() {
   const formatDate = (timestamp) => {
     if (!timestamp) return '';
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleDateString('ar-EG') + ' ' + date.toLocaleTimeString('ar-EG', { 
+    return date.toLocaleDateString('en-GB') + ' ' + date.toLocaleTimeString('en-US', {
       hour: '2-digit', 
       minute: '2-digit' 
     });
@@ -79,22 +70,20 @@ export default function SupportTicketsTable() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary_app"></div>
-      </div>
+      <h3 className='text-center mt-5'><BeatLoader color='var(--primary-app)' /></h3>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+    <div className="card shadow-sm p-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="h4 fw-bold mb-0">
           Support Tickets
         </h2>
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+          className="form-select w-auto"
         >
           <option value="all">All Tickets</option>
           <option value="open">Open</option>
@@ -105,59 +94,57 @@ export default function SupportTicketsTable() {
       </div>
 
       <div className="overflow-x-auto" style={{ maxHeight: '620px', overflowY: 'auto' }}>
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-gray-50 dark:bg-gray-700">
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+        <table className="table table-hover">
+          <thead className='position-sticky top-0'>
+            <tr>
+              <th className="px-3 py-3">
                 User
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+              <th className="px-3 py-3">
                 Subject
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+              <th className="px-3 py-3">
                 Priority
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+              <th className="px-3 py-3">
                 Status
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+              <th className="px-3 py-3">
                 Date
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+              <th className="px-3 py-3">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+          <tbody>
             {filteredTickets.map((ticket) => (
-              <tr key={ticket.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td className="px-4 py-4">
+              <tr key={ticket.id}>
+                <td className="px-3 py-3 align-middle">
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="fw-medium">
                       {ticket.userName}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-sm text-secondary">
                       {ticket.userEmail}
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-4">
-                  <div className="text-sm text-gray-900 dark:text-white max-w-xs truncate">
+                <td className="px-3 py-3 align-middle">
+                  <div className="text-sm" style={{maxWidth: '200px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap'}}>
                     {ticket.subject}
                   </div>
                 </td>
-                <td className="px-4 py-4">
-                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(ticket.priority)}`}>
-                    {ticket.priority === 'urgent' ? 'Urgent' :
-                     ticket.priority === 'high' ? 'High' :
-                     ticket.priority === 'medium' ? 'Medium' : 'Low'}
+                <td className="px-3 py-3 align-middle">
+                  <span className={getPriorityClass(ticket.priority)}>
+                    {ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1).replace('_', ' ')}
                   </span>
                 </td>
-                <td className="px-4 py-4">
+                <td className="px-3 py-3 align-middle">
                   <select
                     value={ticket.status}
                     onChange={(e) => updateTicketStatus(ticket.id, e.target.value)}
-                    className={`px-2 py-1 text-xs font-medium rounded-full border-0 ${getStatusColor(ticket.status)}`}
+                    className="form-select form-select-sm"
                   >
                     <option value="open">Open</option>
                     <option value="in_progress">In Progress</option>
@@ -165,19 +152,19 @@ export default function SupportTicketsTable() {
                     <option value="closed">Closed</option>
                   </select>
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">
-                  <div className="flex items-center gap-1">
+                <td className="px-3 py-3 align-middle text-sm text-secondary">
+                  <div className="d-flex align-items-center gap-1">
                     <RiTimeLine />
                     {formatDate(ticket.createdAt)}
                   </div>
                 </td>
-                <td className="px-4 py-4">
+                <td className="px-3 py-3 align-middle">
                   <button
                     onClick={() => {
                       setSelectedTicket(ticket);
                       setShowChatModal(true);
                     }}
-                    className="bg-primary_app text-white px-3 py-1 rounded-lg text-sm hover:bg-opacity-90 transition-colors flex items-center gap-1"
+                    className="custom-button btn-sm"
                   >
                     <RiMessage3Line />
                     Chat
@@ -189,9 +176,9 @@ export default function SupportTicketsTable() {
         </table>
 
         {filteredTickets.length === 0 && (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-            No support tickets found
-          </div>
+          <p className="text-center text-secondary py-5">
+            No support tickets found for this filter.
+          </p>
         )}
       </div>
 

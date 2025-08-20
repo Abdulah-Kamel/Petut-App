@@ -70,22 +70,22 @@ export default function Overview() {
   };
 
   const statistics = [
-    { title: 'Total Doctors', count: doctors.length, icon: <FaUserDoctor size={40} /> },
-    { title: 'Total Users', count: clients.length, icon: <FaUsers size={40} /> },
-    { title: 'Total Clinics', count: clinics.length, icon: <FaClinicMedical size={40} /> },
-    { title: 'Total Bookings', count: bookings.length, icon: <FaCalendarAlt size={40} /> },
-    { title: 'Total Revenue', count: totalRevenue, icon: <FaSackDollar size={40} /> },
-    { title: "Today's Revenue", count: todayRevenue, icon: <FaSackDollar size={40} /> },
+    { title: 'Total Doctors', count: doctors.length, icon: <FaUserDoctor size={40} className="statistic-icon" /> },
+    { title: 'Total Users', count: clients.length, icon: <FaUsers size={40} className="statistic-icon" /> },
+    { title: 'Total Clinics', count: clinics.length, icon: <FaClinicMedical size={40} className="statistic-icon" /> },
+    { title: 'Total Bookings', count: bookings.length, icon: <FaCalendarAlt size={40} className="statistic-icon" /> },
+    { title: 'Total Revenue', count: totalRevenue, icon: <FaSackDollar size={40} className="statistic-icon" /> },
+    { title: "Today's Revenue", count: todayRevenue, icon: <FaSackDollar size={40} className="statistic-icon" /> },
   ];
 
   return (
     <Fragment>
-      <div className='container-fluid mt-4'>
-        <div className='statistics mb-5'>
-          <div className="d-flex justify-content-between align-items-center">
+      <div className="container-fluid background-secondary p-4">
+        <div className="container-fluid">
+          <div className="d-flex align-items-center justify-content-between mb-4">
             <div className='left'>
-              <h1>Main Control Panel</h1>
-              <p>Activities Overview</p>
+              <h1 className="text-primary-app">Main Control Panel</h1>
+              <p style={{ color: 'var(--text-secondary)' }}>Activities Overview</p>
             </div>
             <div className="right">
               <img src={logo} width={100} height={100} alt="Petut Logo" />

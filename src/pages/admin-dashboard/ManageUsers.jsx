@@ -93,64 +93,38 @@ export default function ManageUsers() {
                         <img src={logo} width={'100px'} height={'100px'} alt="logo" />
                     </div>
                 </div>
-                <div style={{}}>
-                    <div style={{ display: 'flex', borderBottom: '1px solid #ccc' }}>
-                        <button
-                            onClick={() => setActiveTab('doctors')}
-                            style={{
-                                padding: '10px 20px',
-                                border: 'none',
-                                borderBottom: activeTab === 'doctors' ? '3px solid #D9A741' : 'none',
-                                background: 'transparent',
-                                color: activeTab === 'doctors' ? '#D9A741' : '#333',
-                                fontWeight: activeTab === 'doctors' ? 'bold' : 'normal'
-                            }}
-                            className='d-flex align-items-center'
-                        >
-                            <FaUserDoctor className='me-2' size={20} />
-                            doctors
-                        </button>
+                <div className="tab-container">
+                    <button
+                        onClick={() => setActiveTab('doctors')}
+                        className={`tab-button d-flex align-items-center ${activeTab === 'doctors' ? 'tab-active' : 'tab-inactive'}`}
+                    >
+                        <FaUserDoctor className='me-2' size={20} />
+                        doctors
+                    </button>
 
-                        <button
-                            onClick={() => setActiveTab('clients')}
-                            style={{
-                                padding: '10px 20px',
-                                border: 'none',
-                                borderBottom: activeTab === 'clients' ? '3px solid #D9A741' : 'none',
-                                background: 'transparent',
-                                color: activeTab === 'clients' ? '#D9A741' : '#333',
-                                fontWeight: activeTab === 'clients' ? 'bold' : 'normal'
-                            }}
-                            className='d-flex align-items-center'
-                        >
-                            <FaUsers className='me-2' size={20} />
-                            clients
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('admins')}
-                            style={{
-                                padding: '10px 20px',
-                                border: 'none',
-                                borderBottom: activeTab === 'admins' ? '3px solid #D9A741' : 'none',
-                                background: 'transparent',
-                                color: activeTab === 'admins' ? '#D9A741' : '#333',
-                                fontWeight: activeTab === 'admins' ? 'bold' : 'normal'
-                            }}
-                            className='d-flex align-items-center'
-                        >
-                            <FaUsers className='me-2' size={20} />
-                            Admins
-                        </button>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
-                        <button className='custom-button d-flex align-items-center fw-bold' data-bs-toggle="modal" data-bs-target={`#${activeTab === 'doctors' ? 'adddoctor' : activeTab === 'clients' ? 'addclient' : 'addadmin'}`} > <RiAddLine size={20} />{activeTab === 'doctors' ? 'Add doctor' : activeTab === 'clients' ? 'Add client' : 'Add admin'}</button>
-                    </div>
-                    {activeTab === 'doctors' ? <AddDoctorModal fetchDoctors={fetchDoctors} doctors={doctors} setDoctors={setDoctors} /> : activeTab === 'clients' ? <AddClientModal fetchClients={fetchClients} clients={clients} setClients={setClients} /> : <AddAdminModal fetchAdmins={fetchAdmins} admins={admins} setAdmins={setAdmins} />}
-                    <div style={{ marginTop: '30px' }}>
-                        {activeTab === 'doctors' && <DoctorsTable fetchDoctors={fetchDoctors} doctors={doctors} setDoctors={setDoctors} loading={loading} setLoading={setLoading} />}
-                        {activeTab === 'clients' && <Clientstable fetchClients={fetchClients} clients={clients} setClients={setClients} loading={loading} setLoading={setLoading} />}
-                        {activeTab === 'admins' && <AdminsTable fetchAdmins={fetchAdmins} admins={admins} setAdmins={setAdmins} loading={loading} setLoading={setLoading} />}
-                    </div>
+                    <button
+                        onClick={() => setActiveTab('clients')}
+                        className={`tab-button d-flex align-items-center ${activeTab === 'clients' ? 'tab-active' : 'tab-inactive'}`}
+                    >
+                        <FaUsers className='me-2' size={20} />
+                        clients
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('admins')}
+                        className={`tab-button d-flex align-items-center ${activeTab === 'admins' ? 'tab-active' : 'tab-inactive'}`}
+                    >
+                        <FaUsers className='me-2' size={20} />
+                        Admins
+                    </button>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+                    <button className='custom-button d-flex align-items-center fw-bold' data-bs-toggle="modal" data-bs-target={`#${activeTab === 'doctors' ? 'adddoctor' : activeTab === 'clients' ? 'addclient' : 'addadmin'}`} > <RiAddLine size={20} />{activeTab === 'doctors' ? 'Add doctor' : activeTab === 'clients' ? 'Add client' : 'Add admin'}</button>
+                </div>
+                {activeTab === 'doctors' ? <AddDoctorModal fetchDoctors={fetchDoctors} doctors={doctors} setDoctors={setDoctors} /> : activeTab === 'clients' ? <AddClientModal fetchClients={fetchClients} clients={clients} setClients={setClients} /> : <AddAdminModal fetchAdmins={fetchAdmins} admins={admins} setAdmins={setAdmins} />}
+                <div style={{ marginTop: '30px' }}>
+                    {activeTab === 'doctors' && <DoctorsTable fetchDoctors={fetchDoctors} doctors={doctors} setDoctors={setDoctors} loading={loading} setLoading={setLoading} />}
+                    {activeTab === 'clients' && <Clientstable fetchClients={fetchClients} clients={clients} setClients={setClients} loading={loading} setLoading={setLoading} />}
+                    {activeTab === 'admins' && <AdminsTable fetchAdmins={fetchAdmins} admins={admins} setAdmins={setAdmins} loading={loading} setLoading={setLoading} />}
                 </div>
             </div>
         </Fragment>

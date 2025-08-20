@@ -14,9 +14,9 @@ import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
-
 export default function Sidebar({ open, toggleSidebar }) {
     const navigate = useNavigate();
+
     const handleLogout = async () => {
         try {
             await signOut(auth);
@@ -26,40 +26,43 @@ export default function Sidebar({ open, toggleSidebar }) {
             toast.error("Failed to log out, error:" + error.message, { autoClose: 3000 });
         }
     };
+
     return (
         <Fragment>
-            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed  bottom-0  ${open ? 'expanded' : 'collapsed'}`} style={{ top: '100px', borderRight: '1px solid #D9A741', zIndex: '1000' }} >
-                <ul className=" p-0 d-flex flex-column  align-items-left  justify-content-between h-100" >
+            <div className={`sidebar background d-flex flex-column flex-shrink-0 p-3 position-fixed bottom-0 ${open ? 'expanded' : 'collapsed'}`}
+                 style={{ top: '100px', zIndex: '1000' }} >
+                <ul className="p-0 d-flex flex-column align-items-left justify-content-between h-100" >
                     <div className="top-links">
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/overview"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className={({ isActive }) =>
+                                    `text-decoration-none d-flex align-items-center gap-2 nav-link ${isActive ? 'active' : ''}`
+                                }
                                 onClick={toggleSidebar}
                             >
                                 <GrOverview size={25} />
-
                                 <span className="fw-bold">Overview</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/manage-users"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className={({ isActive }) =>
+                                    `text-decoration-none d-flex align-items-center gap-2 nav-link ${isActive ? 'active' : ''}`
+                                }
                                 onClick={toggleSidebar}
                             >
                                 <FaUsers size={25} />
-
                                 <span className="fw-bold">Manage Users</span>
                             </NavLink>
                         </li>
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/manage-clinics"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className={({ isActive }) =>
+                                    `text-decoration-none d-flex align-items-center gap-2 nav-link ${isActive ? 'active' : ''}`
+                                }
                                 onClick={toggleSidebar}
                             >
                                 <FaClinicMedical size={25} />
@@ -69,8 +72,9 @@ export default function Sidebar({ open, toggleSidebar }) {
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/manage-reservations"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className={({ isActive }) =>
+                                    `text-decoration-none d-flex align-items-center gap-2 nav-link ${isActive ? 'active' : ''}`
+                                }
                                 onClick={toggleSidebar}
                             >
                                 <FaCalendarAlt size={25} />
@@ -80,8 +84,9 @@ export default function Sidebar({ open, toggleSidebar }) {
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/reviews"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className={({ isActive }) =>
+                                    `text-decoration-none d-flex align-items-center gap-2 nav-link ${isActive ? 'active' : ''}`
+                                }
                                 onClick={toggleSidebar}
                             >
                                 <MdReviews size={25} />
@@ -91,8 +96,9 @@ export default function Sidebar({ open, toggleSidebar }) {
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/store"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className={({ isActive }) =>
+                                    `text-decoration-none d-flex align-items-center gap-2 nav-link ${isActive ? 'active' : ''}`
+                                }
                                 onClick={toggleSidebar}
                             >
                                 <HiShoppingBag size={25} />
@@ -102,8 +108,9 @@ export default function Sidebar({ open, toggleSidebar }) {
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/charts"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className={({ isActive }) =>
+                                    `text-decoration-none d-flex align-items-center gap-2 nav-link ${isActive ? 'active' : ''}`
+                                }
                                 onClick={toggleSidebar}
                             >
                                 <IoStatsChart size={25} />
@@ -113,8 +120,9 @@ export default function Sidebar({ open, toggleSidebar }) {
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/admin-dashboard/support"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className={({ isActive }) =>
+                                    `text-decoration-none d-flex align-items-center gap-2 nav-link ${isActive ? 'active' : ''}`
+                                }
                                 onClick={toggleSidebar}
                             >
                                 <BiSupport size={25} style={{ display: 'inline-block', minWidth: '25px' }} />
@@ -126,8 +134,7 @@ export default function Sidebar({ open, toggleSidebar }) {
                         <li className="mb-2 p-3">
                             <NavLink
                                 to="/login"
-                                style={({ isActive }) => ({ color: isActive ? "#D9A741" : "black" })}
-                                className="text-decoration-none d-flex align-items-center gap-2"
+                                className="text-decoration-none d-flex align-items-center gap-2 nav-link"
                                 onClick={handleLogout}
                             >
                                 <TbLogout2 size={25} />
@@ -137,7 +144,6 @@ export default function Sidebar({ open, toggleSidebar }) {
                     </div>
                 </ul>
             </div>
-
         </Fragment>
     )
 }
