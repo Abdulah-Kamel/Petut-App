@@ -90,8 +90,9 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
                 </select>
                 <select className="form-select w-25" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                     <option value="all" >All</option>
-                    <option value="active" >active</option>
-                    <option value="inactive" >inactive</option>
+                    <option value="pending" >Pending</option>
+                    <option value="approved" >Approved</option>
+                    <option value="rejected" >Rejected</option>
                 </select>
             </div>
             {loading ? <h3 className='text-center mt-5'><BeatLoader color='#D9A741' /></h3> : doctors?.length === 0 ? <h3 className='text-center mt-5'>No Doctors found</h3> : filteredDoctors.length === 0 ? (
