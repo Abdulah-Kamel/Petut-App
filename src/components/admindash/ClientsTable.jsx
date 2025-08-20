@@ -89,19 +89,21 @@ export default function Clientstable({ clients, setClients, fetchClients, loadin
                                     <td className="px-4 py-3">{client.email}</td>
                                     <td className="px-4 py-3">{client.phone}</td>
                                     <td className="px-4 py-3" ><span style={{ color: 'white', backgroundColor: client.gender === 'male' ? '#007BFF ' : '#E91E63 ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{client.gender}</span></td>
-                                    <td className="px-4 py-3 d-flex align-items-center gap-2">
-                                        <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewclient-${client.id}`}>
-                                            <FaEye cursor={"pointer"} />
-                                        </button>
-                                        <ViewClientModal client={client} modalId={client.id} />
-                                        <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editclient-${client.id}`}>
-                                            <TbEdit size={20} className='' />
-                                        </button>
-                                        <EditClientModal client={client} setClients={setClients} modalId={client.id} />
-                                        <MdDelete cursor={"pointer"} size={20} className='text-danger' onClick={() => {
-                                            setShowConfirm(true);
-                                            setSelectedClientId(client.id);
-                                        }} />
+                                    <td className="px-4 py-3">
+                                        <div className="d-flex align-items-center gap-2">
+                                            <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewclient-${client.id}`}>
+                                                <FaEye cursor={"pointer"} className="table-action-icon" />
+                                            </button>
+                                            <ViewClientModal client={client} modalId={client.id} />
+                                            <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editclient-${client.id}`}>
+                                                <TbEdit size={20} className='table-action-icon' />
+                                            </button>
+                                            <EditClientModal client={client} setClients={setClients} modalId={client.id} />
+                                            <MdDelete cursor={"pointer"} size={20} className='text-danger' onClick={() => {
+                                                setShowConfirm(true);
+                                                setSelectedClientId(client.id);
+                                            }} />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

@@ -138,12 +138,12 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
                                             <div className="d-flex justify-content-start align-items-center gap-2">
 
                                                 <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewdoctor-${doctor.id}`}>
-                                                    <FaEye cursor={"pointer"} size={20} />
+                                                    <FaEye cursor={"pointer"} size={20} className="table-action-icon" />
                                                 </button>
                                                 <ViewDoctorModal doctor={doctor} modalId={doctor.id} />
 
                                                 <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editdoctor-${doctor.id}`}>
-                                                    <TbEdit className='' size={20} />
+                                                    <TbEdit className='table-action-icon' size={20} />
                                                 </button>
                                                 <EditDoctorModal doctor={doctor} doctors={doctors} setDoctors={setDoctors} modalId={doctor.id} />
                                                 <button type="button" className="btn border-0 p-0" >

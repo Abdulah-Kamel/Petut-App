@@ -6,6 +6,8 @@ import ContentDoctorDash from './../../components/doctordash/ContentDoctorDash';
 import { auth, db } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
+import { DarkModeProvider } from '../../context/DarkModeContext';
+
 export default function DoctorDashboard() {
   useBootstrap();
   const [sidebarOpen, setsidebarOpen] = useState(false);
@@ -33,14 +35,16 @@ export default function DoctorDashboard() {
 
     return () => unsubscribe();
   }, []);
+  
   return (
-    <Fragment>
-      <HeaderDoctor toggleSidebar={toggleSidebar}  doctorData={doctorData} />
-      <div className='d-flex'>
-        <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar}  />
-        <ContentDoctorDash  />
-      </div>
-
-    </Fragment>
+    <DarkModeProvider>
+      <Fragment>
+        <HeaderDoctor toggleSidebar={toggleSidebar} doctorData={doctorData} />
+        <div className='d-flex'>
+          <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />
+          <ContentDoctorDash />
+        </div>
+      </Fragment>
+    </DarkModeProvider>
   )
 }

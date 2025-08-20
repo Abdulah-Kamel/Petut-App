@@ -31,10 +31,10 @@ export default function ManageClinics() {
         fetchBookings();
     }, []);
     const statistics = [
-        { title: 'Total clinics', count: clinics.length, icon: <FaClinicMedical size={40} /> },
-        { title: 'Total doctors', count: doctors.length, icon: <FaUserDoctor size={40} /> },
-        { title: 'Total Clients', count: clients, icon: <FaUsers size={40} /> },
-        { title: 'Total Bookings', count: Bookings.length, icon: <FaCalendarAlt size={40} /> },
+        { title: 'Total clinics', count: clinics.length, icon: <FaClinicMedical size={40} className="statistic-icon" /> },
+        { title: 'Total doctors', count: doctors.length, icon: <FaUserDoctor size={40} className="statistic-icon" /> },
+        { title: 'Total Clients', count: clients, icon: <FaUsers size={40} className="statistic-icon" /> },
+        { title: 'Total Bookings', count: Bookings.length, icon: <FaCalendarAlt size={40} className="statistic-icon" /> },
     ]
     //get clinics from firestore
     const fetchClinics = async () => {
