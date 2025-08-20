@@ -62,6 +62,8 @@ import PostDetailsScreen from "./pages/PostDetailsScreen";
 import ProfileViewScreen from "./pages/ProfileViewScreen";
 import EditPostScreen from "./pages/EditPostScreen";
 import BreedIdentifierPage from './pages/BreedIdentifierPage';
+import DoctorProtectedRoute from "./components/DoctorProtectedRoute.jsx";
+import ReviewAccount from "./pages/ReviewAccount.jsx";
 function App() {
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
@@ -153,11 +155,11 @@ function App() {
       <Notification />
       <ToastContainer />
       <Routes>
-
+        <Route path="/review-account" element={<ReviewAccount />} />
         <Route path="/doctor-dashboard" element={
-          <ProtectedRoute>
+          <DoctorProtectedRoute>
             <DoctorDashboard />
-          </ProtectedRoute>}>
+          </DoctorProtectedRoute>}>
           <Route index element={<HelloDoctor />} />
           <Route path="manage-clients" element={<Manageclients />} />
           <Route path="manage-appointments" element={<Manageappointments />} />

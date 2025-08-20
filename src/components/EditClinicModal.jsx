@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useRef } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import MapModal from './MapModal.jsx';
 import { toast } from 'react-toastify';
 import { doc, updateDoc, collection, query, where, getDocs, getDoc, Timestamp } from 'firebase/firestore';
@@ -8,8 +8,8 @@ import { BeatLoader } from 'react-spinners';
 import { MdDelete } from 'react-icons/md';
 import { IoLocation } from 'react-icons/io5';
 
-export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
-    const { name: defaultName, phone: defaultPhone, email: defaultEmail,address: defaultAddress, status: defaultStatus, price: defaultPrice, doctorName: defaultDoctorName, workingHours: defaultWorkingHours } = clinic;
+export default function EditClinicModal({ clinic,setClinics, modalId, fetchClinics }) {
+    const { name: defaultName, phone: defaultPhone, email: defaultEmail, address: defaultAddress, status: defaultStatus, price: defaultPrice, doctorName: defaultDoctorName, workingHours: defaultWorkingHours } = clinic;
 
     const [name, setName] = useState(defaultName);
     const [email, setEmail] = useState(defaultEmail);
@@ -19,7 +19,7 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
 
     const [doctorName, setDoctorName] = useState(defaultDoctorName);
     const [status, setStatus] = useState(defaultStatus);
-    const [notEditable, setnotEditable] = useState(true);
+    const [notEditable, setNotEditable] = useState(true);
     const [day, setDay] = useState('');
     const [openTime, setOpenTime] = useState('');
     const [closeTime, setCloseTime] = useState('');
@@ -28,7 +28,7 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
 
     const [userData, setUserData] = useState(null);
     const [doctors, setDoctors] = useState([]);
-    const [selectedDoctor, setSelectedDoctor] = useState(defaultDoctorName);
+    const [selectedDoctor, setSelectedDoctor] = useState(defaultDoctorName ? { id: clinic.doctorId, fullName: defaultDoctorName } : null);
     const [showMapModal, setShowMapModal] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState({
         governorate: clinic.governorate || '',
@@ -37,22 +37,8 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
         latitude: clinic.latitude || null,
         longitude: clinic.longitude || null
     });
-    
-    const modalRef = useRef(null);
-    const [modalInstance, setModalInstance] = useState(null);
 
     const isAdmin = userData?.role === 'admin';
-
-
-    useEffect(() => {
-        if (modalRef.current && window.bootstrap) {
-            const modal = new window.bootstrap.Modal(modalRef.current, {
-                keyboard: false,
-                backdrop: 'static'
-            });
-            setModalInstance(modal);
-        }
-    }, []);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -104,7 +90,7 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
     const handleSave = async () => {
         try {
             setLoading(true);
-            if (!name || !phone || !email || !price || !status || workingHours.length === 0 || !selectedLocation.latitude) {
+            if (!name || !phone || !email || !price || !status || workingHours.length === 0) {
                 toast.error("Please fill all required fields and select a location.", { autoClose: 3000 });
                 setLoading(false);
                 return;
@@ -116,10 +102,11 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
                 phone,
                 email,
                 price,
-                doctorName,
                 status,
                 workingHours,
-                address: `${selectedLocation?.governorate || ''} - ${selectedLocation?.city || ''} - ${selectedLocation?.street || ''}`,
+                address: selectedLocation?.governorate || selectedLocation?.city || selectedLocation?.street
+                    ? `${selectedLocation?.governorate || ''} - ${selectedLocation?.city || ''} - ${selectedLocation?.street || ''}`
+                    : address,
                 city: selectedLocation?.city,
                 governorate: selectedLocation?.governorate,
                 latitude: selectedLocation?.latitude,
@@ -129,9 +116,17 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
                 doctorName: isAdmin ? selectedDoctor?.fullName : userData?.fullName || '',
             });
             toast.success('Clinic updated successfully', { autoClose: 3000 });
+            setNotEditable(true);
+            const modalEl = document.getElementById(`editclinic-${modalId}`);
+            if (modalEl) {
+                modalEl.classList.remove('show');
+                modalEl.style.display = 'none';
+                document.body.classList.remove('modal-open');
 
-            if (modalInstance) {
-                modalInstance.hide();
+                // إزالة أي backdrop موجود
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach((b) => b.remove());
+                setClinics(prev => prev.map(c => (c.id === clinic.id ? { ...c, name, phone, email, price, status, workingHours, address } : c)));
             }
 
             fetchClinics();
@@ -150,39 +145,40 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
         setStatus(defaultStatus);
         setPrice(defaultPrice || '');
         setDoctorName(defaultDoctorName);
+        setSelectedDoctor(defaultDoctorName ? { id: clinic.doctorId, fullName: defaultDoctorName } : null);
         setWorkingHours(defaultWorkingHours);
-        setnotEditable(true);
-        setAddress('');
+        setNotEditable(true);
+        setAddress(defaultAddress);
         setDay('');
         setOpenTime('');
         setCloseTime('');
     };
 
     const handleOpenMapModal = () => {
-        if (modalInstance) {
-            modalInstance.hide();
-        }
+        // if (modalInstance) {
+        //     modalInstance.hide();
+        // }
         setShowMapModal(true);
     };
 
     const handleLocationConfirmed = (location) => {
         setSelectedLocation(location);
         setShowMapModal(false);
-        if (modalInstance) {
-            modalInstance.show();
-        }
+        // if (modalInstance) {
+        //     modalInstance.show();
+        // }
     };
 
     const handleCloseMapModal = () => {
         setShowMapModal(false);
-        if (modalInstance) {
-            modalInstance.show();
-        }
+        // if (modalInstance) {
+        //     modalInstance.show();
+        // }
     };
-    
+
     return (
         <Fragment>
-            <div className="modal fade" id={`editclinic-${modalId}`} ref={modalRef} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal fade" id={`editclinic-${modalId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header d-flex align-items-center justify-content-between">
@@ -278,7 +274,7 @@ export default function EditClinicModal({ clinic, modalId, fetchClinics }) {
                         {notEditable ? (
                             <div className="modal-footer d-flex justify-content-end gap-2">
                                 <button type="button" className="btn btn-danger" id='close-btn-edit' data-bs-dismiss="modal" style={{ width: '100px' }}>Close</button>
-                                <button type="button" className="custom-button" style={{ width: '100px' }} onClick={() => setnotEditable(false)}>Edit</button>
+                                <button type="button" className="custom-button" style={{ width: '100px' }} onClick={() => setNotEditable(false)}>Edit</button>
                             </div>
                         ) : (
                             <div className="modal-footer d-flex justify-content-end gap-2">

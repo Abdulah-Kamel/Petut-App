@@ -11,7 +11,7 @@ import { BeatLoader } from 'react-spinners';
 import ViewClinicModal from './ViewClinicModal';
 import { useState } from 'react';
 
-export default function ClinicsTable({ clinics, fetchClinics, onDelete, loading }) {
+export default function ClinicsTable({ clinics,setClinics, fetchClinics, onDelete, loading }) {
 
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -81,20 +81,21 @@ export default function ClinicsTable({ clinics, fetchClinics, onDelete, loading 
                                     <td className="px-4 py-3">{clinic.phone}</td>
                                     <td className="px-4 py-3">{clinic.price}</td>
                                     <td className="px-4 py-3"><span style={{ color: 'white', backgroundColor: clinic.status === 'active' ? '#28a745  ' : '#6c757d   ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{clinic.status}</span></td>
-                                    <td className="px-4 py-3 d-flex align-items-center gap-2">
-
-                                        <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewclinic-${clinic.id}`}>
-                                            <FaEye cursor={"pointer"} size={20} className='mb-1' />
-                                        </button>
-                                        <ViewClinicModal clinic={clinic} modalId={clinic.id} />
-                                        <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editclinic-${clinic.id}`} >
-                                            <TbEdit size={20} className='mb-1' />
-                                        </button>
-                                        <EditClinicModal clinic={clinic} modalId={clinic.id} />
-                                        <MdDelete cursor={"pointer"} size={20} className='text-danger' onClick={() => {
-                                            setShowConfirm(true);
-                                            setSelectedClinicId(clinic.id);
-                                        }} />
+                                    <td className="px-4 py-3">
+                                        <div className="d-flex align-items-center gap-2">
+                                            <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewclinic-${clinic.id}`}>
+                                                <FaEye cursor={"pointer"} size={20} className='table-action-icon mb-1' />
+                                            </button>
+                                            <ViewClinicModal clinic={clinic} modalId={clinic.id} />
+                                            <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editclinic-${clinic.id}`} >
+                                                <TbEdit size={20} className='table-action-icon mb-1' />
+                                            </button>
+                                            <EditClinicModal clinic={clinic} setClinics={setClinics} modalId={clinic.id} fetchClinics={fetchClinics} />
+                                            <MdDelete cursor={"pointer"} size={20} className='text-danger' onClick={() => {
+                                                setShowConfirm(true);
+                                                setSelectedClinicId(clinic.id); 
+                                            }} />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
