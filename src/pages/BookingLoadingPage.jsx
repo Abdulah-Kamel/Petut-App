@@ -43,16 +43,6 @@ const BookingLoadingPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-light dark:bg-gray-900 flex flex-col">
-      {/* Header with Dark Mode Toggle */}
-      <div className="p-4 flex items-center justify-center relative">
-        {/* <h2 className="font-bold text-lg dark:text-white">
-          Processing Booking
-        </h2> */}
-        {/* <div className="absolute right-4">
-          <DarkModeToggle />
-        </div> */}
-      </div>
-
       {/* Loading Content */}
       <div className="flex-1 flex flex-col items-center justify-center">
         <div className="text-center mb-8">

@@ -5,6 +5,7 @@ const BookingSuccessPage = () => {
   const navigate = useNavigate();
   const [showText, setShowText] = useState(false);
   const iconRef = useRef(null);
+
   useEffect(() => {
     if (iconRef.current) {
       iconRef.current.animate(
@@ -23,6 +24,7 @@ const BookingSuccessPage = () => {
 
     const textTimeout = setTimeout(() => setShowText(true), 500);
     const navTimeout = setTimeout(() => navigate("/", { replace: true }), 3000);
+
     return () => {
       clearTimeout(textTimeout);
       clearTimeout(navTimeout);
@@ -34,21 +36,19 @@ const BookingSuccessPage = () => {
       className="min-h-screen dark:bg-gray-900 flex flex-col"
       style={{ maxWidth: "375px", margin: "0 auto", position: "relative" }}
     >
-     
-
       {/* Success Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-8">
         {/* Success Icon */}
-        <div ref={iconRef} className="mb-16">
+        <div ref={iconRef} className="mb-12">
           <div
-            className="w-32 h-32 bg-green-500 rounded-full flex items-center justify-center shadow-lg"
+            className="w-28 h-28 bg-green-500 rounded-full flex items-center justify-center shadow-lg"
             style={{
               opacity: 1,
               transition: "opacity 0.8s",
             }}
           >
             <svg
-              className="w-16 h-16 text-white"
+              className="w-14 h-14 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -65,7 +65,7 @@ const BookingSuccessPage = () => {
 
         {/* Success Text */}
         <div
-          className={`transition-opacity duration-600 text-3xl font-bold text-gray-700 dark:text-white text-center mb-6 ${
+          className={`transition-opacity duration-600 text-2xl font-bold text-gray-700 dark:text-white text-center mb-4 ${
             showText ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -74,14 +74,13 @@ const BookingSuccessPage = () => {
 
         {/* Description Text */}
         <div
-          className={`transition-opacity duration-800 text-lg text-gray-500 dark:text-gray-300 text-center leading-relaxed ${
+          className={`transition-opacity duration-800 text-base text-gray-500 dark:text-gray-300 text-center leading-relaxed ${
             showText ? "opacity-100" : "opacity-0"
           }`}
         >
           Your appointment has been booked successfully.
           <br />
-          <br />
-          Returning to home...
+          <span className="block mt-2">Returning to home...</span>
         </div>
       </div>
     </div>

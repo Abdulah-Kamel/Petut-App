@@ -27,7 +27,7 @@ const ImageUpload = () => {
 
   const isAnimalDetected = (predictions) => {
     const topPrediction = predictions[0];
-    if (topPrediction.probability < 70) {
+    if (topPrediction.probability < 40) {
       return false;
     }
     const hasReasonableConfidence = predictions.some(

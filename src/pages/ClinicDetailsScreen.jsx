@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
 import { datePickerStyles } from "../styles/datePickerStyles";
 
 const ClinicDetailsScreen = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const clinic = state?.clinic;
+
   const [doctorData, setDoctorData] = useState(null);
-
-  useEffect(() => {
-    const fetchDoctorData = async () => {
-      if (!clinic?.doctorId) return;
-      try {
-        const docRef = doc(db, "users", clinic.doctorId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setDoctorData(docSnap.data());
-        }
-      } catch (err) {
-        console.error("Error fetching doctor data:", err);
-      }
-    };
-    fetchDoctorData();
-  }, [clinic.uid, clinic.id]);
-
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [error, setError] = useState("");
@@ -37,78 +27,218 @@ const ClinicDetailsScreen = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
+  // ===================== helpers =====================
+  const formatDayName = (date) =>
+    date.toLocaleDateString("en-US", { weekday: "long" });
+
+  const formatDateYMD = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  };
+
+  const formatTime12 = (date) =>
+    date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+
+  const parseHHmmToDateOn = (baseDate, hhmm) => {
+    const [h, m] = hhmm.split(":").map((v) => parseInt(v, 10));
+    const d = new Date(baseDate);
+    d.setHours(h, m, 0, 0);
+    return d;
+  };
+
+  // تحسين استخراج بيانات العمل من Firebase
+  const getWorkingHoursFromFirebase = () => {
+    // أولاً نحاول الحصول على working hours من الclnic
+    let workingHours = clinic?.workingHours;
+
+    // إذا لم توجد في clinic، نحصل عليها من doctor data
+    if (!workingHours && doctorData?.workingHours) {
+      workingHours = doctorData.workingHours;
+    }
+
+    // التعامل مع الأشكال المختلفة لبيانات working hours
+    if (Array.isArray(workingHours)) {
+      return workingHours;
+    } else if (workingHours && typeof workingHours === "object") {
+      // إذا كان object، نحوله لarray
+      return Object.values(workingHours);
+    }
+
+    return [];
+  };
+
+  // الحصول على الأيام العاملة
+  const getWorkingDays = () => {
+    const workingHours = getWorkingHoursFromFirebase();
+    console.log("Working Hours Data:", workingHours);
+
+    // استخراج الأيام من working hours
+    const days = workingHours
+      .filter((schedule) => schedule && schedule.day)
+      .map((schedule) => schedule.day);
+
+    console.log("Available Working Days:", days);
+    return days;
+  };
+
+  // الحصول على جدول عمل يوم معين
+  const getScheduleForDay = (dayName) => {
+    const workingHours = getWorkingHoursFromFirebase();
+    const schedule = workingHours.find((s) => s?.day === dayName);
+    console.log(`Schedule for ${dayName}:`, schedule);
+    return schedule || null;
+  };
+
+  // ===========================================================
+
+  // الأيام العاملة مع memo
+  const workingDays = useMemo(() => getWorkingDays(), [clinic, doctorData]);
+
+  useEffect(() => {
+    console.log("Clinic Data:", clinic);
+    console.log("Doctor Data:", doctorData);
+    if (clinic?.workingHours) {
+      console.log("Clinic Working Hours:", clinic.workingHours);
+    }
+    if (doctorData?.workingHours) {
+      console.log("Doctor Working Hours:", doctorData.workingHours);
+    }
+  }, [clinic, doctorData]);
+
+  // فحص إتاحة اليوم
+  const isDayAvailable = (date) => {
+    const dayName = formatDayName(date);
+    const isAvailable = workingDays.includes(dayName);
+    console.log(`Is ${dayName} available?`, isAvailable);
+    return isAvailable;
+  };
+
+  // جلب بيانات الطبيب
+  useEffect(() => {
+    const fetchDoctorData = async () => {
+      if (!clinic?.doctorId) {
+        console.log("No doctor ID found in clinic data");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const docRef = doc(db, "users", clinic.doctorId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          console.log("Doctor Data fetched:", data);
+          setDoctorData(data);
+        } else {
+          console.log("No doctor document found!");
+        }
+      } catch (err) {
+        console.error("Error fetching doctor data:", err);
+        setError("Error loading doctor information");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctorData();
+  }, [clinic?.doctorId]);
+
+  // جلب المواعيد المحجوزة
   useEffect(() => {
     const fetchBookedSlots = async () => {
-      if (!clinic?.id) return;
+      if (!clinic?.id && !clinic?.doctorId) return;
+
       try {
         const bookingsRef = collection(db, "bookings");
-        const q = query(bookingsRef, where("clinicId", "==", clinic.id));
+        let q;
+
+        if (clinic?.id) {
+          q = query(bookingsRef, where("clinicId", "==", clinic.id));
+        } else if (clinic?.doctorId) {
+          q = query(bookingsRef, where("doctorId", "==", clinic.doctorId));
+        }
+
         const snapshot = await getDocs(q);
         const slots = snapshot.docs.map((doc) => {
           const data = doc.data();
           return {
             date: data.date,
             time: data.time,
-            datetime: new Date(`${data.date} ${data.time}`),
           };
         });
+
+        console.log("Booked slots:", slots);
         setBookedSlots(slots);
       } catch (err) {
         console.error("Error fetching booked slots:", err);
       }
     };
+
     fetchBookedSlots();
-  }, [clinic.uid]);
+  }, [clinic?.id, clinic?.doctorId]);
 
-  const checkBookingAvailability = async () => {
-    setError("");
-    setLoading(true);
-    try {
-      const bookingsRef = collection(db, "bookings");
-      const q = query(
-        bookingsRef,
-        where("clinicId", "==", clinic.id),
-        where(
-          "date",
-          "==",
-          selectedDateTime ? selectedDateTime.toDateString() : ""
-        ),
-        where(
-          "time",
-          "==",
-          selectedDateTime
-            ? selectedDateTime.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            : ""
-        )
-      );
-      const snapshot = await getDocs(q);
-      setLoading(false);
-      return snapshot.empty;
-    } catch (e) {
-      setLoading(false);
-      setError("An error occurred while checking slot availability.");
-      return false;
+  const bookedSet = useMemo(() => {
+    const s = new Set();
+    for (const b of bookedSlots) {
+      if (b.date && b.time) s.add(`${b.date}|${b.time}`);
     }
-  };
+    return s;
+  }, [bookedSlots]);
 
-  const isSlotBooked = (date) => {
-    if (!date) return false;
-    const dateStr = date.toDateString();
-    const timeStr = date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    return bookedSlots.some(
-      (slot) => slot.date === dateStr && slot.time === timeStr
+  // بناء المواعيد المتاحة لليوم المختار
+  const timeSlotsForSelectedDate = useMemo(() => {
+    if (!selectedDate) return [];
+
+    const dayName = formatDayName(selectedDate);
+    const schedule = getScheduleForDay(dayName);
+
+    console.log(`Getting time slots for ${dayName}:`, schedule);
+
+    if (!schedule?.openTime || !schedule?.closeTime) {
+      console.log("No schedule found for this day");
+      return [];
+    }
+
+    const start = parseHHmmToDateOn(selectedDate, schedule.openTime);
+    let end = parseHHmmToDateOn(selectedDate, schedule.closeTime);
+
+    console.log("Start time:", start, "End time:", end);
+
+    // إذا كان وقت الإغلاق قبل وقت الفتح، فهذا يعني أنه في اليوم التالي
+    if (end <= start) {
+      console.log("End time is next day, adding 24 hours");
+      end = new Date(end.getTime() + 24 * 60 * 60 * 1000); // إضافة 24 ساعة
+      console.log("Adjusted end time:", end);
+    }
+
+    const slots = [];
+    let currentTime = new Date(start);
+
+    // إضافة حماية من اللوب اللانهائي
+    let maxSlots = 48; // حد أقصى 24 ساعة (48 slot كل 30 دقيقة)
+    let slotCount = 0;
+
+    while (currentTime < end && slotCount < maxSlots) {
+      slots.push(new Date(currentTime));
+      currentTime = new Date(currentTime.getTime() + 30 * 60 * 1000); // 30 دقيقة
+      slotCount++;
+    }
+
+    console.log(
+      "Generated time slots:",
+      slots.map((s) => formatTime12(s))
     );
-  };
+    console.log("Time slots count:", slots.length);
+    return slots;
+  }, [selectedDate, doctorData, clinic]);
 
-  const filterAvailableTimes = (date) => {
-    if (date < new Date()) return false;
-    return !isSlotBooked(date);
+  const isSlotBooked = (dateObj) => {
+    if (!dateObj) return false;
+    const key = `${formatDateYMD(dateObj)}|${formatTime12(dateObj)}`;
+    return bookedSet.has(key);
   };
 
   const handleReschedule = () => {
@@ -120,9 +250,48 @@ const ClinicDetailsScreen = () => {
   };
 
   const handleDateSelect = (date) => {
+    console.log("Date selected:", date);
     setSelectedDate(date);
     setShowDatePicker(false);
     setShowTimePicker(true);
+    setSelectedDateTime(null);
+  };
+
+  const checkBookingAvailability = async () => {
+    if (!selectedDateTime) return false;
+    setError("");
+    setLoading(true);
+
+    try {
+      const bookingsRef = collection(db, "bookings");
+      const dateStr = formatDateYMD(selectedDateTime);
+      const timeStr = formatTime12(selectedDateTime);
+
+      let q;
+      if (clinic?.id) {
+        q = query(
+          bookingsRef,
+          where("clinicId", "==", clinic.id),
+          where("date", "==", dateStr),
+          where("time", "==", timeStr)
+        );
+      } else if (clinic?.doctorId) {
+        q = query(
+          bookingsRef,
+          where("doctorId", "==", clinic.doctorId),
+          where("date", "==", dateStr),
+          where("time", "==", timeStr)
+        );
+      }
+
+      const snapshot = await getDocs(q);
+      setLoading(false);
+      return snapshot.empty;
+    } catch (e) {
+      setLoading(false);
+      setError("An error occurred while checking slot availability.");
+      return false;
+    }
   };
 
   const handleBook = async () => {
@@ -130,41 +299,42 @@ const ClinicDetailsScreen = () => {
       setError("Please select date and time.");
       return;
     }
+
     if (isSlotBooked(selectedDateTime)) {
       setError("This slot is already booked. Please choose another time.");
       return;
     }
+
     const available = await checkBookingAvailability();
     if (!available) {
       setError("This slot is not available. Please choose another time.");
       return;
     }
+
     navigate("/booking-confirmation", {
       state: {
         clinic,
         selectedDay: selectedDateTime.toDateString(),
-        selectedTime: selectedDateTime.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        selectedTime: formatTime12(selectedDateTime),
         selectedDate: selectedDateTime,
       },
     });
   };
 
+  // عنوان العيادة
   let displayAddress = "Unknown Address";
-  if (clinic.address && typeof clinic.address === "string") {
+  if (clinic?.address && typeof clinic.address === "string") {
     displayAddress = clinic.address;
   } else if (
-    clinic.address &&
+    clinic?.address &&
     typeof clinic.address === "object" &&
     clinic.address.city &&
     clinic.address.governorate
   ) {
     displayAddress = `${clinic.address.city}, ${clinic.address.governorate}`;
-  } else if (clinic.clinicAddress) {
+  } else if (clinic?.clinicAddress) {
     displayAddress = clinic.clinicAddress;
-  } else if (clinic.location) {
+  } else if (clinic?.location) {
     displayAddress = clinic.location;
   }
 
@@ -189,7 +359,6 @@ const ClinicDetailsScreen = () => {
   return (
     <div className="min-h-screen bg-secondary-light dark:bg-gray-900 pb-8">
       <style>{datePickerStyles}</style>
-
       <div className="max-w-2xl mx-auto px-4 pt-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6 mt-10">
@@ -202,13 +371,13 @@ const ClinicDetailsScreen = () => {
             </span>
           </button>
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-            {clinic.clinicName || clinic.doctorName}
+            {clinic.clinicName || clinic.doctorName || clinic.name}
           </h1>
         </div>
 
-        {/* Connected White Background Container */}
+        {/* Main Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm overflow-hidden">
-          {/* Doctor Profile Card */}
+          {/* Doctor Profile */}
           <div className="p-6 border-b border-gray-100 dark:border-gray-700">
             <div className="flex items-start gap-6">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden bg-secondary-light dark:bg-gray-700 flex-shrink-0">
@@ -224,12 +393,10 @@ const ClinicDetailsScreen = () => {
                   </span>
                 )}
               </div>
-
               <div className="flex-1 min-w-0">
                 <h2 className="font-bold text-xl text-gray-800 dark:text-white mb-2 truncate">
-                  {clinic.clinicName || clinic.doctorName}
+                  {clinic.clinicName || clinic.doctorName || clinic.name}
                 </h2>
-
                 <div className="flex items-center flex-wrap gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-300 mb-3">
                   <div className="flex items-center gap-1">
                     <span className="material-icons text-primary text-base">
@@ -237,7 +404,6 @@ const ClinicDetailsScreen = () => {
                     </span>
                     <span>{rating.toFixed(1)}</span>
                   </div>
-
                   {(clinic.phone || clinic.phoneNumber) && (
                     <div className="flex items-center gap-1">
                       <span className="material-icons text-primary text-base">
@@ -246,7 +412,6 @@ const ClinicDetailsScreen = () => {
                       <span>{clinic.phone || clinic.phoneNumber}</span>
                     </div>
                   )}
-
                   {(doctorData?.doctorDetails?.experience ||
                     clinic.experience) && (
                     <div className="flex items-center gap-1">
@@ -254,7 +419,7 @@ const ClinicDetailsScreen = () => {
                         work_history
                       </span>
                       <span>
-                        Experience:
+                        Experience:{" "}
                         {doctorData?.doctorDetails?.experience ||
                           clinic.experience}{" "}
                         years
@@ -271,16 +436,27 @@ const ClinicDetailsScreen = () => {
                     </span>
                     <span className="truncate">{displayAddress}</span>
                   </div>
-
                   <div className="flex items-center gap-2">
                     <span className="material-icons text-primary text-base">
                       payments
                     </span>
                     <span>
-                      {clinic.price ? `${clinic.price} EGP` : "Price not set"}
+                      {clinic.price ? `${clinic.price} $` : "Price not set"}
                     </span>
                   </div>
                 </div>
+
+                {/* عرض أيام العمل */}
+                {workingDays.length > 0 && (
+                  <div className="mt-3">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                      <span className="material-icons text-primary text-base">
+                        schedule
+                      </span>
+                      <span>Working Days: {workingDays.join(", ")}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -291,9 +467,19 @@ const ClinicDetailsScreen = () => {
               Choose Appointment Day
             </h3>
 
+            {workingDays.length === 0 && (
+              <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/30 rounded-xl">
+                <p className="text-yellow-700 dark:text-yellow-300 text-center">
+                  No working hours available. Please contact the clinic
+                  directly.
+                </p>
+              </div>
+            )}
+
             <button
               onClick={handleReschedule}
-              className="flex items-center gap-2 px-6 py-3 bg-primary_app  text-white font-medium rounded-full transition-colors mb-6"
+              disabled={workingDays.length === 0}
+              className="flex items-center gap-2 px-6 py-3 bg-primary_app text-white font-medium rounded-full transition-colors mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="material-icons text-lg">event</span>
               <span>
@@ -307,13 +493,13 @@ const ClinicDetailsScreen = () => {
               </span>
             </button>
 
-            {/* Date Picker Modal */}
-            {showDatePicker && (
+            {showDatePicker && workingDays.length > 0 && (
               <div className="mb-6">
                 <DatePicker
                   selected={selectedDate}
                   onChange={handleDateSelect}
                   minDate={new Date()}
+                  filterDate={isDayAvailable}
                   inline
                   className="w-full"
                 />
@@ -323,25 +509,18 @@ const ClinicDetailsScreen = () => {
             <h4 className="font-semibold text-gray-800 dark:text-white mb-4">
               Available Times
             </h4>
-
             {!showTimePicker ? (
               <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                 <p>Please pick a date to see available times.</p>
               </div>
+            ) : timeSlotsForSelectedDate.length === 0 ? (
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <p>No available times for the selected date.</p>
+              </div>
             ) : (
               <div className="grid grid-cols-3 gap-3">
-                {/* Generate time slots */}
-                {Array.from({ length: 20 }, (_, i) => {
-                  const hour = Math.floor(i / 2) + 9;
-                  const minute = (i % 2) * 30;
-                  const time = new Date(selectedDate);
-                  time.setHours(hour, minute, 0, 0);
-
-                  const timeStr = time.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  });
-
+                {timeSlotsForSelectedDate.map((time, i) => {
+                  const timeStr = formatTime12(time);
                   const isBooked = isSlotBooked(time);
                   const isPast = time < new Date();
                   const isSelected =
@@ -384,17 +563,13 @@ const ClinicDetailsScreen = () => {
                       day: "numeric",
                     })}
                     {" at "}
-                    {selectedDateTime.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    {formatTime12(selectedDateTime)}
                   </span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Error Message */}
           {error && (
             <div className="px-6 pb-6">
               <div className="p-4 bg-red-50 dark:bg-red-900/30 rounded-xl">
@@ -427,7 +602,7 @@ const ClinicDetailsScreen = () => {
                 </div>
               ))}
             </div>
-            {/* Action Buttons */}
+
             <div className="flex gap-4 bottom-4 mt-14">
               <button
                 className="flex-1 flex items-center justify-center gap-2 bg-secondary-light dark:bg-gray-800 text-primary font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -441,11 +616,13 @@ const ClinicDetailsScreen = () => {
 
               <button
                 className="flex-1 flex items-center justify-center gap-2 bg-primary_app text-white font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                disabled={!selectedDateTime || loading}
+                disabled={
+                  !selectedDateTime || loading || workingDays.length === 0
+                }
                 onClick={handleBook}
               >
                 <span className="material-icons">event_available</span>
-                <span>Book Appointment</span>
+                <span>{loading ? "Loading..." : "Book Appointment"}</span>
               </button>
             </div>
           </div>

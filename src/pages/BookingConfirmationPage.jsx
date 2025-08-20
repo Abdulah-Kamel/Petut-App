@@ -162,12 +162,12 @@ const BookingConfirmationPage = () => {
               Billing Details
             </h3>
             <div className="space-y-3">
-              <InfoRow label="Consultation Fee" value={`${clinic.price} EGP`} />
+              <InfoRow label="Consultation Fee" value={`${clinic.price} $`} />
               <InfoRow label="Service Fee & Tax" value="FREE" />
               <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
                 <InfoRow
                   label="Total Amount"
-                  value={`${clinic.price} EGP`}
+                  value={`${clinic.price} $`}
                   isBold
                   textSize="text-lg"
                 />
@@ -205,7 +205,7 @@ const BookingConfirmationPage = () => {
                   Total Amount
                 </div>
                 <div className="text-xl font-bold text-gray-800 dark:text-white">
-                  {clinic.price} EGP
+                  {clinic.price} $
                 </div>
               </div>
               <button
