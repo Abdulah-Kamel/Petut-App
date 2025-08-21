@@ -1,13 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BiSearchAlt2 } from "react-icons/bi";
 import { toast } from 'react-toastify';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase.js';
-import { BeatLoader } from 'react-spinners';
 import BookingsOneDoctor from './../../components/doctordash/BookingsOneDoctor';
-import { getAuth } from 'firebase/auth';
-import { useDarkMode } from '../../context/DarkModeContext';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 
 
 
@@ -23,32 +21,37 @@ export default function Manageclients() {
 
 
   // get bookings from firebase
-  useEffect(() => {
+useEffect(() => {
+  const auth = getAuth();
+
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
     const fetchBookingsOneDoctor = async () => {
-      if (!currentDoctorId) return;
+      if (!user) {
+        setBookings([]);
+        setLoading(false);
+        return;
+      }
       try {
+        console.log(user.uid);
+        
         setLoading(true);
-        const q = query(collection(db, "bookings"), where("doctorId", "==", currentDoctorId));
+        const q = query(collection(db, "bookings"), where("doctorId", "==", user.uid));
         const snapshot = await getDocs(q);
-        if (snapshot.empty) {
-          setBookings([]);
-          return;
-        }
-        const bookingsData = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        const bookingsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setBookings(bookingsData);
       } catch (error) {
-        toast.error("Failed to fetch bookings, error:" + error.message, { autoClose: 3000 });
-
+        toast.error("Failed to fetch bookings: " + error.message, { autoClose: 3000 });
+        setBookings([]);
       } finally {
         setLoading(false);
-
       }
     };
+
     fetchBookingsOneDoctor();
-  }, [currentDoctorId]);
+  });
+
+  return () => unsubscribe();
+}, []);
 
 
 
@@ -62,33 +65,9 @@ export default function Manageclients() {
           <li className={`breadcrumb-item active ${isDarkMode ? 'text-white-50' : ''}`} aria-current="page">Clients</li>
         </ol>
       </nav>
-
-      <div className="d-flex justify-content-between align-items-center my-3">
-        <div className="search-box w-50 position-relative">
-          <input
-            className={`form-control pe-5 ${isDarkMode ? 'bg-dark-2 text-white border-secondary' : ''}`}
-            type="text"
-            placeholder="Search by name, email, or responsible doctor"
-
-          />
-          <BiSearchAlt2
-            size={20}
-            className="position-absolute"
-            style={{ top: '50%', right: '15px', transform: 'translateY(-50%)', color: '#888' }}
-          />
-        </div>
-        <select className={`form-select w-25 ${isDarkMode ? 'bg-dark-2 text-white border-secondary' : ''}`} >
-          <option value="all" >All</option>
-          <option value="booked" >Booked</option>
-          <option value="inactive" >Completed</option>
-        </select>
-      </div>
-
-      {loading ? (<h3 className={`text-center mt-5 ${isDarkMode ? 'text-white' : ''}`}><BeatLoader color="#D9A741" /></h3>) : bookings?.length === 0 ? (<h3 className={`text-center mt-5 ${isDarkMode ? 'text-white' : ''}`}>No Bookings found </h3>) : (
-        <>
-          <BookingsOneDoctor bookings={bookings} isDarkMode={isDarkMode} />
-        </>
-      )}
+      <BookingsOneDoctor bookings={bookings} setBookings={setBookings} />
     </Fragment>
   )
 }
+
+

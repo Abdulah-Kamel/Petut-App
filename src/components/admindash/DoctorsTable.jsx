@@ -121,7 +121,7 @@ export default function DoctorsTable({ doctors, setDoctors, fetchDoctors, loadin
                                                     count={5}
                                                     value={3}
                                                     edit={false}
-                                                    size={24}
+                                                    size={24} 
                                                     activeColor="#ffd700" />
                                             </div>
                                         </td>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {collection,addDoc,serverTimestamp,doc,updateDoc,
+import {
+  collection, addDoc, serverTimestamp, doc, updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
@@ -36,6 +37,9 @@ const BookingConfirmationPage = () => {
         currentUser?.displayName || currentUser?.email || "Unknown Customer";
       const customerEmail = currentUser?.email || "";
       const customerPhone = currentUser?.phoneNumber || "";
+      console.log(selectedDate);
+      console.log(selectedDay);
+      console.log(selectedTime);
 
       const bookingData = {
         clinicId: clinic.id,
@@ -43,6 +47,7 @@ const BookingConfirmationPage = () => {
         clinicPhone: clinic.phone ?? clinic.phoneNumber ?? "Not Provided",
         clinicLocation:
           clinic.clinicAddress || clinic.location || "Not specified",
+        address: clinic.address,
         day: selectedDay,
         time: selectedTime,
         date: selectedDate,
@@ -54,7 +59,7 @@ const BookingConfirmationPage = () => {
         userName,
         customerPhone,
         customerEmail,
-        doctorId: clinic.userId || clinic.id,
+        doctorId: clinic.doctorId,
         doctorName: clinic.doctorName || "Unknown Doctor",
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -239,11 +244,10 @@ const BookingConfirmationPage = () => {
                 {paymentMethods.map((method) => (
                   <label
                     key={method.key}
-                    className={`flex items-center p-4 rounded-xl cursor-pointer border-2 transition-colors ${
-                      selectedPayment === method.key
-                        ? "border-primary bg-primary/5 dark:bg-primary/10"
-                        : "border-gray-200 dark:border-gray-700"
-                    }`}
+                    className={`flex items-center p-4 rounded-xl cursor-pointer border-2 transition-colors ${selectedPayment === method.key
+                      ? "border-primary bg-primary/5 dark:bg-primary/10"
+                      : "border-gray-200 dark:border-gray-700"
+                      }`}
                   >
                     <input
                       type="radio"

@@ -136,6 +136,9 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
 
             if (modalInstance) {
                 modalInstance.hide();
+                document.body.classList.remove('modal-open');
+                const modalBackdrop = document.querySelector('.modal-backdrop');
+                if (modalBackdrop) modalBackdrop.remove();
             }
             fetchClinics();
 
@@ -250,8 +253,8 @@ export default function AddClinicModal({ fetchClinics, loading, setLoading }) {
                                     <button onClick={handleOpenMapModal} className='custom-button d-flex align-items-center gap-2' type='button' data-bs-toggle="modal" data-bs-target="#map-modal">
                                         <IoLocation /> choose location
                                     </button>
-                
-                                   
+
+
                                 </div>
                                 {selectedLocation && (
                                     <p className="mb-0">{selectedLocation.governorate} - {selectedLocation.city} - {selectedLocation.street}</p>

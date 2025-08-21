@@ -7,8 +7,10 @@ import logo from '../assets/petut.png';
 import { BeatLoader } from 'react-spinners';
 import { MdDelete } from 'react-icons/md';
 import { IoLocation } from 'react-icons/io5';
+import { onAuthStateChanged } from 'firebase/auth';
 
-export default function EditClinicModal({ clinic, setClinics, modalId, fetchClinics, isDarkMode }) {
+export default function EditClinicModal({ clinic, setClinics, modalId, fetchClinics }) {
+
     const { name: defaultName, phone: defaultPhone, email: defaultEmail, address: defaultAddress, status: defaultStatus, price: defaultPrice, doctorName: defaultDoctorName, workingHours: defaultWorkingHours } = clinic;
 
     const [name, setName] = useState(defaultName);
@@ -87,11 +89,81 @@ export default function EditClinicModal({ clinic, setClinics, modalId, fetchClin
         setWorkingHours(workingHours.filter(item => item.day !== dayDeleted));
     };
 
+    // const handleSave = async () => {
+    //     try {
+    //         setLoading(true);
+    //         if (!name || !phone || !email || !price || !status || workingHours.length === 0) {
+    //             toast.error("Please fill all required fields and select a location.", { autoClose: 3000 });
+    //             setLoading(false);
+    //             return;
+    //         }
+
+    //         const clinicRef = doc(db, 'clinics', clinic.id);
+    //         await updateDoc(clinicRef, {
+    //             name,
+    //             phone,
+    //             email,
+    //             price,
+    //             status,
+    //             workingHours,
+    //             address: selectedLocation?.governorate || selectedLocation?.city || selectedLocation?.street
+    //                 ? `${selectedLocation?.governorate || ''} - ${selectedLocation?.city || ''} - ${selectedLocation?.street || ''}`
+    //                 : address,
+    //             city: selectedLocation?.city,
+    //             governorate: selectedLocation?.governorate,
+    //             latitude: selectedLocation?.latitude,
+    //             longitude: selectedLocation?.longitude,
+    //             street: selectedLocation?.street,
+    //             doctorId: isAdmin ? selectedDoctor?.id : auth.currentUser.uid,
+    //             doctorName: isAdmin ? selectedDoctor?.fullName : userData?.fullName || '',
+    //         });
+    //         toast.success('Clinic updated successfully', { autoClose: 3000 });
+    //         setNotEditable(true);
+    //         const modalEl = document.getElementById(`editclinic-${modalId}`);
+    //         if (modalEl) {
+    //             modalEl.classList.remove('show');
+    //             modalEl.style.display = 'none';
+    //             document.body.classList.remove('modal-open');
+
+    //             // إزالة أي backdrop موجود
+    //             const backdrops = document.querySelectorAll('.modal-backdrop');
+    //             backdrops.forEach((b) => b.remove());
+    //             setClinics(prev => prev.map(c => (c.id === clinic.id ? { ...c, name, phone, email, price, status, workingHours, address } : c)));
+    //         }
+
+    //         fetchClinics();
+
+    //     } catch (error) {
+    //         toast.error("Failed to update clinic, error:" + error.message, { autoClose: 3000 });
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
     const handleSave = async () => {
+        setLoading(true);
+
         try {
-            setLoading(true);
+            const currentUser = auth.currentUser;
+
+            if (!currentUser && !isAdmin) {
+                toast.error("User not logged in.");
+                setLoading(false);
+                return;
+            }
+
+            // بيانات لازمة
             if (!name || !phone || !email || !price || !status || workingHours.length === 0) {
                 toast.error("Please fill all required fields and select a location.", { autoClose: 3000 });
+                setLoading(false);
+                return;
+            }
+
+            const doctorId = isAdmin ? selectedDoctor?.id : currentUser.uid;
+            const doctorName = isAdmin ? selectedDoctor?.fullName : userData?.fullName || '';
+
+            if (!doctorId) {
+                toast.error("Doctor ID not defined.");
                 setLoading(false);
                 return;
             }
@@ -107,29 +179,30 @@ export default function EditClinicModal({ clinic, setClinics, modalId, fetchClin
                 address: selectedLocation?.governorate || selectedLocation?.city || selectedLocation?.street
                     ? `${selectedLocation?.governorate || ''} - ${selectedLocation?.city || ''} - ${selectedLocation?.street || ''}`
                     : address,
-                city: selectedLocation?.city,
-                governorate: selectedLocation?.governorate,
-                latitude: selectedLocation?.latitude,
-                longitude: selectedLocation?.longitude,
-                street: selectedLocation?.street,
-                doctorId: isAdmin ? selectedDoctor?.id : auth.currentUser.uid,
-                doctorName: isAdmin ? selectedDoctor?.fullName : userData?.fullName || '',
+                city: selectedLocation?.city || '',
+                governorate: selectedLocation?.governorate || '',
+                latitude: selectedLocation?.latitude || null,
+                longitude: selectedLocation?.longitude || null,
+                street: selectedLocation?.street || '',
+                doctorId,
+                doctorName,
             });
-            toast.success('Clinic updated successfully', { autoClose: 3000 });
+
             setNotEditable(true);
+            if (setClinics) {
+                setClinics(prev => prev.map(c => (c.id === clinic.id ? { ...c, name, phone, email, price, status, workingHours, address } : c)));
+            }
+
+            if (fetchClinics) fetchClinics();
+
+            // إغلاق المودال
             const modalEl = document.getElementById(`editclinic-${modalId}`);
             if (modalEl) {
                 modalEl.classList.remove('show');
                 modalEl.style.display = 'none';
                 document.body.classList.remove('modal-open');
-
-                // إزالة أي backdrop موجود
-                const backdrops = document.querySelectorAll('.modal-backdrop');
-                backdrops.forEach((b) => b.remove());
-                setClinics(prev => prev.map(c => (c.id === clinic.id ? { ...c, name, phone, email, price, status, workingHours, address } : c)));
+                document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
             }
-
-            fetchClinics();
 
         } catch (error) {
             toast.error("Failed to update clinic, error:" + error.message, { autoClose: 3000 });
@@ -137,6 +210,22 @@ export default function EditClinicModal({ clinic, setClinics, modalId, fetchClin
             setLoading(false);
         }
     };
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setUserData({ ...docSnap.data(), uid: user.uid });
+                }
+            } else {
+                setUserData(null);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+
 
     const resetFields = () => {
         setName(defaultName);

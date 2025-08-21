@@ -123,7 +123,7 @@ export default function ReservationTable() {
                 <select className="form-select w-25" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} >
                     <option value="all" >All</option>
                     <option value="booked" >booked</option>
-                    <option value="completed" >completed</option>
+                    <option value="done" >Done</option>
                 </select>
             </div>
             <div className="bookings-table mt-4 bg-white shadow rounded w-100">
