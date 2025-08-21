@@ -5,8 +5,9 @@ import L from 'leaflet';
 import { toast } from 'react-toastify';
 import 'leaflet/dist/leaflet.css';
 import { BeatLoader } from 'react-spinners';
+// test
+// 💡 تأكد من أن هذه الأسطر موجودة كما هي
 
-// تأكد من أن هذه الأسطر موجودة كما هي
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 import 'leaflet-control-geocoder'; 
 import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.min';
