@@ -1,24 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DarkModeToggle from "../components/DarkModeToggle";
 
 const BookingSuccessPage = () => {
   const navigate = useNavigate();
   const [showText, setShowText] = useState(false);
   const iconRef = useRef(null);
-
-  useEffect(() => {
-    // تحميل سكريبت dotlottie-wc لعرض الأنيميشن أونلاين
-    const script = document.createElement("script");
-    script.src =
-      "https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js";
-    script.type = "module";
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   useEffect(() => {
     if (iconRef.current) {
       iconRef.current.animate(
@@ -44,52 +30,56 @@ const BookingSuccessPage = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-secondary-light dark:bg-gray-900 flex flex-col">
-      {/* Header with Dark Mode Toggle */}
-      <div className="bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-center relative">
-        <h2 className="font-bold text-lg dark:text-white">Booking Success</h2>
-        <div className="absolute right-4">
-          <DarkModeToggle />
-        </div>
-      </div>
+    <div
+      className="min-h-screen dark:bg-gray-900 flex flex-col"
+      style={{ maxWidth: "375px", margin: "0 auto", position: "relative" }}
+    >
+     
 
       {/* Success Content */}
-      <div className="flex-1 flex flex-col items-center justify-center">
-        <div className="mb-4">
-          <dotlottie-wc
-            src="https://lottie.host/a4efe5f7-194d-429b-8d14-0f7a4e565fc5/HR3EAogwVr.lottie"
-            style={{ width: "120px", height: "120px" }}
-            speed="1"
-            autoplay
-            loop="false"
-          ></dotlottie-wc>
-        </div>
-        <div ref={iconRef}>
-          <span
-            className="material-icons"
+      <div className="flex-1 flex flex-col items-center justify-center px-8">
+        {/* Success Icon */}
+        <div ref={iconRef} className="mb-16">
+          <div
+            className="w-32 h-32 bg-green-500 rounded-full flex items-center justify-center shadow-lg"
             style={{
-              color: "green",
-              fontSize: 100,
               opacity: 1,
               transition: "opacity 0.8s",
             }}
           >
-            check_circle_rounded
-          </span>
+            <svg
+              className="w-16 h-16 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={3}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
         </div>
+
+        {/* Success Text */}
         <div
-          className={`transition-opacity duration-600 mt-6 text-2xl font-bold text-neutral dark:text-white text-center ${
+          className={`transition-opacity duration-600 text-3xl font-bold text-gray-700 dark:text-white text-center mb-6 ${
             showText ? "opacity-100" : "opacity-0"
           }`}
         >
           Appointment Confirmed!
         </div>
+
+        {/* Description Text */}
         <div
-          className={`transition-opacity duration-800 mt-3 text-base text-gray-600 dark:text-gray-300 text-center ${
+          className={`transition-opacity duration-800 text-lg text-gray-500 dark:text-gray-300 text-center leading-relaxed ${
             showText ? "opacity-100" : "opacity-0"
           }`}
         >
           Your appointment has been booked successfully.
+          <br />
           <br />
           Returning to home...
         </div>

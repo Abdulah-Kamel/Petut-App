@@ -15,6 +15,7 @@ import ConfirmModal from '../ConfirmModal';
 
 //get clinics from firebase 
 export default function Clinic({ clinic,setClinics,fetchClinics , onDelete }) {
+
     const { name, address, phone, email, status } = clinic
 
     const [showConfirm, setShowConfirm] = useState(false);
@@ -24,7 +25,7 @@ export default function Clinic({ clinic,setClinics,fetchClinics , onDelete }) {
 
     return (
         <Fragment>
-            <div className="clinic p-4 col-5" style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', borderRadius: '8px' }} >
+            <div className={`clinic p-4 col-5 ${isDarkMode ? 'bg-dark-2 text-white' : ''}`} style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', borderRadius: '8px' }} >
                 <div className="clinic-header d-flex align-items-center justify-content-between">
                     <div className="left d-flex align-items-center gap-2">
                         <FaUserDoctor size={30} className='' />
@@ -61,26 +62,28 @@ export default function Clinic({ clinic,setClinics,fetchClinics , onDelete }) {
                         </button>
                     </div>
                     {showConfirm && (
-                        <ConfirmModal onDelete={() => onDelete(selectedClinicId)} setShowConfirm={setShowConfirm} setSelectedClinicId={setSelectedClinicId} whatDelete={"clinic"} />
+                        <ConfirmModal onDelete={() => onDelete(selectedClinicId)} setShowConfirm={setShowConfirm} setSelectedClinicId={setSelectedClinicId} whatDelete={"clinic"} isDarkMode={isDarkMode} />
                     )}
 
                 </div>
-                <hr />
+                <hr className={`${isDarkMode ? 'border-secondary' : ''}`} />
                 <div className="options d-flex align-items-center justify-content-between">
                     <div className="option d-flex align-items-center justify-content-between gap-1">
                         <IoTimer />
-                        <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#appointments-${clinic.id}`}>Appointments</button>
-                        <AppointmentsModal clinic={clinic} modalId={clinic.id}  />
+                        <button type="button" className={`btn border-0 p-0 ${isDarkMode ? 'text-white' : ''}`} data-bs-toggle="modal" data-bs-target={`#appointments-${clinic.id}`}>Appointments</button>
+                        <AppointmentsModal clinic={clinic} modalId={clinic.id} isDarkMode={isDarkMode} />
                     </div>
                     <div className="option d-flex align-items-center justify-content-between gap-1">
                         <HiMiniUserGroup />
-                        <button type="button" className="btn border-0 p-0">patients</button>
+                        <button type="button" className={`btn border-0 p-0 ${isDarkMode ? 'text-white' : ''}`}>patients</button>
 
                     </div>
                     <div className="option d-flex align-items-center justify-content-between gap-1">
                         
+
                         <button type="button" className="btn border-0 p-0 d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target={`#editclinic-${clinic.id}`}><TbEdit />Edit data</button>
                         <Editclinicmodal clinic={clinic} setClinics={setClinics} fetchClinics={fetchClinics} modalId={clinic.id} />
+
                     </div>
 
                 </div>
@@ -88,5 +91,3 @@ export default function Clinic({ clinic,setClinics,fetchClinics , onDelete }) {
         </Fragment>
     )
 }
-
-

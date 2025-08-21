@@ -10,6 +10,7 @@ import { IoLocation } from 'react-icons/io5';
 import { onAuthStateChanged } from 'firebase/auth';
 
 export default function EditClinicModal({ clinic, setClinics, modalId, fetchClinics }) {
+
     const { name: defaultName, phone: defaultPhone, email: defaultEmail, address: defaultAddress, status: defaultStatus, price: defaultPrice, doctorName: defaultDoctorName, workingHours: defaultWorkingHours } = clinic;
 
     const [name, setName] = useState(defaultName);
@@ -243,143 +244,144 @@ export default function EditClinicModal({ clinic, setClinics, modalId, fetchClin
     };
 
     const handleOpenMapModal = () => {
-        // if (modalInstance) {
-        //     modalInstance.hide();
-        // }
         setShowMapModal(true);
     };
 
     const handleLocationConfirmed = (location) => {
         setSelectedLocation(location);
         setShowMapModal(false);
-        // if (modalInstance) {
-        //     modalInstance.show();
-        // }
     };
 
     const handleCloseMapModal = () => {
         setShowMapModal(false);
-        // if (modalInstance) {
-        //     modalInstance.show();
-        // }
     };
 
     return (
         <Fragment>
             <div className="modal fade" id={`editclinic-${modalId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-lg">
-                    <div className="modal-content">
-                        <div className="modal-header d-flex align-items-center justify-content-between">
-                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Clinic Info</h1>
+                    <div className={`modal-content ${isDarkMode ? 'bg-dark-2 text-white' : ''}`}>
+                        <div className="modal-header d-flex align-items-center justify-content-between border-bottom-0">
+                            <h1 className="modal-title fs-5 ps-3" id="staticBackdropLabel">Edit Clinic Info</h1>
                             <img src={logo} width={'90px'} height={'90px'} alt="logo" />
                         </div>
                         <div className="modal-body">
                             <form action="#">
-                                {/* Clinic Info */}
-                                <div className="clinic-name d-flex align-items-center gap-3 mb-3">
-                                    <label className="form-label" htmlFor='clinic-name'>Clinic Name</label>
-                                    <input type="text" className="form-control w-75" id='clinic-name' placeholder='Enter Clinic Name' value={name} onChange={(e) => setName(e.target.value)} disabled={notEditable} />
+                                <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <label htmlFor={`name-${modalId}`} className="form-label">Name</label>
+                                        <input type="text" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id={`name-${modalId}`} value={name} onChange={(e) => setName(e.target.value)} disabled={notEditable} />
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <label htmlFor={`phone-${modalId}`} className="form-label">Phone</label>
+                                        <input type="text" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id={`phone-${modalId}`} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={notEditable} />
+                                    </div>
                                 </div>
-                                <div className="clinic-phone d-flex align-items-center gap-3 mb-3">
-                                    <label className="form-label" htmlFor='clinic-phone'>Phone</label>
-                                    <input type="tel" className="form-control w-75" id='clinic-phone' placeholder='Enter Clinic Phone' value={phone} onChange={(e) => setPhone(e.target.value)} disabled={notEditable} />
-                                </div>
-                                <div className="clinic-email d-flex align-items-center gap-3 mb-3">
-                                    <label className="form-label" htmlFor='clinic-email'>Email</label>
-                                    <input type="email" className="form-control w-75" id='clinic-email' placeholder='Enter Clinic Email' value={email} onChange={(e) => setEmail(e.target.value)} disabled={notEditable} />
-                                </div>
-                                <div className="clinic-price d-flex align-items-center gap-3 mb-3">
-                                    <label className="form-label" htmlFor='clinic-price'>Cost</label>
-                                    <input type="number" className="form-control w-75" id='clinic-price' placeholder='Enter Cost' value={price} onChange={(e) => setPrice(e.target.value)} disabled={notEditable} />
-                                </div>
-                                {isAdmin && (
-                                    <div className="mb-3 d-flex align-items-center gap-3">
-                                        <label className="form-label">Doctor</label>
-                                        <select
-                                            className="form-select w-50"
-                                            value={selectedDoctor ? `${selectedDoctor.id}|${selectedDoctor.fullName}` : ''}
-                                            onChange={(e) => {
-                                                const [id, fullName] = e.target.value.split('|');
-                                                setSelectedDoctor({ id, fullName });
-                                            }}
-                                            disabled={notEditable}
-                                        >
-                                            <option value="">Select a doctor</option>
-                                            {doctors.map((doctor) => (
-                                                <option key={doctor.id} value={`${doctor.id}|${doctor.fullName}`}>{doctor.fullName}</option>
-                                            ))}
+                                <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <label htmlFor={`email-${modalId}`} className="form-label">Email</label>
+                                        <input type="email" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id={`email-${modalId}`} value={email} onChange={(e) => setEmail(e.target.value)} disabled={notEditable} />
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <label htmlFor={`status-${modalId}`} className="form-label">Status</label>
+                                        <select className={`form-select ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id={`status-${modalId}`} value={status} onChange={(e) => setStatus(e.target.value)} disabled={notEditable}>
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
                                         </select>
                                     </div>
-                                )}
-                                {selectedLocation.latitude && (
-                                    <p className="mb-3"><span>Location: </span>{selectedLocation.governorate} - {selectedLocation.city} - {selectedLocation.street}</p>
-                                )}
-                                <div className="address d-flex align-items-center gap-3 mb-3">
-                                    <p className='mb-0'>Choose Location</p>
-                                    <button onClick={handleOpenMapModal} className='custom-button d-flex align-items-center gap-2' type='button' disabled={notEditable}>
-                                        <IoLocation /> choose location
-                                    </button>
                                 </div>
-                                <div className="status d-flex align-items-center gap-3 mb-3">
-                                    <p className='mb-0'>Choose Status</p>
-                                    <select name="status" id="status" className="form-select w-50" value={status} onChange={(e) => setStatus(e.target.value)} disabled={notEditable}>
-                                        <option value="">Choose Status</option>
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
-                                    </select>
-                                </div>
-                                <hr />
-                                <div className="appointment mb-3">
-                                    <p className='fw-bold mb-2'>Working Hours</p>
-                                    <div className="d-flex align-items-center gap-3 flex-wrap">
-                                        <select className="form-select w-auto" value={day} onChange={(e) => setDay(e.target.value)} disabled={notEditable}>
-                                            <option value="">Select Day</option>
-                                            {['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map(d => (
-                                                <option key={d} value={d}>{d}</option>
-                                            ))}
-                                        </select>
-                                        <span>from</span>
-                                        <input type="time" className="form-control w-auto" value={openTime} onChange={(e) => setOpenTime(e.target.value)} disabled={notEditable} />
-                                        <span>to</span>
-                                        <input type="time" className="form-control w-auto" value={closeTime} onChange={(e) => setCloseTime(e.target.value)} disabled={notEditable} />
-                                        <button type="button" className="btn btn-success ms-2" onClick={handleAddDay} disabled={notEditable}>Add</button>
+                                <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <label htmlFor={`price-${modalId}`} className="form-label">Price</label>
+                                        <input type="number" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} id={`price-${modalId}`} value={price} onChange={(e) => setPrice(e.target.value)} disabled={notEditable} />
                                     </div>
-                                    {workingHours.length > 0 && (
-                                        <ul className="mt-3  list-group w-75">
-                                            {workingHours.map((item, index) => (
-                                                <li key={index} className="list-group-item d-flex justify-content-between align-items-center mb-2 border rounded px-3 py-2">
-                                                    <span>{item.day}: {item.openTime} - {item.closeTime}</span>
-                                                    <button className="btn border-0" onClick={() => handleDeleteDay(item.day)} disabled={notEditable}>
-                                                        <MdDelete size={25} className='text-danger' />
-                                                    </button>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                    {isAdmin && (
+                                        <div className="col-md-6 mb-3">
+                                            <label htmlFor={`doctor-${modalId}`} className="form-label">Doctor</label>
+                                            <select
+                                                className={`form-select ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`}
+                                                id={`doctor-${modalId}`}
+                                                value={selectedDoctor ? JSON.stringify(selectedDoctor) : ''}
+                                                onChange={(e) => setSelectedDoctor(JSON.parse(e.target.value))}
+                                                disabled={notEditable}
+                                            >
+                                                <option value="">Select Doctor</option>
+                                                {doctors.map(doc => (
+                                                    <option key={doc.id} value={JSON.stringify(doc)}>{doc.fullName}</option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     )}
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between mb-3">
+                                    <button type="button" className="btn btn-secondary d-flex align-items-center gap-2" onClick={handleOpenMapModal} disabled={notEditable}>
+                                        <IoLocation />
+                                        Select Location
+                                    </button>
+                                    {selectedLocation && (
+                                        <div className={`location-display p-2 rounded ${isDarkMode ? 'bg-dark border' : 'bg-light'}`}>
+                                            <p className={`mb-0 fw-bold ${isDarkMode ? 'text-white' : ''}`}>{selectedLocation.governorate}, {selectedLocation.city}</p>
+                                            <p className={`mb-0 ${isDarkMode ? 'text-white-50' : 'text-muted'}`}>{selectedLocation.street}</p>
+                                        </div>
+                                    )}
+                                </div>
+                                <hr className={`${isDarkMode ? 'border-secondary' : ''}`} />
+                                <div className="working-hours-section mt-3">
+                                    <h5 className='fs-6'>Working Hours</h5>
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            <select className={`form-select ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} value={day} onChange={(e) => setDay(e.target.value)} disabled={notEditable}>
+                                                <option value="">Select Day</option>
+                                                <option value="Saturday">Saturday</option>
+                                                <option value="Sunday">Sunday</option>
+                                                <option value="Monday">Monday</option>
+                                                <option value="Tuesday">Tuesday</option>
+                                                <option value="Wednesday">Wednesday</option>
+                                                <option value="Thursday">Thursday</option>
+                                                <option value="Friday">Friday</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-md-3">
+                                            <input type="time" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} value={openTime} onChange={(e) => setOpenTime(e.target.value)} disabled={notEditable} />
+                                        </div>
+                                        <div className="col-md-3">
+                                            <input type="time" className={`form-control ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`} value={closeTime} onChange={(e) => setCloseTime(e.target.value)} disabled={notEditable} />
+                                        </div>
+                                        <div className="col-md-2">
+                                            <button type="button" className="btn btn-primary w-100" onClick={handleAddDay} disabled={notEditable}>Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="working-hours-display mt-3">
+                                    <ul className="list-group">
+                                        {workingHours.map((wh, index) => (
+                                            <li key={index} className={`list-group-item d-flex justify-content-between align-items-center ${isDarkMode ? 'bg-dark text-white border-secondary' : ''}`}>
+                                                <span>{wh.day}: {wh.openTime} - {wh.closeTime}</span>
+                                                <button type="button" className="btn btn-danger btn-sm" onClick={() => handleDeleteDay(wh.day)} disabled={notEditable}><MdDelete /></button>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </form>
                         </div>
-                        {notEditable ? (
-                            <div className="modal-footer d-flex justify-content-end gap-2">
-                                <button type="button" className="btn btn-danger" id='close-btn-edit' data-bs-dismiss="modal" style={{ width: '100px' }}>Close</button>
-                                <button type="button" className="custom-button" style={{ width: '100px' }} onClick={() => setNotEditable(false)}>Edit</button>
-                            </div>
-                        ) : (
-                            <div className="modal-footer d-flex justify-content-end gap-2">
-                                <button type="button" className="btn btn-danger" id='close-btn-edit' data-bs-dismiss="modal" style={{ width: '100px' }} onClick={() => {
-                                    resetFields();
-                                }}>Cancel</button>
-                                <button type="button" className="custom-button" style={{ width: '100px' }} onClick={handleSave} disabled={notEditable || loading}>{loading ? <BeatLoader size={10} color="#fff" /> : "Save"}</button>
-                            </div>
-                        )}
+                        <div className="modal-footer border-top-0">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={resetFields}>Close</button>
+                            {notEditable ? (
+                                <button type="button" className="btn btn-warning" onClick={() => setNotEditable(false)}>Edit</button>
+                            ) : (
+                                <button type="button" className="btn btn-primary" onClick={handleSave} disabled={loading}>
+                                    {loading ? <BeatLoader color="#fff" size={8} /> : 'Save changes'}
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
             {showMapModal && (
                 <MapModal
-                    onLocationConfirmed={handleLocationConfirmed}
+                    onConfirm={handleLocationConfirmed}
                     onClose={handleCloseMapModal}
-                    initialLocation={selectedLocation}
+                    isDarkMode={isDarkMode}
                 />
             )}
         </Fragment>

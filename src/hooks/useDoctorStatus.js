@@ -8,6 +8,7 @@ export default function useDoctorStatus() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     const fetchStatus = async () => {
       const auth = getAuth();
       const user = auth.currentUser;

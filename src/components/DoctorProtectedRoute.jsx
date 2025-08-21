@@ -61,6 +61,7 @@
 
 
 // ProtectedRoute.jsx
+import React, {useEffect} from "react";
 import { Navigate } from "react-router-dom";
 import useDoctorStatus from "../hooks/useDoctorStatus";
 
@@ -72,6 +73,7 @@ export default function ProtectedRoute({ children }) {
   if (status === "pending") return <Navigate to="/pending" replace />;
   if (status === "rejected") return <Navigate to="/rejected" replace />;
   if (status === "approved") return children;
-
+  else {
   return <Navigate to="/login" replace />;
+  }
 }

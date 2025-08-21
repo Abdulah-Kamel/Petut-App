@@ -100,7 +100,7 @@ const BookingConfirmationPage = () => {
               arrow_back
             </span>
           </button>
-          <h1 className="text-xl font-bold text-gray-800 dark:text-white text-left flex-1 ">
+          <h1 className="text-xl font-bold text-gray-800 dark:text-white text-left flex-1  ">
             Confirm Appointment
           </h1>
         </div>
@@ -214,13 +214,13 @@ const BookingConfirmationPage = () => {
                 </div>
               </div>
               <button
-                className="min-w-[160px] bg-primary text-white font-medium px-6 py-3 rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                className="min-w-[160px] bg-primary_app text-white font-medium px-6 py-3 rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
                 onClick={handleConfirmBooking}
                 disabled={loading}
               >
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">
-                    <span className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></span>
+                    <span className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent "></span>
                     <span>Processing...</span>
                   </div>
                 ) : (

@@ -10,7 +10,7 @@ import { BeatLoader } from 'react-spinners';
 import logo from '../../../assets/petut.png';
 import ViewClientBooking from '../VeiwClientBooking.jsx';
 
-export default function Calendar() {
+export default function Calendar({ isDarkMode }) {
 
     const [selectedDate, setSelectedDate] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -79,9 +79,9 @@ export default function Calendar() {
     return (
         <Fragment>
 
-            <div className="container my-4">
+            <div className={`container my-4 ${isDarkMode ? 'dark-mode-calendar' : ''}`}>
                 {loading ? (
-                    <h3 className='text-center mt-5'><BeatLoader color="#D9A741" /></h3>) : (
+                    <h3 className={`text-center mt-5 ${isDarkMode ? 'text-white' : ''}`}><BeatLoader color="#D9A741" /></h3>) : (
                     <FullCalendar
                         plugins={[dayGridPlugin, interactionPlugin]}
                         initialView="dayGridMonth"
@@ -103,11 +103,12 @@ export default function Calendar() {
                 <>
                     <div className="modal modal-lg large show fade d-block" tabIndex={-1} role="dialog">
                         <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header d-flex align-items-center justify-content-between py-0 pe-0">
-                                    <h5 className="modal-title">Day data: {selectedDate}</h5>
+                            <div className={`modal-content ${isDarkMode ? 'bg-dark-2 text-white' : ''}`}>
+                                <div className="modal-header d-flex align-items-center justify-content-between py-0 pe-0 border-bottom-0">
+                                    <h5 className="modal-title ps-3">Day data: {selectedDate}</h5>
                                     <img src={logo} width="90" height="90" alt="logo" />
                                 </div>
+
 
                                 <div className="modal-body">
                                     {selectedDayBookings > 0 ? selectedDayBookings.map((book) => (
@@ -150,6 +151,7 @@ export default function Calendar() {
                                     }
 
                                     {/* {selectedDayBookings.length > 0 ? (
+
                                         <ul className=" p-0">
                                             {selectedDayBookings.map((item) => (
                                                 <li key={item.id}>
@@ -163,7 +165,7 @@ export default function Calendar() {
                                     )} */}
                                 </div>
 
-                                <div className="modal-footer">
+                                <div className="modal-footer border-top-0">
                                     <button type="button" className="btn btn-danger" onClick={() => setShowModal(false)}>Close</button>
                                 </div>
                             </div>

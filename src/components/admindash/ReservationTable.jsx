@@ -164,11 +164,11 @@ export default function ReservationTable() {
                                             <td className="px-4 py-3 align-middle">
                                                 <div className="d-flex justify-content-start align-items-center gap-2">
                                                     <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#viewbooking-${book.id}`}>
-                                                        <FaEye cursor={"pointer"} size={20} />
+                                                        <FaEye cursor={"pointer"} size={20} className="table-action-icon" />
                                                     </button>
                                                     <ViewBookingModal book={book} modalId={book.id} />
                                                     <button type="button" className="btn border-0 p-0" data-bs-toggle="modal" data-bs-target={`#editbooking-${book.id}`} >
-                                                        <TbEdit size={20} className='' />
+                                                        <TbEdit size={20} className='table-action-icon' />
                                                     </button>
                                                     <EditReservation book={book} setBookings={setBookings} modalId={book.id} />
                                                     <button type="button" className="btn border-0 p-0" >
