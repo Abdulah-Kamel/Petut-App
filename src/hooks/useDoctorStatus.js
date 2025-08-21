@@ -1,26 +1,34 @@
-// useDoctorStatus.js
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db, auth } from "../firebase";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function useDoctorStatus() {
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!auth.currentUser) return;
-
-    const unsub = onSnapshot(
-      doc(db, "doctors", auth.currentUser.uid),
-      (snapshot) => {
-        if (snapshot.exists()) {
-          setStatus(snapshot.data().status);
-        }
+    const fetchStatus = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) {
+        setStatus(null);
         setLoading(false);
+        return;
       }
-    );
 
-    return () => unsub();
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setStatus(docSnap.data().status);
+      } else {
+        setStatus(null);
+      }
+      setLoading(false);
+    };
+
+    fetchStatus();
   }, []);
 
   return { status, loading };

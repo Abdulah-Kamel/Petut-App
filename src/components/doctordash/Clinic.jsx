@@ -14,7 +14,7 @@ import ConfirmModal from '../ConfirmModal';
 
 
 //get clinics from firebase 
-export default function Clinic({ clinic, onDelete }) {
+export default function Clinic({ clinic,setClinics,fetchClinics , onDelete }) {
     const { name, address, phone, email, status } = clinic
 
     const [showConfirm, setShowConfirm] = useState(false);
@@ -39,7 +39,7 @@ export default function Clinic({ clinic, onDelete }) {
                 <div className="clinic-body mt-3">
                     <div className="address d-flex align-items-center gap-2 mb-3">
                         <ImLocation2 />
-                        <p className='mb-0'>{address?.governorate} - {address?.city}</p>
+                        <p className='mb-0'>{address}</p>
                     </div>
                     <div className="phone d-flex align-items-center gap-2 mb-3">
                         <FaMobileAlt />
@@ -80,7 +80,7 @@ export default function Clinic({ clinic, onDelete }) {
                     <div className="option d-flex align-items-center justify-content-between gap-1">
                         
                         <button type="button" className="btn border-0 p-0 d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target={`#editclinic-${clinic.id}`}><TbEdit />Edit data</button>
-                        <Editclinicmodal clinic={clinic} modalId={clinic.id} />
+                        <Editclinicmodal clinic={clinic} setClinics={setClinics} fetchClinics={fetchClinics} modalId={clinic.id} />
                     </div>
 
                 </div>

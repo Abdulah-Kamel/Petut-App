@@ -93,7 +93,7 @@ export default function ReviewAccount() {
                     </button>
                 </>
             )} */}
-
+            {/* 
             {status === 'approved' && !justApproved && (
                 <>
                     <h2 className="text-2xl font-bold" style={{ color: "#FF985E" }}> Congratulations Your Account Approved 🎉</h2>
@@ -107,8 +107,24 @@ export default function ReviewAccount() {
                         Open Dashboard
                     </button>
                 </>
-            )}
+            )} */}
 
+            {status === 'approved' && (
+                <>
+                    <h2 className="text-2xl font-bold" style={{ color: "#FF985E" }}>
+                        Congratulations! Your Account Approved 🎉
+                    </h2>
+                    <p className="mt-2 text-gray-700">
+                        Welcome back! You can now access your Doctor Dashboard 👨‍⚕️
+                    </p>
+                    <button
+                        onClick={() => navigate("/doctor-dashboard")}
+                        className="mt-4 btn-primary-app text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
+                    >
+                        Open Dashboard
+                    </button>
+                </>
+            )}
             {status === 'rejected' && (
                 <>
                     <h2 className="text-2xl font-bold " style={{ color: "#FF985E" }}>Request Rejected</h2>

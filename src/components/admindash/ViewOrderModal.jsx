@@ -12,7 +12,7 @@ export default function ViewOrderModal({ order, modalId }) {
                             <img src={logo} width={'90px'} height={'90px'} alt="logo" />
                         </div>
                         <div className="modal-body ">
-                            <div className="top-body d-flex align-items-start gap-40">
+                            <div className="top-body d-flex align-items-start">
                                 <div className="delivery-info">
                                     <div className="delivery-name mb-2"><span className="fw-bold">Client Name : </span> {order.deliveryInfo.fullName}</div>
                                     <div className="delivery-address mb-2"><span className="fw-bold">Client Address : </span> {order.deliveryInfo.address}</div>

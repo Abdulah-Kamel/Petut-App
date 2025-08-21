@@ -14,6 +14,8 @@ const ClinicDetailsScreen = () => {
   const [doctorData, setDoctorData] = useState(null);
 
   useEffect(() => {
+    console.log(clinic);
+    
     const fetchDoctorData = async () => {
       if (!clinic?.doctorId) return;
       try {

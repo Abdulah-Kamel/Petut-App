@@ -17,7 +17,7 @@ export default function Manageclinics() {
 
 
   // get clinics from Firebase
-  const getClinics = async (userId) => {
+  const fetchClinics = async (userId) => {
     if (!userId) {
       toast.error("User ID is undefined");
       return;
@@ -42,7 +42,7 @@ export default function Manageclinics() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        getClinics(user.uid);
+        fetchClinics(user.uid);
       } else {
         toast.error("User is not logged in.", { autoClose: 3000 });
       }
@@ -84,7 +84,7 @@ export default function Manageclinics() {
           <div className="right col-2">
             <button type="button" className="custom-button" data-bs-toggle="modal" data-bs-target="#addclinic" ><RiAddLine size={20} />New Clinic</button>
           </div>
-          <AddClinicModal loading={loading} setLoading={setLoading} getClinics={() => getClinics(auth.currentUser.uid)} />
+          <AddClinicModal loading={loading} setLoading={setLoading} fetchClinics={() => fetchClinics(auth.currentUser.uid)} />
         </div>
       </div>
 
@@ -97,6 +97,8 @@ export default function Manageclinics() {
               <Clinic
                 key={clinic.id}
                 clinic={clinic}
+                setClinics={setClinics}
+                fetchClinics={fetchClinics}
                 onDelete={handleDeleteClinic}
               />
             ))}
