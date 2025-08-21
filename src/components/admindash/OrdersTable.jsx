@@ -78,7 +78,7 @@ export default function OrdersTable({ orders, handleDeleteOrder, loading }) {
                   </td>
                   <td className="px-4 py-3 align-middle ">
                     <button type="button" className="btn border-0 p-0 me-1" data-bs-toggle="modal" data-bs-target={`#vieworder-${order.id}`}>
-                      <FaEye />
+                      <FaEye className="table-action-icon"/>
                     </button>
                     <ViewOrderModal order={order} modalId={order.id} orders={orders} />
                     <button type="button" className="btn border-0 p-0 " onClick={() => {

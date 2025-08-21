@@ -8,7 +8,9 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 
+
 export default function Manageclients() {
+  const { isDarkMode } = useDarkMode();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -55,12 +57,12 @@ useEffect(() => {
 
   return (
     <Fragment>
-      <nav aria-label="breadcrumb" className='container-fluid d-flex align-items-center justify-content-between mb-5' style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', marginTop: '20px', padding: '10px 40px', borderRadius: '8px' }} >
+      <nav aria-label="breadcrumb" className={`container-fluid d-flex align-items-center justify-content-between mb-5 ${isDarkMode ? 'bg-dark-2 text-white' : 'bg-white'}`} style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', marginTop: '20px', padding: '10px 40px', borderRadius: '8px' }} >
         <span className='fw-bold'>Clients</span>
-        <ol className="breadcrumb mb-0 py-3 text-align-center" >
+        <ol className={`breadcrumb mb-0 py-3 text-align-center ${isDarkMode ? 'text-white-50' : ''}`} >
           <li className="breadcrumb-item"><Link to="/" className='text-decoration-none' style={{ color: '#D9A741' }}>Home</Link></li>
-          <li className="breadcrumb-item active" aria-current="page">Dashboard</li>
-          <li className="breadcrumb-item active" aria-current="page">Clients</li>
+          <li className={`breadcrumb-item active ${isDarkMode ? 'text-white-50' : ''}`} aria-current="page">Dashboard</li>
+          <li className={`breadcrumb-item active ${isDarkMode ? 'text-white-50' : ''}`} aria-current="page">Clients</li>
         </ol>
       </nav>
       <BookingsOneDoctor bookings={bookings} setBookings={setBookings} />

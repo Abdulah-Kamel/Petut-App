@@ -3,7 +3,7 @@ import logo from '../assets/petut.png';
 import { useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 
-export default function ConfirmModal({ onDelete, setShowConfirm, selectedId, whatDelete }) {
+export default function ConfirmModal({ onDelete, setShowConfirm, selectedId, whatDelete, isDarkMode }) {
     const [loading, setLoading] = useState(false);
 
     const handleClose = () => {
@@ -40,15 +40,15 @@ export default function ConfirmModal({ onDelete, setShowConfirm, selectedId, wha
                 style={{ display: "block", zIndex: 1060 }}
             >
                 <div className="modal-dialog" style={{ marginTop: '250px' }}>
-                    <div className="modal-content">
-                        <div className="modal-header d-flex align-items-center justify-content-between py-0 pe-0">
-                            <h5 className="modal-title">Confirm Deletion</h5>
+                    <div className={`modal-content ${isDarkMode ? 'bg-dark-2 text-white' : ''}`}>
+                        <div className={`modal-header d-flex align-items-center justify-content-between py-0 pe-0 ${isDarkMode ? 'border-secondary' : ''}`}>
+                            <h5 className="modal-title ps-3">Confirm Deletion</h5>
                             <img src={logo} width="90" height="90" alt="logo" />
                         </div>
                         <div className="modal-body">
                             <p className="my-3">Are you sure you want to delete this {whatDelete}?</p>
                         </div>
-                        <div className="modal-footer">
+                        <div className={`modal-footer ${isDarkMode ? 'border-secondary' : ''}`}>
                             <button
                                 type="button"
                                 className="btn btn-secondary"

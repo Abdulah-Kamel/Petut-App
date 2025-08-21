@@ -6,8 +6,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import logo from '../../assets/petut.png';
 import { BeatLoader } from "react-spinners";
 import axios from 'axios';
-
-
 export default function AddAdminModal({ fetchAdmins , admins, setAdmins }) {
 
     const [fullName, setFullName] = useState('');

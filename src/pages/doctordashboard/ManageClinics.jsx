@@ -8,8 +8,10 @@ import { BeatLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 import { onAuthStateChanged } from 'firebase/auth';
 import AddClinicModal from '../../components/AddClinicModal';
+import { useDarkMode } from '../../context/DarkModeContext';
 
 export default function Manageclinics() {
+  const { isDarkMode } = useDarkMode();
   const [loading, setLoading] = useState(true);
   const [clinics, setClinics] = useState([]);
 
@@ -67,29 +69,30 @@ export default function Manageclinics() {
   }
   return (
     <Fragment>
-      <nav aria-label="breadcrumb" className='container-fluid d-flex align-items-center justify-content-between ' style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', marginTop: '20px', padding: '10px 40px', borderRadius: '8px' }} >
+      <nav aria-label="breadcrumb" className={`container-fluid d-flex align-items-center justify-content-between ${isDarkMode ? 'bg-dark-2 text-white' : ''}`} style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', marginTop: '20px', padding: '10px 40px', borderRadius: '8px' }} >
         <span className='fw-bold'>Clinics</span>
         <ol className="breadcrumb mb-0 py-3 text-align-center" >
           <li className="breadcrumb-item"><Link to="/" className='text-decoration-none' style={{ color: '#D9A741' }}>Home</Link></li>
-          <li className="breadcrumb-item active" aria-current="page">Dashboard</li>
-          <li className="breadcrumb-item active" aria-current="page">Clinics</li>
+          <li className={`breadcrumb-item active ${isDarkMode ? 'text-white-50' : ''}`} aria-current="page">Dashboard</li>
+          <li className={`breadcrumb-item active ${isDarkMode ? 'text-white-50' : ''}`} aria-current="page">Clinics</li>
         </ol>
       </nav>
       <div className="container-fluid mt-4">
         <div className="row align-items-center">
           <div className="left col-10">
-            <h1 className='fw-bold fs-5'>Associated clinics</h1>
-            <p>Managing and monitoring the clinics you work in</p>
+            <h1 className={`fw-bold fs-5 ${isDarkMode ? 'text-white' : ''}`}>Associated clinics</h1>
+            <p className={`${isDarkMode ? 'text-white-50' : ''}`}>Managing and monitoring the clinics you work in</p>
           </div>
           <div className="right col-2">
             <button type="button" className="custom-button" data-bs-toggle="modal" data-bs-target="#addclinic" ><RiAddLine size={20} />New Clinic</button>
           </div>
           <AddClinicModal loading={loading} setLoading={setLoading} fetchClinics={() => fetchClinics(auth.currentUser.uid)} />
+
         </div>
       </div>
 
 
-      {loading ? (<h3 className='text-center mt-5'><BeatLoader color="#D9A741" /></h3>) : clinics.length === 0 ? (<h3 className='text-center'>No clinics found</h3>) : (
+      {loading ? (<h3 className={`text-center mt-5 ${isDarkMode ? 'text-white' : ''}`}><BeatLoader color="#D9A741" /></h3>) : clinics.length === 0 ? (<h3 className={`text-center ${isDarkMode ? 'text-white' : ''}`}>No clinics found</h3>) : (
 
         <div className="container-fluid my-4 ">
           <div className="row gap-4 justify-content-start">
@@ -100,6 +103,7 @@ export default function Manageclinics() {
                 setClinics={setClinics}
                 fetchClinics={fetchClinics}
                 onDelete={handleDeleteClinic}
+                isDarkMode={isDarkMode}
               />
             ))}
 

@@ -1,12 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-
 const Notification = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [permission, setPermission] = useState(null);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const initRef = useRef(false);
-
   useEffect(() => {
     // منع التهيئة المضاعفة باستخدام ref
     if (initRef.current) {
@@ -28,7 +26,7 @@ const Notification = () => {
             console.log("🚀 بدء تهيئة OneSignal باستخدام Deferred...");
 
             await OneSignal.init({
-              appId: "59bf05ab-6174-404a-a257-3e7cce35f6b3", // ⚠️ ضع App ID الصحيح هنا
+              appId: "0f5304b0-aea7-4f4a-8eb3-0e715915a563",
               safari_web_id: "",
               notifyButton: {
                 enable: true,
@@ -133,60 +131,6 @@ const Notification = () => {
       alert("حدث خطأ: " + err.message);
     }
   };
-
-  // عرض معلومات التطوير
-  //   if (process.env.NODE_ENV === "development") {
-  //     return (
-  //       <div
-  //         style={{
-  //           position: "fixed",
-  //           top: "10px",
-  //           right: "10px",
-  //           background: "#f0f0f0",
-  //           padding: "10px",
-  //           borderRadius: "5px",
-  //           fontSize: "12px",
-  //           zIndex: 9999,
-  //           border: "1px solid #ccc",
-  //           maxWidth: "300px",
-  //         }}
-  //       >
-  //         <div>
-  //           <strong>OneSignal Status:</strong>
-  //         </div>
-  //         <div>مهيأ: {isInitialized ? "✅" : "❌"}</div>
-  //         <div>الإذن: {permission || "غير محدد"}</div>
-  //         <div>
-  //           User ID: {userId ? `${userId.substring(0, 8)}...` : "غير متوفر"}
-  //         </div>
-  //         {error && (
-  //           <div style={{ color: "red", fontSize: "10px", marginTop: "5px" }}>
-  //             ❌ {error}
-  //           </div>
-  //         )}
-  //         {isInitialized && (
-  //           <button
-  //             onClick={sendTestNotification}
-  //             style={{
-  //               marginTop: "8px",
-  //               padding: "5px 10px",
-  //               background: "#007bff",
-  //               color: "white",
-  //               border: "none",
-  //               borderRadius: "3px",
-  //               cursor: "pointer",
-  //               fontSize: "11px",
-  //             }}
-  //           >
-  //             🧪 اختبار الإشعارات
-  //           </button>
-  //         )}
-  //         <div style={{ fontSize: "10px", marginTop: "5px", color: "#666" }}>
-  //           Port: {window.location.port}
-  //         </div>
-  //       </div>
-  //     );
-  //   }
 
   return null;
 };

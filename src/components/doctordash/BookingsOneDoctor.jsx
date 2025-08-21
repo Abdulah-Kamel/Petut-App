@@ -9,6 +9,9 @@ import { BeatLoader } from 'react-spinners';
 
 
 
+export default function BookingsOneDoctor({ bookings, isDarkMode}) {
+
+
 
 export default function BookingsOneDoctor({ bookings, setBookings }) {
 
@@ -39,6 +42,7 @@ export default function BookingsOneDoctor({ bookings, setBookings }) {
         <Fragment>
 
 
+
             <div className="d-flex justify-content-between align-items-center my-3">
                 <div className="search-box w-50 position-relative">
                     <input
@@ -59,6 +63,7 @@ export default function BookingsOneDoctor({ bookings, setBookings }) {
                     <option value="booked" >Booked</option>
                     <option value="completed" >Completed</option>
                 </select>
+
             </div>
 
             {loading ? (<h3 className='text-center mt-5'><BeatLoader color="#D9A741" /></h3>) : bookings?.length === 0 ? (<h3 className='text-center mt-5'>No Bookings found </h3>) : (

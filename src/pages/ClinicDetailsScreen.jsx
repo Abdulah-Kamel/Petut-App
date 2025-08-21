@@ -32,9 +32,12 @@ const ClinicDetailsScreen = () => {
   }, [clinic.uid, clinic.id]);
 
   const [selectedDateTime, setSelectedDateTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookedSlots, setBookedSlots] = useState([]);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   useEffect(() => {
     const fetchBookedSlots = async () => {
@@ -108,6 +111,20 @@ const ClinicDetailsScreen = () => {
   const filterAvailableTimes = (date) => {
     if (date < new Date()) return false;
     return !isSlotBooked(date);
+  };
+
+  const handleReschedule = () => {
+    setShowDatePicker(true);
+    setShowTimePicker(false);
+    setSelectedDate(null);
+    setSelectedDateTime(null);
+    setError("");
+  };
+
+  const handleDateSelect = (date) => {
+    setSelectedDate(date);
+    setShowDatePicker(false);
+    setShowTimePicker(true);
   };
 
   const handleBook = async () => {
@@ -273,26 +290,87 @@ const ClinicDetailsScreen = () => {
           {/* Appointment Picker */}
           <div className="p-6 border-b border-gray-100 dark:border-gray-700">
             <h3 className="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-              <span className="material-icons text-primary">event</span>
-              Choose Appointment Date & Time
+              Choose Appointment Day
             </h3>
 
-            <DatePicker
-              selected={selectedDateTime}
-              onChange={(date) => setSelectedDateTime(date)}
-              minDate={new Date()}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={30}
-              dateFormat="MMMM d, yyyy h:mm aa"
-              filterTime={filterAvailableTimes}
-              placeholderText="Select date and time"
-              excludeTimes={bookedSlots
-                .map((slot) => slot.datetime)
-                .filter(Boolean)}
-              className="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-              wrapperClassName="w-full"
-            />
+            <button
+              onClick={handleReschedule}
+              className="flex items-center gap-2 px-6 py-3 bg-primary_app  text-white font-medium rounded-full transition-colors mb-6"
+            >
+              <span className="material-icons text-lg">event</span>
+              <span>
+                {selectedDate
+                  ? selectedDate.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  : "Pick a date"}
+              </span>
+            </button>
+
+            {/* Date Picker Modal */}
+            {showDatePicker && (
+              <div className="mb-6">
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={handleDateSelect}
+                  minDate={new Date()}
+                  inline
+                  className="w-full"
+                />
+              </div>
+            )}
+
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-4">
+              Available Times
+            </h4>
+
+            {!showTimePicker ? (
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <p>Please pick a date to see available times.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-3 gap-3">
+                {/* Generate time slots */}
+                {Array.from({ length: 20 }, (_, i) => {
+                  const hour = Math.floor(i / 2) + 9;
+                  const minute = (i % 2) * 30;
+                  const time = new Date(selectedDate);
+                  time.setHours(hour, minute, 0, 0);
+
+                  const timeStr = time.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  });
+
+                  const isBooked = isSlotBooked(time);
+                  const isPast = time < new Date();
+                  const isSelected =
+                    selectedDateTime &&
+                    time.getTime() === selectedDateTime.getTime();
+
+                  return (
+                    <button
+                      key={i}
+                      onClick={() =>
+                        !isBooked && !isPast && setSelectedDateTime(time)
+                      }
+                      disabled={isBooked || isPast}
+                      className={`p-3 rounded-xl border-2 transition-colors ${
+                        isSelected
+                          ? "bg-orange-400 text-white border-orange-400"
+                          : isBooked || isPast
+                          ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed dark:bg-gray-800 dark:text-gray-600 dark:border-gray-700"
+                          : "bg-white text-gray-800 border-gray-300 hover:border-orange-400 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:border-orange-400"
+                      }`}
+                    >
+                      {timeStr}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
             {selectedDateTime && (
               <div className="mt-4 p-4 bg-primary/10 dark:bg-primary/20 rounded-xl">
@@ -352,9 +430,9 @@ const ClinicDetailsScreen = () => {
               ))}
             </div>
             {/* Action Buttons */}
-            <div className="flex gap-4  bottom-4 mt-14 ">
+            <div className="flex gap-4 bottom-4 mt-14">
               <button
-                className="flex-1 flex items-center justify-center  gap-2  bg-secondary-light dark:bg-gray-800 text-primary font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 bg-secondary-light dark:bg-gray-800 text-primary font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 onClick={() =>
                   window.open(`tel:${clinic.phone || clinic.phoneNumber}`)
                 }
@@ -364,7 +442,7 @@ const ClinicDetailsScreen = () => {
               </button>
 
               <button
-                className="flex-1 flex items-center justify-center gap-2 bg-primary text-white   font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-primary/90 disabled:opacity-50  disabled:cursor-not-allowed transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary_app text-white font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 disabled={!selectedDateTime || loading}
                 onClick={handleBook}
               >

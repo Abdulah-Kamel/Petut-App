@@ -49,14 +49,15 @@ export default function Reviews() {
                             {/* <td className="px-4 py-3" ><span style={{ color: 'white', backgroundColor: doctor.gender === 'male' ? '#007BFF ' : '#E91E63 ', fontSize: '14px' }} className='px-3 py-1 rounded rounded-5 '>{doctor.gender}</span></td> */}
                             <td className="px-4 py-3"></td>
                             <td className="px-4 py-3"></td>
-                            <td className="px-4 py-3 d-flex align-items-center gap-2 ">
-                                
-                                <button type="button" className="btn border-0 p-0 mb-1" data-bs-toggle="modal" data-bs-target="#review">
-                                    <FaEye cursor={"pointer"}  />
-                                </button>
-                                <DoctorReviewsModal />
+                            <td className="px-4 py-3">
+                                <div className="d-flex align-items-center gap-2">
+                                    <button type="button" className="btn border-0 p-0 mb-1" data-bs-toggle="modal" data-bs-target="#review">
+                                        <FaEye cursor={"pointer"} className="table-action-icon" />
+                                    </button>
+                                    <DoctorReviewsModal />
 
-                                <MdDelete cursor={"pointer"} size={20} className='text-danger' />
+                                    <MdDelete cursor={"pointer"} size={20} className='text-danger' />
+                                </div>
                             </td>
 
                         </tr>
